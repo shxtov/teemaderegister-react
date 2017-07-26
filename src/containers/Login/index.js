@@ -2,33 +2,38 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { login } from 'actions/LoginActions'
-import Link from 'valuelink'
-import FormInput from 'components/Form/FormInput'
 import queryString from 'query-string'
 import { Redirect } from 'react-router-dom'
+import { Row, Col, Form, Icon, Input, Button, message } from 'antd'
+const FormItem = Form.Item
+
+import './login.less'
 
 class Login extends React.Component {
   constructor(props) {
     super(props)
-
     this.state = {
-      email: '',
-      password: ''
+      loading: props.loading
     }
-
     this.submit = this.submit.bind(this)
   }
 
-  submit(e) {
-    e.preventDefault()
-    const creds = {
-      email: this.state.email.trim(),
-      password: this.state.password.trim()
+  componentWillReceiveProps(nextProps) {
+    // You don't have to do this check first, but it can help prevent an unneeded render
+    if (nextProps.loading !== this.state.loading) {
+      this.setState({ loading: nextProps.loading })
+      console.log(nextProps.loginErrors)
+      if (nextProps.loginErrors.length > 0) {
+        nextProps.loginErrors.map(err => message.error(err.msg))
+      }
     }
-    this.props.login(creds)
   }
 
   render() {
+    const { getFieldDecorator } = this.props.form
+    //const { loginErrors } = this.props
+    const { loading } = this.state
+
     let params = queryString.parse(this.props.location.search)
     let redirect = params.redirect || '/'
     let { isAuthenticated } = this.props.auth
@@ -38,34 +43,70 @@ class Login extends React.Component {
       return <Redirect to={redirect} />
     }
 
-    const emailRegexPattern = /^[-a-z0-9~!$%^&*_=+}{'?]+(\.[-a-z0-9~!$%^&*_=+}{'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i
-    const isEmail = x => Boolean(x.match(emailRegexPattern))
-    isEmail.error = 'Should be valid email'
-
-    const emailLink = Link.state(this, 'email')
-      .check(x => x, '*')
-      .check(isEmail)
-
-    const passwordLink = Link.state(this, 'password')
-      .check(x => x, '*')
-      .check(x => x.length > 5, 'Password length must be atlest 5 ')
-
     return (
-      <form onSubmit={this.submit}>
-        {this.props.loading && <div>Loading....</div>}
-        <FormInput label="email" valueLink={emailLink} type="text" />
-        <br />
-        <FormInput
-          label="password"
-          valueLink={passwordLink}
-          type="password"
-        />{' '}
-        <br />
-        <button disabled={emailLink.error || passwordLink.error} type="submit">
-          Login
-        </button>
-      </form>
+      <Row gutter={8}>
+        <Col span={8} />
+        <Col xs={24} sm={8}>
+          {/* {loginErrors.length > 0 &&
+            loginErrors.map((err, i) =>
+              <Alert key={i} message={err.msg} type="error" closable="true" />
+            )} */}
+          <Form onSubmit={this.submit} className="login-form">
+            <FormItem>
+              {getFieldDecorator('userName', {
+                rules: [
+                  { required: true, message: 'Please input your username!' },
+                  { type: 'email', message: 'Please enter correct email' }
+                ]
+              })(
+                <Input
+                  prefix={<Icon type="user" style={{ fontSize: 13 }} />}
+                  placeholder="Username"
+                />
+              )}
+            </FormItem>
+            <FormItem>
+              {getFieldDecorator('password', {
+                rules: [
+                  { required: true, message: 'Please input your Password!' }
+                ]
+              })(
+                <Input
+                  prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
+                  type="password"
+                  placeholder="Password"
+                />
+              )}
+            </FormItem>
+            <FormItem>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="login-form-button"
+                loading={loading}
+              >
+                Log in
+              </Button>
+              Or <a href="">register now!</a>
+            </FormItem>
+          </Form>
+        </Col>
+        <Col span={8} />
+      </Row>
     )
+  }
+
+  submit(e) {
+    e.preventDefault()
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values)
+        this.setState({ loading: true })
+        window.setTimeout(() => {
+          this.props.login(values)
+        }, 1000)
+      }
+    })
   }
 }
 
@@ -73,13 +114,16 @@ Login.propTypes = {
   login: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   auth: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  form: PropTypes.object.isRequired,
+  loginErrors: PropTypes.array.isRequired
 }
 
 const mapStateToProps = state => {
   return {
     auth: state.auth,
     loading: state.login.loading,
+    loginErrors: state.login.errors,
     from: state.from
   }
 }
@@ -90,4 +134,10 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+const WrappedLogin = Form.create({
+  onValuesChange(_, values) {
+    console.log(values)
+  }
+})(Login)
+
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedLogin)

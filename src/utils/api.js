@@ -42,6 +42,6 @@ export default function(method, url, query) {
         //dispatch same as logout
         console.log('not authorized')
       }
-      return Promise.reject(err)
+      return Promise.reject(err.response)
     })
 }

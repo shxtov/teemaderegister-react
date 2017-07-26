@@ -26,11 +26,11 @@ export function login(creds) {
         let token = data.token
 
         dispatch(setToken(token))
-        dispatch({ type: types.LOGIN_FINISHED })
+        dispatch({ type: types.LOGIN_SUCCESS })
       })
       .catch(err => {
         console.log(err)
-        dispatch({ type: types.LOGIN_FINISHED })
+        dispatch({ type: types.LOGIN_FAIL, errors: err.data })
       })
   }
 }

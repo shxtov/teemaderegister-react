@@ -1,7 +1,8 @@
 import * as types from '../constants/ActionTypes'
 
 const INITIAL_STATE = {
-  loading: false
+  loading: false,
+  errors: []
 }
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -11,10 +12,17 @@ export default function(state = INITIAL_STATE, action) {
       loading: true
     }
 
-  case types.LOGIN_FINISHED:
+  case types.LOGIN_SUCCESS:
     return {
       ...state,
       loading: false
+    }
+
+  case types.LOGIN_FAIL:
+    return {
+      ...state,
+      loading: false,
+      errors: action.errors
     }
 
   default:

@@ -32,6 +32,14 @@ const plugins = [
   })
 ]
 
+// ANTD
+const fs = require('fs')
+
+const lessToJs = require('less-vars-to-js')
+const themeVariables = lessToJs(
+  fs.readFileSync(SRC_DIR + '/stylesheets/ant-default-vars.less', 'utf8')
+)
+
 if (PRODUCTION) {
   plugins.push(
     new webpack.optimize.UglifyJsPlugin({
@@ -85,8 +93,14 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loaders: ['babel-loader'],
-        exclude: /node_modules/
+        //  loaders: ['babel-loader'],
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            plugins: [['import', { libraryName: 'antd', style: true }]]
+          }
+        }
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
@@ -97,6 +111,24 @@ module.exports = {
         test: /\.scss$/,
         loaders: scssLoader,
         exclude: /node_modules/
+      },
+      // FOR ANTD1
+      {
+        test: /\.less$/,
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'less-loader',
+            query: {
+              modifyVars: themeVariables
+            }
+          }
+        ]
       }
     ]
   },
