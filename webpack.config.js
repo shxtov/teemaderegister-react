@@ -3,25 +3,58 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const webpack = require('webpack')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin
 
 const BUILD_DIR = path.resolve(__dirname, './dist')
 const SRC_DIR = path.resolve(__dirname, './src')
-
 const PRODUCTION = process.env.NODE_ENV === 'production'
+const VISUALIZE = process.env.visualization === 'true'
+console.log(
+  'Running webpack in mode:' +
+    process.env.NODE_ENV +
+    ' visualization:' +
+    VISUALIZE
+)
 
-console.log('Running webpack in ' + process.env.NODE_ENV)
+const extractSCSS = new ExtractTextPlugin('css/style.[contenthash:10].css')
+const extractLESS = new ExtractTextPlugin('css/antd.[contenthash:10].css')
 
-const entry = {
-  app: [SRC_DIR + '/index.js'],
-  // TODO add other vendor files
-  vendor: ['react', 'react-dom', 'react-router-dom']
+const isExternal = function(module) {
+  var context = module.context
+  if (typeof context !== 'string') {
+    return false
+  }
+  return context.indexOf('node_modules') !== -1
 }
 
+// ANTD
+// lessToJs does not support @icon-url: "some-string", so we are manually adding it to the produced themeVariables js object here
+// downloaded from https://github.com/ant-design/antd-init/tree/master/examples/local-iconfont/iconfont
+const fs = require('fs')
+const lessToJs = require('less-vars-to-js')
+const themeVariables = lessToJs(
+  fs.readFileSync(SRC_DIR + '/stylesheet/ant-default-vars.less', 'utf8')
+)
+themeVariables['@icon-url'] = '\'/fonts/iconfont\''
+
 const plugins = [
-  new ExtractTextPlugin('css/style-[contenthash:10].css'),
+  VISUALIZE
+    ? new BundleAnalyzerPlugin({
+      analyzerMode: 'static'
+    })
+    : null,
+  extractSCSS,
+  extractLESS,
+  //TODO merge css files via merge-files-webpack-plugin
   new webpack.optimize.CommonsChunkPlugin({
-    names: ['vendor'],
-    minChunks: 1
+    name: 'vendors',
+    minChunks: function(module) {
+      return isExternal(module)
+    }
+  }),
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'manifest'
   }),
   new HtmlWebpackPlugin({
     //hash: DEVELOPMENT ? true : false, // if needed to force remove caching issues while in dev
@@ -29,113 +62,116 @@ const plugins = [
     minify: {
       collapseWhitespace: PRODUCTION ? true : false // this is for minifying HTML in PRODUCTION
     }
-  })
-]
+  }),
+  PRODUCTION
+    ? (
+      new webpack.optimize.UglifyJsPlugin({
+        comments: false,
+        compress: {
+          warnings: false,
+          drop_console: true
+        },
+        minimize: true,
+        sourceMap: true
+      }),
+      new CompressionPlugin({
+        asset: '[path].gz[query]',
+        algorithm: 'gzip',
+        test: /\.js$|\.css$|\.html$/,
+        threshold: 10240, // only if file size > 10.24 kb
+        minRatio: 0.8
+      })
+    )
+    : null
+].filter(p => p)
 
-// ANTD
-const fs = require('fs')
-
-const lessToJs = require('less-vars-to-js')
-const themeVariables = lessToJs(
-  fs.readFileSync(SRC_DIR + '/stylesheets/ant-default-vars.less', 'utf8')
-)
-
-if (PRODUCTION) {
-  plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      comments: false,
-      compress: {
-        warnings: false,
-        drop_console: true
-      },
-      minimize: true,
-      sourceMap: true
-    }),
-    new CompressionPlugin({
-      asset: '[path].gz[query]',
-      algorithm: 'gzip',
-      test: /\.js$|\.css$|\.html$/,
-      threshold: 10240, // only if file size > 10.24 kb
-      minRatio: 0.8
-    })
-  )
-}
-
-const scssLoader = ExtractTextPlugin.extract({
-  fallback: 'style-loader',
-  use: ['css-loader?sourceMap', 'sass-loader?sourceMap']
-})
-
-const devServer = {
-  proxy: {
-    // proxy URLs to backend development server
-    '/api': 'http://localhost:3000'
+const rules = [
+  {
+    test: /\.js$/,
+    exclude: /node_modules/,
+    use: {
+      loader: 'babel-loader',
+      options: {
+        plugins: [['import', { libraryName: 'antd', style: true }]]
+      }
+    }
   },
-  host: 'localhost',
-  port: 3446, // add preferred port
-  contentBase: BUILD_DIR,
-  compress: true,
-  historyApiFallback: true,
-  hot: true,
-  inline: true,
-  noInfo: true
-}
-
-module.exports = {
-  devtool: PRODUCTION ? 'source-map' : 'source-map',
-  stats: 'normal',
-  entry: entry,
-  plugins: plugins,
-  //externals: {
-  //	jquery: "jQuery" //jquery is external and available at the global variable jQuery
-  //},
-  module: {
-    loaders: [
+  {
+    test: /media\/([^/]*)\.(jpe?g|png|gif|svg)$/i,
+    exclude: [/node_modules/],
+    use: [
       {
-        test: /\.js$/,
-        //  loaders: ['babel-loader'],
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            plugins: [['import', { libraryName: 'antd', style: true }]]
-          }
-        }
-      },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loaders: ['url-loader?limit=10240&name=media/[hash:10].[ext]'], // embed images size > 10kb
-        exclude: /node_modules/
-      },
-      {
-        test: /\.scss$/,
-        loaders: scssLoader,
-        exclude: /node_modules/
-      },
-      // FOR ANTD1
-      {
-        test: /\.less$/,
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader'
-          },
-          {
-            loader: 'less-loader',
-            query: {
-              modifyVars: themeVariables
-            }
-          }
-        ]
+        loader: 'url-loader',
+        options: { limit: 1024, name: 'media/[hash:10].[ext]' } // embed images size < 10kb
       }
     ]
+  },
+  {
+    test: /fonts\/([^/]*)\.(woff|woff2|eot|ttf|svg)$/,
+    exclude: /node_modules/,
+    use: [
+      {
+        loader: 'url-loader',
+        options: { limit: 1, name: 'fonts/[name].[ext]' } // do not embed fonts > 1b
+      }
+    ]
+  },
+  // TODO add autoprefixer like autoprefixer?browsers=last 2 version
+  {
+    test: /\.scss$/,
+    exclude: /node_modules/,
+    use: extractSCSS.extract({
+      fallback: 'style-loader',
+      use: [
+        { loader: 'css-loader', options: { sourceMap: true } },
+        { loader: 'sass-loader', options: { sourceMap: true } }
+      ]
+    })
+  },
+  {
+    // FOR ANTD1
+    test: /\.less$/,
+    use: extractLESS.extract({
+      fallback: 'style-loader',
+      use: [
+        { loader: 'css-loader', options: { sourceMap: true } },
+        {
+          loader: 'less-loader',
+          options: {
+            sourceMap: true,
+            modifyVars: themeVariables
+          }
+        }
+      ]
+    })
+  }
+]
+
+module.exports = {
+  devtool: 'source-map',
+  stats: 'normal',
+  entry: {
+    app: [SRC_DIR + '/index.js']
+  },
+  plugins: plugins,
+  // externals: { jquery: "jQuery" }, jquery is external and available at the global variable jQuery
+  module: {
+    rules
   },
   output: {
     path: BUILD_DIR,
     publicPath: PRODUCTION ? '/' : '/',
-    filename: PRODUCTION ? 'js/[name]-[hash:10].js' : 'js/[name].js'
+    filename: PRODUCTION ? 'js/[name].[chunkhash].js' : 'js/[name].js',
+    chunkFilename: '[chunkhash].js'
   },
-  devServer: devServer
+  devServer: {
+    host: 'localhost',
+    port: 3446, // preferred port
+    contentBase: BUILD_DIR,
+    compress: true,
+    historyApiFallback: true,
+    hot: true,
+    inline: true,
+    noInfo: true
+  }
 }
