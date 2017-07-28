@@ -6,23 +6,19 @@ const INITIAL_STATE = {
 }
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
+  case types.INIT_LOGIN:
+    return INITIAL_STATE
   case types.LOGIN_IN_PROGRESS:
     return {
       ...state,
       loading: true
     }
 
-  case types.LOGIN_SUCCESS:
-    return {
-      ...state,
-      loading: false
-    }
-
-  case types.LOGIN_FAIL:
+  case types.LOGIN_FINISHED:
     return {
       ...state,
       loading: false,
-      errors: action.errors
+      errors: action.errors || []
     }
 
   default:

@@ -2,6 +2,12 @@ import * as types from 'constants/ActionTypes'
 import { setToken, removeTokenAndUser } from 'actions/AuthActions'
 import Api from 'utils/api'
 
+export function initLogin() {
+  return dispatch => {
+    dispatch({ type: types.INIT_LOGIN })
+  }
+}
+
 export function logout() {
   return dispatch => {
     return Api('POST', '/auth/logout')
@@ -23,14 +29,13 @@ export function login(creds) {
     }
     return Api('POST', '/auth/local/login', query)
       .then(data => {
-        let token = data.token
-
-        dispatch(setToken(token))
-        dispatch({ type: types.LOGIN_SUCCESS })
+        dispatch(setToken(data.token))
+        dispatch({ type: types.LOGIN_FINISHED })
       })
       .catch(err => {
         console.log(err)
-        dispatch({ type: types.LOGIN_FAIL, errors: err.data })
+        let errors = err.data
+        dispatch({ type: types.LOGIN_FINISHED, errors })
       })
   }
 }

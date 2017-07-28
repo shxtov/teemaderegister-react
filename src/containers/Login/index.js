@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { login } from 'actions/LoginActions'
+import { initLogin, login } from 'actions/LoginActions'
 import queryString from 'query-string'
 import { Redirect } from 'react-router-dom'
 import { Row, Col, Form, Icon, Input, Button, message, Tooltip } from 'antd'
@@ -32,6 +32,10 @@ class Login extends React.Component {
   componentDidMount() {
     let userNameInput = this.props.form.getFieldInstance('userName').refs.input
     userNameInput.focus()
+  }
+
+  componentWillUnmount() {
+    this.props.initLogin()
   }
 
   submit(e) {
@@ -114,6 +118,7 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
+  initLogin: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   auth: PropTypes.object.isRequired,
@@ -133,7 +138,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    login: creds => dispatch(login(creds))
+    login: creds => dispatch(login(creds)),
+    initLogin: () => dispatch(initLogin())
   }
 }
 
