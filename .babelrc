@@ -42,10 +42,6 @@
         {
           "src": "./src/constants",
           "expose": "constants"
-        },
-        {
-          "src": "./src/common",
-          "expose": "common"
         }
       ]
     ]
