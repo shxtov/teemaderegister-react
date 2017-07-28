@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 import { login } from 'actions/LoginActions'
 import queryString from 'query-string'
 import { Redirect } from 'react-router-dom'
-import { Row, Col, Form, Icon, Input, Button, message } from 'antd'
+import { Row, Col, Form, Icon, Input, Button, message, Tooltip } from 'antd'
 const FormItem = Form.Item
 
-import './login.less'
+import './login.scss'
 
 class Login extends React.Component {
   constructor(props) {
@@ -29,16 +29,33 @@ class Login extends React.Component {
     }
   }
 
+  componentDidMount() {
+    let userNameInput = this.props.form.getFieldInstance('userName').refs.input
+    userNameInput.focus()
+  }
+
+  submit(e) {
+    e.preventDefault()
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.setState({ loading: true })
+        // show user loading
+        window.setTimeout(() => {
+          this.props.login(values)
+        }, 1000)
+      }
+    })
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form
-    //const { loginErrors } = this.props
     const { loading } = this.state
 
-    let params = queryString.parse(this.props.location.search)
-    let redirect = params.redirect || '/'
-    let { isAuthenticated } = this.props.auth
+    const params = queryString.parse(this.props.location.search)
+    const redirect = params.redirect || '/'
+    const { isAuthenticated } = this.props.auth
 
-    //TODO no redirect after logout?
+    // TODO no redirect after logout?
     if (isAuthenticated) {
       return <Redirect to={redirect} />
     }
@@ -47,23 +64,17 @@ class Login extends React.Component {
       <Row gutter={8}>
         <Col span={8} />
         <Col xs={24} sm={8}>
-          {/* {loginErrors.length > 0 &&
-            loginErrors.map((err, i) =>
-              <Alert key={i} message={err.msg} type="error" closable="true" />
-            )} */}
           <Form onSubmit={this.submit} className="login-form">
+            <h2 className="center">
+              Sign in to <span className="emphisize-title">Te</span>
+            </h2>
             <FormItem>
               {getFieldDecorator('userName', {
                 rules: [
                   { required: true, message: 'Please input your username!' },
                   { type: 'email', message: 'Please enter correct email' }
                 ]
-              })(
-                <Input
-                  prefix={<Icon type="user" style={{ fontSize: 13 }} />}
-                  placeholder="Username"
-                />
-              )}
+              })(<Input prefix={<Icon type="user" />} placeholder="Email" />)}
             </FormItem>
             <FormItem>
               {getFieldDecorator('password', {
@@ -72,7 +83,7 @@ class Login extends React.Component {
                 ]
               })(
                 <Input
-                  prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
+                  prefix={<Icon type="lock" />}
                   type="password"
                   placeholder="Password"
                 />
@@ -87,26 +98,18 @@ class Login extends React.Component {
               >
                 Log in
               </Button>
-              Or <a href="">register now!</a>
+              <Tooltip
+                placement="topLeft"
+                title="If you do not have account please contact your school administrator"
+              >
+                <p>do not have account?</p>
+              </Tooltip>
             </FormItem>
           </Form>
         </Col>
         <Col span={8} />
       </Row>
     )
-  }
-
-  submit(e) {
-    e.preventDefault()
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values)
-        this.setState({ loading: true })
-        window.setTimeout(() => {
-          this.props.login(values)
-        }, 1000)
-      }
-    })
   }
 }
 
@@ -134,10 +137,6 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const WrappedLogin = Form.create({
-  onValuesChange(_, values) {
-    console.log(values)
-  }
-})(Login)
+const WrappedLogin = Form.create()(Login)
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedLogin)
