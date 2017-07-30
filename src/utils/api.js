@@ -1,6 +1,8 @@
 const BASE_URL = '/api'
 import axios from 'axios'
 import { getToken } from 'actions/AuthActions'
+import nprogress from 'nprogress'
+// nprogress.configure({ showSpinner: false }) // disable spinner
 
 function makeConfig(method, url, query) {
   let config = {
@@ -30,10 +32,14 @@ function makeConfig(method, url, query) {
 
 export default function(method, url, query) {
   let config = makeConfig(method, url, query)
+  // TODO if already started continue progressbar (from auth)
+  nprogress.start()
 
   return axios
     .request(config)
     .then(response => {
+      nprogress.done()
+
       return Promise.resolve(response.data)
     })
     .catch(err => {
@@ -42,6 +48,7 @@ export default function(method, url, query) {
         //dispatch same as logout
         console.log('not authorized')
       }
+      nprogress.done()
       return Promise.reject(err.response)
     })
 }

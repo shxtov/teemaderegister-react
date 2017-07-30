@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run clean && NODE_ENV=production webpack -p --progress --config webpack.config.js",
     "build-visualization": "npm run clean && NODE_ENV=production visualization=true webpack -p --progress --config webpack.config.js",
-    "dev": "NODE_ENV=development webpack-dev-server --hot --inline --debug --config webpack.config.js",
+    "dev": "npm run clean && NODE_ENV=development webpack-dev-server --hot --inline --debug --config webpack.config.js",
     "lint": "eslint src/",
     "clean": "rm -rf dist/",
     "prod": "npm run lint && npm run build",
@@ -26,6 +26,7 @@
   "dependencies": {
     "antd": "^2.12.2",
     "axios": "^0.16.2",
+    "nprogress": "^0.2.0",
     "query-string": "^4.3.4",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",

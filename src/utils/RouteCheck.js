@@ -8,7 +8,6 @@ export default function(ComposedComponent, restrict) {
   class RouteCheck extends React.Component {
     componentWillMount() {
       analytics(this.props.location.pathname)
-
       this.props.checkUser(this.props.auth)
     }
     render() {
@@ -27,7 +26,8 @@ export default function(ComposedComponent, restrict) {
       } else if (!authInProgress) {
         return <ComposedComponent {...this.props} />
       } else {
-        return <div>Loading...</div>
+        // Loading
+        return null
       }
     }
   }
@@ -55,7 +55,7 @@ export default function(ComposedComponent, restrict) {
   }
 
   function analytics(route) {
-    console.log('ROUTE' + route)
+    //console.log('ROUTE' + route)
   }
 
   return connect(mapStateToProps, mapDispatchToProps)(RouteCheck)
