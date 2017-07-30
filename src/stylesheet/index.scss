@@ -2,13 +2,15 @@
   background: #fff;
   padding: 24;
   min-height: 280;
-  max-width: 1200px;
+  max-width: 980px;
   margin: 0 auto;
+  padding: 0 16px;
 }
 
 #header-wrapper {
-  max-width: 1200px;
+  max-width: 980px;
   margin: 0 auto;
+  padding: 0 16px;
 }
 
 .header-logo {
@@ -31,7 +33,7 @@
   .ant-layout-header {
     // height: 48px;
     // line-height: 48px;
-    padding: 0 20px;
+    padding: 0;
   }
   .ant-layout {
     background-color: #fff;

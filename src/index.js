@@ -8,12 +8,12 @@ import { Layout } from 'antd'
 const { Header, Content, Footer } = Layout
 
 import MyHeader from 'components/MyHeader/MyHeader'
-import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs'
 import RouteCheck from 'utils/RouteCheck'
 
 import Home from 'containers/Home'
 import NotFound from 'containers/NotFound'
 import Login from 'containers/Login'
+import Curriculum from 'containers/Curriculum'
 
 import store from 'store/configureStore'
 
@@ -30,7 +30,7 @@ render(
     <BrowserRouter history={createBrowserHistory()}>
       <Layout className="layout">
         <Header>
-          <div className="header-wrapper">
+          <div id="header-wrapper">
             <Link to="/">
               <div className="header-logo">Te</div>
             </Link>
@@ -38,17 +38,20 @@ render(
           </div>
         </Header>
         <Content>
-          <Route component={Breadcrumbs} />
           <div id="content-wrapper">
             <Switch>
               <Route exact path="/" restrict component={RouteCheck(Home)} />
               <Route exact path="/login" component={RouteCheck(Login)} />
+              <Route
+                path="/curriculum/:abbreviation"
+                component={RouteCheck(Curriculum)}
+              />
               <Route component={RouteCheck(NotFound)} />
             </Switch>
           </div>
         </Content>
         <Footer>
-          Romil Rõbtšenkov ©{new Date().getFullYear()}
+          TLU ©{new Date().getFullYear()} | Made by Romil Rõbtšenkov
         </Footer>
       </Layout>
     </BrowserRouter>
