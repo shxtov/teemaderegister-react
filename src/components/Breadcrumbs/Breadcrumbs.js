@@ -7,22 +7,24 @@ import './Breadcrumbs.scss'
 
 class Breadcrumbs extends Component {
   render() {
-    const { pathname } = this.props.location
+    const { crumbs } = this.props
 
-    const breadcrumbNameMap = {
-      '/login': 'Sign in'
-    }
-    const pathSnippets = pathname.split('/').filter(i => i)
-    const extraBreadcrumbItems = pathSnippets.map((_, index) => {
-      const url = `/${pathSnippets.slice(0, index + 1).join('/')}`
+    const extraBreadcrumbItems = crumbs.map(crumb => {
+      const { url, name } = crumb
+
+      const link = url
+        ? <Link to={url}>
+          {name}
+        </Link>
+        : name
+
       return (
         <Breadcrumb.Item key={url}>
-          <Link to={url}>
-            {breadcrumbNameMap[url]}
-          </Link>
+          {link}
         </Breadcrumb.Item>
       )
     })
+
     const breadcrumbItems = [
       <Breadcrumb.Item key="home">
         <Link to="/">
@@ -32,20 +34,17 @@ class Breadcrumbs extends Component {
     ].concat(extraBreadcrumbItems)
 
     return (
-      <div>
-        {pathname !== '/' &&
-          <div id="breadcrumb-wrapper">
-            <Breadcrumb>
-              {breadcrumbItems}
-            </Breadcrumb>
-          </div>}
+      <div id="breadcrumb-wrapper">
+        <Breadcrumb>
+          {breadcrumbItems}
+        </Breadcrumb>
       </div>
     )
   }
 }
 
 Breadcrumbs.propTypes = {
-  location: PropTypes.object.isRequired
+  crumbs: PropTypes.array
 }
 
 export default Breadcrumbs

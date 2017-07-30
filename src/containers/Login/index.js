@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { initLogin, login } from 'actions/LoginActions'
 import queryString from 'query-string'
 import { Redirect } from 'react-router-dom'
+import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs'
 import { Row, Col, Form, Icon, Input, Button, message, Tooltip } from 'antd'
 const FormItem = Form.Item
 
@@ -65,54 +66,59 @@ class Login extends React.Component {
     }
 
     return (
-      <Row gutter={8}>
-        <Col span={8} />
-        <Col xs={24} sm={8}>
-          <Form onSubmit={this.submit} className="login-form">
-            <h2 className="center">
-              Sign in to <span className="emphisize-title">Te</span>
-            </h2>
-            <FormItem>
-              {getFieldDecorator('userName', {
-                rules: [
-                  { required: true, message: 'Please input your username!' },
-                  { type: 'email', message: 'Please enter correct email' }
-                ]
-              })(<Input prefix={<Icon type="user" />} placeholder="Email" />)}
-            </FormItem>
-            <FormItem>
-              {getFieldDecorator('password', {
-                rules: [
-                  { required: true, message: 'Please input your Password!' }
-                ]
-              })(
-                <Input
-                  prefix={<Icon type="lock" />}
-                  type="password"
-                  placeholder="Password"
-                />
-              )}
-            </FormItem>
-            <FormItem>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="login-form-button"
-                loading={loading}
-              >
-                Log in
-              </Button>
-              <Tooltip
-                placement="topLeft"
-                title="If you do not have account please contact your school administrator"
-              >
-                <p>do not have account?</p>
-              </Tooltip>
-            </FormItem>
-          </Form>
-        </Col>
-        <Col span={8} />
-      </Row>
+      <div id="login-page">
+        <Breadcrumbs
+          crumbs={[{ url: this.props.location.pathname, name: 'Sign In' }]}
+        />
+        <Row gutter={8}>
+          <Col span={8} />
+          <Col xs={24} sm={8}>
+            <Form onSubmit={this.submit} className="login-form">
+              <h2 className="center">
+                Sign in to <span className="emphisize-title">Te</span>
+              </h2>
+              <FormItem>
+                {getFieldDecorator('userName', {
+                  rules: [
+                    { required: true, message: 'Please input your username!' },
+                    { type: 'email', message: 'Please enter correct email' }
+                  ]
+                })(<Input prefix={<Icon type="user" />} placeholder="Email" />)}
+              </FormItem>
+              <FormItem>
+                {getFieldDecorator('password', {
+                  rules: [
+                    { required: true, message: 'Please input your Password!' }
+                  ]
+                })(
+                  <Input
+                    prefix={<Icon type="lock" />}
+                    type="password"
+                    placeholder="Password"
+                  />
+                )}
+              </FormItem>
+              <FormItem>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="login-form-button"
+                  loading={loading}
+                >
+                  Log in
+                </Button>
+                <Tooltip
+                  placement="topLeft"
+                  title="If you do not have account please contact your school administrator"
+                >
+                  <p>do not have account?</p>
+                </Tooltip>
+              </FormItem>
+            </Form>
+          </Col>
+          <Col span={8} />
+        </Row>
+      </div>
     )
   }
 }

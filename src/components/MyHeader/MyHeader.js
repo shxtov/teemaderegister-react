@@ -22,7 +22,7 @@ class MyHeader extends Component {
     //const { pathname } = this.props.location
 
     return (
-      <div id="header-wrapper">
+      <div className="header-wrapper">
         <div className="search">
           <Search
             size="large"
