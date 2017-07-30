@@ -22,10 +22,14 @@ class CurriculumTypeCollection extends React.Component {
     let items = []
 
     collection.forEach((c, i) => {
-      const { abbreviation, name, _id } = c
+      let { abbreviation, name, _id, languages } = c
       const cardStyle = {
         backgroundImage: 'url(' + colorMap[type] + ')'
       }
+      languages = languages.map(
+        (l, i) =>
+          l + ((i !== languages.length - 1) & (languages.length > 1) ? '/' : '')
+      )
 
       items.push(
         <Col key={i} sm={12} md={8}>
@@ -40,7 +44,7 @@ class CurriculumTypeCollection extends React.Component {
                 {name}
               </h2>
               <p>
-                {abbreviation}
+                {abbreviation} | {languages}
               </p>
             </Card>
           </Link>

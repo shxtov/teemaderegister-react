@@ -2,23 +2,43 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs'
 import { connect } from 'react-redux'
+import {
+  getSingleCurriculumData,
+  initCurriculum
+} from 'actions/CurriculumActions'
+
+import CurriculumMeta from 'components/CurriculumMeta'
 
 class Curriculum extends React.Component {
   constructor(props) {
     super(props)
+
+    const { abbreviation } = this.props.match.params
+    props.getSingleCurriculumData(abbreviation)
+  }
+
+  getCrumbs(name) {
+    return [
+      { url: null, name: 'Curriculum' },
+      { url: this.props.location.pathname, name }
+    ]
+  }
+
+  componentWillUnmount() {
+    this.props.initCurriculum()
   }
 
   render() {
-    const abbreviation = this.props.match.params.abbreviation
+    const { curriculumMeta } = this.props.curriculum
+
     return (
       <div id="curriculum-page">
-        <Breadcrumbs
-          crumbs={[
-            { url: null, name: 'Curriculum' },
-            { url: this.props.location.pathname, name: 'Full name here' }
-          ]}
-        />
-        Curriculum: {abbreviation}
+        {/*TODO check for loading instead*/}
+        {curriculumMeta._id &&
+          <div>
+            <Breadcrumbs crumbs={this.getCrumbs(curriculumMeta.name)} />
+            <CurriculumMeta curriculumMeta={curriculumMeta} />
+          </div>}
       </div>
     )
   }
@@ -26,7 +46,24 @@ class Curriculum extends React.Component {
 
 Curriculum.propTypes = {
   location: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired,
+  getSingleCurriculumData: PropTypes.func.isRequired,
+  initCurriculum: PropTypes.func.isRequired,
+  curriculum: PropTypes.object.isRequired
 }
 
-export default connect()(Curriculum)
+const mapStateToProps = state => {
+  return {
+    curriculum: state.curriculum
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getSingleCurriculumData: abbreviation =>
+      dispatch(getSingleCurriculumData(abbreviation)),
+    initCurriculum: () => dispatch(initCurriculum())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Curriculum)

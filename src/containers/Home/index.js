@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { loadCurriculums } from 'actions/HomeActions'
+import { loadHomeCurriculums } from 'actions/CurriculumActions'
 import CurriculumTypeCollection from 'components/CurriculumTypeCollection'
 
 import './home.scss'
@@ -10,38 +10,44 @@ class Home extends React.Component {
   constructor(props) {
     super(props)
 
-    props.loadCurriculums()
+    props.loadHomeCurriculums()
   }
 
-  render() {
-    let { loading, curriculums } = this.props.home
-
-    let cards = []
-    curriculums.forEach((single, i) => {
+  getCards(curriculums) {
+    return curriculums.map(single => {
       const { type, collection } = single
-      cards.push(
-        <div className="home-curriculums" key={i}>
+      const typeMap = {
+        BA: 'Bakalaureuseõpe',
+        MA: 'Magistriõpe',
+        PHD: 'Doktoriõpe'
+      }
+      return (
+        <div className="home-curriculums" key={type}>
           <h1>
-            {type}
+            {typeMap[type]}
           </h1>
           <CurriculumTypeCollection type={type} collection={collection} />
         </div>
       )
     })
+  }
+
+  render() {
+    let { loading, curriculums } = this.props.home
 
     return (
       <div id="home-page">
         <div className="intro">
           <h1>Tere tulemast DTI uue teemaderegistri lehele</h1>
         </div>
-        {!loading && cards}
+        {!loading && this.getCards(curriculums)}
       </div>
     )
   }
 }
 
 Home.propTypes = {
-  loadCurriculums: PropTypes.func.isRequired,
+  loadHomeCurriculums: PropTypes.func.isRequired,
   home: PropTypes.object.isRequired
 }
 
@@ -53,7 +59,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadCurriculums: () => dispatch(loadCurriculums())
+    loadHomeCurriculums: () => dispatch(loadHomeCurriculums())
   }
 }
 
