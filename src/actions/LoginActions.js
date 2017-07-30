@@ -34,8 +34,8 @@ export function login(creds) {
       })
       .catch(err => {
         console.log(err)
-        let errors = err.data
-        dispatch({ type: types.LOGIN_FINISHED, errors })
+        let error = err.data
+        dispatch({ type: types.LOGIN_FINISHED, error })
       })
   }
 }

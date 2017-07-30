@@ -23,16 +23,17 @@ class Login extends React.Component {
     // You don't have to do this check first, but it can help prevent an unneeded render
     if (nextProps.loading !== this.state.loading) {
       this.setState({ loading: nextProps.loading })
-      console.log(nextProps.loginErrors)
-      if (nextProps.loginErrors.length > 0) {
-        nextProps.loginErrors.map(err => message.error(err.msg))
+      if (nextProps.hasLoginError) {
+        console.log(nextProps.loginError)
+        message.error(nextProps.loginError.msg)
+        //nextProps.loginError.map(err => message.error(err.msg))
       }
     }
   }
 
   componentDidMount() {
-    let userNameInput = this.props.form.getFieldInstance('userName').refs.input
-    userNameInput.focus()
+    let emailInput = this.props.form.getFieldInstance('email').refs.input
+    emailInput.focus()
   }
 
   componentWillUnmount() {
@@ -78,9 +79,9 @@ class Login extends React.Component {
                 Sign in to <span className="emphisize-title">Te</span>
               </h2>
               <FormItem>
-                {getFieldDecorator('userName', {
+                {getFieldDecorator('email', {
                   rules: [
-                    { required: true, message: 'Please input your username!' },
+                    { required: true, message: 'Please input your email!' },
                     { type: 'email', message: 'Please enter correct email' }
                   ]
                 })(<Input prefix={<Icon type="user" />} placeholder="Email" />)}
@@ -107,12 +108,14 @@ class Login extends React.Component {
                 >
                   Log in
                 </Button>
-                <Tooltip
-                  placement="topLeft"
-                  title="If you do not have account please contact your school administrator"
-                >
-                  <p>do not have account?</p>
-                </Tooltip>
+                <p>
+                  <Tooltip
+                    placement="topLeft"
+                    title="If you do not have account please contact your school administrator"
+                  >
+                    <span>do not have account?</span>
+                  </Tooltip>
+                </p>
               </FormItem>
             </Form>
           </Col>
@@ -130,14 +133,16 @@ Login.propTypes = {
   auth: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
-  loginErrors: PropTypes.array.isRequired
+  loginError: PropTypes.object.isRequired,
+  hasLoginError: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = state => {
   return {
     auth: state.auth,
     loading: state.login.loading,
-    loginErrors: state.login.errors,
+    loginError: state.login.error,
+    hasLoginError: state.login.hasError,
     from: state.from
   }
 }

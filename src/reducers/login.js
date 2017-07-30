@@ -2,7 +2,8 @@ import * as types from '../constants/ActionTypes'
 
 const INITIAL_STATE = {
   loading: false,
-  errors: []
+  hasError: false,
+  error: {}
 }
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -18,7 +19,8 @@ export default function(state = INITIAL_STATE, action) {
     return {
       ...state,
       loading: false,
-      errors: action.errors || []
+      hasError: action.error ? true : false,
+      error: action.error || {}
     }
 
   default:
