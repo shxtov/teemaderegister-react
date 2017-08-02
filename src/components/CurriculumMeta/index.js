@@ -1,6 +1,8 @@
 import React from 'react'
 import { PropTypes } from 'prop-types'
 import './CurriculumMeta.scss'
+import { connect } from 'react-redux'
+
 import { Avatar, Tag, Tooltip } from 'antd'
 
 import noneBack from 'media/none-cur-back.svg'
@@ -14,6 +16,10 @@ const colorMap = {
 }
 
 class CurriculumMeta extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
   getLangs(languages) {
     return languages.map(lang => {
       return (
@@ -25,7 +31,9 @@ class CurriculumMeta extends React.Component {
   }
 
   render() {
-    console.log(this.props.curriculumMeta)
+    console.log('R:CurriculumMeta')
+    //console.log(this.props.curriculumMeta)
+    //TODO do not rerender if url changes for tab
 
     let {
       name,
@@ -96,4 +104,10 @@ CurriculumMeta.propTypes = {
   curriculumMeta: PropTypes.object.isRequired
 }
 
-export default CurriculumMeta
+const mapStateToProps = state => {
+  return {
+    curriculumMeta: state.curriculumMeta.meta
+  }
+}
+
+export default connect(mapStateToProps)(CurriculumMeta)

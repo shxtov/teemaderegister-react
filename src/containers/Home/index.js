@@ -33,6 +33,7 @@ class Home extends React.Component {
   }
 
   render() {
+    console.log('R:Home')
     let { loading, curriculums } = this.props.home
 
     return (

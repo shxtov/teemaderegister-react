@@ -61,6 +61,8 @@ class Login extends React.Component {
     const redirect = params.redirect || '/'
     const { isAuthenticated } = this.props.auth
 
+    const crumbs = [{ url: this.props.location.pathname, name: 'Sign In' }]
+
     // TODO no redirect after logout?
     if (isAuthenticated) {
       return <Redirect to={redirect} />
@@ -68,9 +70,7 @@ class Login extends React.Component {
 
     return (
       <div id="login-page">
-        <Breadcrumbs
-          crumbs={[{ url: this.props.location.pathname, name: 'Sign In' }]}
-        />
+        <Breadcrumbs crumbs={crumbs} />
         <Row gutter={8}>
           <Col span={8} />
           <Col xs={24} sm={8}>

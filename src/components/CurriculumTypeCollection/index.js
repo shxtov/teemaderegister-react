@@ -17,6 +17,7 @@ const colorMap = {
 
 class CurriculumTypeCollection extends React.Component {
   render() {
+    console.log('R:CurriculumTypeCollection')
     const { type, collection } = this.props
 
     let items = []

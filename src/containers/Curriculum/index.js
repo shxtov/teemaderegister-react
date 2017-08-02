@@ -2,19 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs'
 import { connect } from 'react-redux'
-import {
-  getSingleCurriculumData,
-  initCurriculum
-} from 'actions/CurriculumActions'
+import { getCurriculumMeta, initCurriculum } from 'actions/CurriculumActions'
 
 import CurriculumMeta from 'components/CurriculumMeta'
+import CurriculumContentWrapper from 'components/CurriculumContentWrapper'
 
 class Curriculum extends React.Component {
   constructor(props) {
     super(props)
 
     const { abbreviation } = this.props.match.params
-    props.getSingleCurriculumData(abbreviation)
+    props.getCurriculumMeta(abbreviation)
   }
 
   getCrumbs(name) {
@@ -29,15 +27,16 @@ class Curriculum extends React.Component {
   }
 
   render() {
-    const { curriculumMeta } = this.props.curriculum
-
+    console.log('R:Curriculum')
+    const { curriculumMeta } = this.props
+    const { name } = curriculumMeta
     return (
       <div id="curriculum-page">
-        {/*TODO check for loading instead*/}
-        {curriculumMeta._id &&
+        {name &&
           <div>
-            <Breadcrumbs crumbs={this.getCrumbs(curriculumMeta.name)} />
-            <CurriculumMeta curriculumMeta={curriculumMeta} />
+            <Breadcrumbs crumbs={this.getCrumbs('name')} />
+            <CurriculumMeta />
+            <CurriculumContentWrapper />
           </div>}
       </div>
     )
@@ -47,21 +46,21 @@ class Curriculum extends React.Component {
 Curriculum.propTypes = {
   location: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
-  getSingleCurriculumData: PropTypes.func.isRequired,
+  getCurriculumMeta: PropTypes.func.isRequired,
   initCurriculum: PropTypes.func.isRequired,
-  curriculum: PropTypes.object.isRequired
+  curriculumMeta: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => {
   return {
-    curriculum: state.curriculum
+    curriculumMeta: state.curriculumMeta.meta
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    getSingleCurriculumData: abbreviation =>
-      dispatch(getSingleCurriculumData(abbreviation)),
+    getCurriculumMeta: abbreviation =>
+      dispatch(getCurriculumMeta(abbreviation)),
     initCurriculum: () => dispatch(initCurriculum())
   }
 }
