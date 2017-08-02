@@ -34,7 +34,7 @@ const isExternal = function(module) {
 const fs = require('fs')
 const lessToJs = require('less-vars-to-js')
 const themeVariables = lessToJs(
-  fs.readFileSync(SRC_DIR + '/stylesheet/ant-default-vars.less', 'utf8')
+  fs.readFileSync(SRC_DIR + '/ant-default-vars.less', 'utf8')
 )
 themeVariables['@icon-url'] = '\'/fonts/iconfont\''
 
@@ -151,7 +151,7 @@ module.exports = {
   devtool: 'source-map',
   stats: 'normal',
   entry: {
-    app: [SRC_DIR + '/index.js']
+    app: [SRC_DIR + '/app.js']
   },
   plugins: plugins,
   // externals: { jquery: "jQuery" }, jquery is external and available at the global variable jQuery

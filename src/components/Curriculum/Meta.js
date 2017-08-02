@@ -1,0 +1,85 @@
+import React from 'react'
+import { PropTypes } from 'prop-types'
+
+import { Avatar, Tooltip } from 'antd'
+
+import noneBack from '../../media/none-cur-back.svg'
+import halfBack from '../../media/half-cur-back.svg'
+import fullBack from '../../media/full-cur-back.svg'
+
+const colorMap = {
+  BA: fullBack,
+  MA: halfBack,
+  PHD: noneBack
+}
+
+const Meta = props => {
+  let {
+    name,
+    nameEng,
+    abbreviation,
+    type,
+    languages,
+    representative
+  } = props.data
+
+  const { profile } = representative
+  const typeMap = {
+    BA: 'Bakalaureuseõpe',
+    MA: 'Magistriõpe',
+    PHD: 'Doktoriõpe'
+  }
+
+  languages = languages.map(
+    (l, i) =>
+      l + ((i !== languages.length - 1) & (languages.length > 1) ? '/' : '')
+  )
+
+  return (
+    <div
+      style={{
+        backgroundImage: 'url(' + colorMap[type] + ')',
+        backgroundPosition: 'center center',
+        backgroundSize: 'cover',
+        padding: '15px'
+      }}
+    >
+      <h1>
+        {name}
+      </h1>
+      <i>
+        <h3>
+          {abbreviation} | {nameEng}
+        </h3>
+      </i>
+      <br />
+      <h4>
+        {typeMap[type]} - {languages}
+      </h4>
+      <br />
+      <div className="c-representative">
+        <Tooltip title={'Õppekava kuraator'}>
+          <Avatar
+            shape="square"
+            size="small"
+            icon="user"
+            style={{
+              backgroundColor: 'rgba(0,0,0,0.7)',
+              display: 'inline-table',
+              marginRight: '5px'
+            }}
+          />
+          <span>
+            {profile.firstName + ' ' + profile.lastName}
+          </span>
+        </Tooltip>
+      </div>
+    </div>
+  )
+}
+
+Meta.propTypes = {
+  data: PropTypes.object.isRequired
+}
+
+export default Meta

@@ -9,27 +9,27 @@ const INITIAL_STATE = {
 }
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-  case types.SET_CURRENT_USER:
+  case types.AUTH_SET_USER:
     return {
       ...state,
       isAuthenticated: !isEmpty(action.user),
       user: action.user,
       authInProgress: false
     }
-  case types.RESET_CURRENT_USER:
+  case types.AUTH_RESET_USER:
     return {
       user: {},
       token: '',
       isAuthenticated: false,
       authInProgress: false
     }
-  case types.SET_TOKEN:
+  case types.AUTH_SET_TOKEN:
     return {
       ...state,
       token: action.token,
       isAuthenticated: true
     }
-  case types.FINISH_AUTH:
+  case types.AUTH_FINISH:
     return {
       ...state,
       authInProgress: false

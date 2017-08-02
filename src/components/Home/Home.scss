@@ -1,0 +1,38 @@
+#home-page {
+  .ant-card-body {
+    padding: 14px;
+  }
+  .intro {
+    margin: 100px 0;
+    text-align: center;
+  }
+}
+
+.home-curriculums {
+  a {
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 12px;
+  }
+  h1 {
+    margin-bottom: 5px;
+  }
+}
+
+// TypeCollection
+.curriculum-card {
+  min-height: 90px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center center;
+
+  h2 {
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+}
+
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td {
+  word-break: normal;
+}

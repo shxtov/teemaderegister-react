@@ -7,43 +7,6 @@
         "libraryName": "antd",
         "style": true
       }
-    ],
-    [
-      "babel-plugin-module-alias",
-      [
-        {
-          "src": "./src/components",
-          "expose": "components"
-        },
-        {
-          "src": "./src/media",
-          "expose": "media"
-        },
-        {
-          "src": "./src/utils",
-          "expose": "utils"
-        },
-        {
-          "src": "./src/containers",
-          "expose": "containers"
-        },
-        {
-          "src": "./src/reducers",
-          "expose": "reducers"
-        },
-        {
-          "src": "./src/store",
-          "expose": "store"
-        },
-        {
-          "src": "./src/actions",
-          "expose": "actions"
-        },
-        {
-          "src": "./src/constants",
-          "expose": "constants"
-        }
-      ]
     ]
   ]
 }

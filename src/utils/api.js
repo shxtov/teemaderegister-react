@@ -1,6 +1,6 @@
 const BASE_URL = '/api'
 import axios from 'axios'
-import { getToken } from 'actions/AuthActions'
+import { getToken } from '../actions/TokenActions'
 import nprogress from 'nprogress'
 // nprogress.configure({ showSpinner: false }) // disable spinner
 
