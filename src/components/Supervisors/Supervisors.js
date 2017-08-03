@@ -5,12 +5,12 @@ import { Table } from 'antd'
 const { Column } = Table
 
 const Supervisors = props => {
-  const { activeTab, activeSub, supervisors } = props
-  const { data, count, loading } = supervisors
-
+  const { supervisors } = props
+  const { data, count, loading, query } = supervisors
+  const { tab, sub } = query
   const pagination = {
     pageSize: 10,
-    total: count[activeSub] || data.count,
+    total: count[sub] || data.count,
     page: 1
   }
 
@@ -23,7 +23,7 @@ const Supervisors = props => {
         loading={{ spinning: loading, delay: 200 }}
         pagination={
           // fix for pagination shift when changing tabs
-          activeTab === 'supervisors' ? pagination : false
+          tab === 'supervisors' ? pagination : false
         }
         rowKey={r => r._id}
         dataSource={data}
@@ -49,9 +49,7 @@ const sorterSupervisor = (a, b) => {
 }
 
 Supervisors.propTypes = {
-  supervisors: PropTypes.object.isRequired,
-  activeTab: PropTypes.string.isRequired,
-  activeSub: PropTypes.string.isRequired
+  supervisors: PropTypes.object.isRequired
 }
 
 export default Supervisors

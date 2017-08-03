@@ -16,7 +16,9 @@
     "type": "git",
     "url": "git+https://github.com/romilrobtsenkov/teemaderegister-react.git"
   },
-  "keywords": ["react"],
+  "keywords": [
+    "react"
+  ],
   "author": "Romil Robtsenkov",
   "license": "UNLICENSED",
   "bugs": {
@@ -26,6 +28,7 @@
   "dependencies": {
     "antd": "^2.12.2",
     "axios": "^0.16.2",
+    "moment": "^2.18.1",
     "nprogress": "^0.2.0",
     "query-string": "^4.3.4",
     "react": "^15.6.1",

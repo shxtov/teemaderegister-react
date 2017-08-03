@@ -42,8 +42,8 @@ class ContentWrapper extends React.Component {
           key: 'available',
           count: topicsCount.available
         },
-        { title: 'Defended', key: 'defended', count: topicsCount.defended },
-        { title: 'All', key: 'all', count: topicsCount.all }
+        { title: 'Defended', key: 'defended', count: topicsCount.defended }
+        // no need for this { title: 'All', key: 'all', count: topicsCount.all }
       ],
       supervisors: [
         {

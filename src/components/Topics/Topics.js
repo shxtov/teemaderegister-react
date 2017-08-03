@@ -1,44 +1,83 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { PropTypes } from 'prop-types'
+import moment from 'moment'
 
-import { Table } from 'antd'
+import { Table, Badge, Tooltip, Icon } from 'antd'
 const { Column } = Table
 
+import './Topics.scss'
+
 const Topics = props => {
-  const { activeTab, activeSub, topics } = props
-  const { data, count, loading } = topics
+  const { topics, curriculum } = props
+  const { data, count, loading, query } = topics
+  const { tab, sub } = query
+  const { name, type } = curriculum.data // TODO check if curriculum has SE or KU
+
+  // console.log(data[0])
+  // console.log(props)
 
   const supervisors = {
     data: [{ profile: { firstName: 'Romil', lastName: 'Robtsenkov', _id: 1 } }]
   }
 
   const pagination = {
-    pageSize: 10,
-    total: count[activeSub] || data.count,
+    pageSize: 20,
+    total: count[sub] || data.count,
     page: 1
   }
 
   return (
     <div>
       <br />
-      <br />
       <Table
-        size="middle"
+        size="small"
         loading={{ spinning: loading, delay: 200 }}
         pagination={
           // fix for pagination shift when changing tabs
-          activeTab === 'topics' ? pagination : false
+          tab === 'topics' ? pagination : false
         }
         rowKey={r => r._id}
         dataSource={data}
+        rowClassName={record => (record.description ? '' : 'no-desc')}
+        expandedRowRender={sub === 'available' ? renderExpandedRow : false}
       >
-        <Column title="Title" dataIndex="title" key="_id" />
-        <Column title="SE" dataIndex="types" key="types" render={renderType} />
+        <Column title="Title" dataIndex="title" render={renderTitle} />
+
+        {sub === 'available' &&
+          <Column
+            title={
+              <Tooltip placement="top" title={'Sobilik teistele õppekavadele'}>
+                {'ÕK'}
+              </Tooltip>
+            }
+            dataIndex="curriculums"
+            render={renderCurriculums}
+          />}
+
+        {name === 'Informaatika' &&
+          type === 'BA' &&
+          <Column
+            title={
+              <Tooltip
+                placement="top"
+                title={
+                  sub === 'available' ? 'Sobilik seminaritööks' : 'Seminaritöö'
+                }
+              >
+                {'SE'}
+              </Tooltip>
+            }
+            dataIndex="types"
+            key="types"
+            render={renderType}
+          />}
+        {(sub === 'registered' || sub === 'defended') &&
+          <Column title="Author" dataIndex="author" render={renderAuthor} />}
+
         <Column
           title="Supervisor(s)"
           dataIndex="supervisors"
-          key="supervisors"
           filters={supervisors.data.map(s => {
             return {
               text: s.profile.firstName + ' ' + s.profile.lastName,
@@ -47,14 +86,71 @@ const Topics = props => {
           })}
           render={renderSupervisors.bind(this)}
         />
+
+        {sub === 'registered' &&
+          <Column
+            title="Registered"
+            dataIndex="registered"
+            render={renderDate}
+          />}
+
+        {sub === 'defended' &&
+          <Column title="Defended" dataIndex="defended" render={renderDate} />}
+        {sub === 'defended' &&
+          <Column title="" dataIndex="file" render={renderFile} />}
+        {sub === 'available' &&
+          <Column title="Added" dataIndex="accepted" render={renderDate} />}
       </Table>
     </div>
   )
 }
 
+const renderFile = file => {
+  return (
+    <span>
+      <a style={{ display: 'inline' }} href={file} target="_blank">
+        <Icon type="file-pdf" style={{ fontSize: '15px' }} />
+      </a>
+    </span>
+  )
+}
+
+const renderTitle = (title, item) => {
+  return (
+    <span>
+      {title}
+    </span>
+  )
+}
+
+const renderExpandedRow = record => {
+  return (
+    <span>
+      {record.description || '-'}
+    </span>
+  )
+}
+
+const renderDate = date => {
+  return moment(date).format('DD.MM.YY')
+}
+
+const renderAuthor = author => {
+  if (!author) return '-'
+  return author.firstName + ' ' + author.lastName
+}
+
 const renderType = types => {
   if (types.indexOf('SE') !== -1) {
-    return 'SE'
+    return <Badge status="default" />
+  } else {
+    return null
+  }
+}
+const renderCurriculums = curriculums => {
+  console.log(curriculums)
+  if (curriculums.length > 1) {
+    return <Badge status="default" />
   } else {
     return null
   }
@@ -81,8 +177,7 @@ const renderSupervisors = arr => {
 
 Topics.propTypes = {
   topics: PropTypes.object.isRequired,
-  activeTab: PropTypes.string.isRequired,
-  activeSub: PropTypes.string.isRequired
+  curriculum: PropTypes.object.isRequired
 }
 
 export default Topics

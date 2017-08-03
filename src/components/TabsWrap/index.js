@@ -11,13 +11,13 @@ class TabsWrap extends Component {
     super(props)
   }
 
-  createTabPanes(tabs, subTabs, activeSub, activeTab) {
+  createTabPanes(tabs, subTabs, activeSub) {
     return Object.keys(tabs).map(key => {
       const { title, icon, count, ContentElement } = tabs[key]
       return (
         <TabPane tab={this.createTabTitle(icon, title, count)} key={key}>
           {this.createSubTabs(subTabs[key], activeSub)}
-          <ContentElement activeTab={activeTab} activeSub={activeSub} />
+          <ContentElement />
         </TabPane>
       )
     })
@@ -78,7 +78,7 @@ class TabsWrap extends Component {
         onChange={this.updateTabs.bind(this)}
         defaultActiveKey={activeTab}
       >
-        {this.createTabPanes(tabs, subTabs, activeSub, activeTab)}
+        {this.createTabPanes(tabs, subTabs, activeSub)}
       </Tabs>
     )
   }

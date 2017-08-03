@@ -19,8 +19,8 @@ export const getTopics = ({ curriculumId, tab, sub }) => dispatch => {
   const url = '/curriculums/' + curriculumId + '/' + tab
 
   return Api('GET', url, q)
-    .then(({ data, count }) => {
-      dispatch({ type: types.TOPICS_LOADED, data, count, sub })
+    .then(({ data, count, query }) => {
+      dispatch({ type: types.TOPICS_LOADED, data, count, query })
     })
     .catch(err => {
       // TODO handle errors

@@ -8,6 +8,7 @@ const INITIAL_STATE = {
     defended: 0,
     all: 0
   },
+  query: {},
   loading: true
 }
 
@@ -26,13 +27,14 @@ export default function(state = INITIAL_STATE, action) {
       loading: true
     }
   case types.TOPICS_LOADED: {
-    const { data, count, sub } = action
+    const { data, count, query } = action
     const o = {
       ...state,
       data,
+      query,
       loading: false
     }
-    o.count[sub] = count
+    o.count[query.sub] = count
     return o
   }
   case types.TOPICS_INIT:
