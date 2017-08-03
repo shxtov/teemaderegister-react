@@ -12,10 +12,9 @@ export const getCurriculum = abbreviation => dispatch => {
     .then(response => {
       const { data, supervisors, topics } = response
 
-      dispatch({ type: types.CURRICULUM_LOADED, data })
-
       dispatch(loadedTopicsCount(topics))
       dispatch(loadedSupervisorsCount(supervisors))
+      dispatch({ type: types.CURRICULUM_LOADED, data })
     })
     .catch(err => {
       // TODO handle errors
