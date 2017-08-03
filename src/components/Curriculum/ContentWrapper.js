@@ -71,7 +71,7 @@ class ContentWrapper extends React.Component {
       sub
     }
 
-    this.curriculumId = props.curriculum.data._id
+    this.curriculum = props.curriculum.data._id
     this.queryMap = {
       topics: props.getTopics,
       supervisors: props.getSupervisors
@@ -80,16 +80,17 @@ class ContentWrapper extends React.Component {
 
   componentDidMount() {
     const { tab, sub } = this.state
-    const { curriculumId, queryMap } = this
-    queryMap[tab]({ curriculumId, tab, sub })
+    const { curriculum, queryMap } = this
+    queryMap[tab]({ curriculum, sub })
   }
 
   tabUpdated([tab, sub]) {
     this.writeURL({ tab, sub })
     this.setState({ tab, sub })
-    const { curriculumId, queryMap } = this
-    queryMap[tab]({ curriculumId, tab, sub })
+    const { curriculum, queryMap } = this
+    queryMap[tab]({ curriculum, sub })
     //TODO update document title
+    //TODO check if it is needed to update
   }
 
   writeURL({ tab, sub }) {

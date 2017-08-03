@@ -148,7 +148,6 @@ const renderType = types => {
   }
 }
 const renderCurriculums = curriculums => {
-  console.log(curriculums)
   if (curriculums.length > 1) {
     return <Badge status="default" />
   } else {

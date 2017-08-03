@@ -7,17 +7,17 @@ export const initSupervisors = () => dispatch =>
 export const loadedSupervisorsCount = count => dispatch =>
   dispatch({ type: types.SUPERVISORS_LOADED_COUNT, count })
 
-export const getSupervisors = ({ curriculumId, tab, sub }) => dispatch => {
+export const getSupervisors = ({ curriculum, sub }) => dispatch => {
   dispatch({ type: types.SUPERVISORS_STARTED_LOADING })
 
   const q = {
     params: {
+      curriculum,
       sub
     }
   }
-  const url = '/curriculums/' + curriculumId + '/' + tab
 
-  return Api('GET', url, q)
+  return Api('GET', '/supervisors', q)
     .then(({ data, count, query }) => {
       dispatch({ type: types.SUPERVISORS_LOADED, data, count, query })
     })
