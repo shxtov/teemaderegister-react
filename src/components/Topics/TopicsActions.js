@@ -7,7 +7,8 @@ export const initTopics = () => dispatch =>
 export const loadedTopicsCount = count => dispatch =>
   dispatch({ type: types.TOPICS_LOADED_COUNT, count })
 
-export const getTopics = (_id, tab, sub) => dispatch => {
+// TODO separate server side route to pass more params for filter and sort etc
+export const getTopics = ({ curriculumId, tab, sub }) => dispatch => {
   dispatch({ type: types.TOPICS_STARTED_LOADING })
 
   const q = {
@@ -15,7 +16,7 @@ export const getTopics = (_id, tab, sub) => dispatch => {
       sub
     }
   }
-  const url = '/curriculums/' + _id + '/' + tab
+  const url = '/curriculums/' + curriculumId + '/' + tab
 
   return Api('GET', url, q)
     .then(({ data, count }) => {

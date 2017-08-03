@@ -2,22 +2,76 @@ import React from 'react'
 import queryString from 'query-string'
 import { PropTypes } from 'prop-types'
 
-import Topics from '../Topics/Topics'
-import Supervisors from '../Supervisors/Supervisors'
-
-import { Tabs, Icon } from 'antd'
-const TabPane = Tabs.TabPane
+import Topics from '../Topics'
+import Supervisors from '../Supervisors'
+import TabsWrap from '../TabsWrap'
 
 class ContentWrapper extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      tableLoading: true,
-      activeTab: this.getActiveTab(),
-      activeSubs: this.getActiveSubs()
+    const topicsCount = props.topics.count
+    const supervisorsCount = props.supervisors.count
+
+    const tabs = {
+      topics: {
+        icon: 'file-text',
+        title: 'Topics',
+        defaultSub: 'registered',
+        count: topicsCount.all,
+        ContentElement: Topics
+      },
+      supervisors: {
+        icon: 'user',
+        title: 'Supervisors',
+        defaultSub: 'supervised',
+        count: supervisorsCount.all,
+        ContentElement: Supervisors
+      }
     }
 
+    const subTabs = {
+      topics: [
+        {
+          title: 'Registered',
+          key: 'registered',
+          count: topicsCount.registered
+        },
+        {
+          title: 'Available',
+          key: 'available',
+          count: topicsCount.available
+        },
+        { title: 'Defended', key: 'defended', count: topicsCount.defended },
+        { title: 'All', key: 'all', count: topicsCount.all }
+      ],
+      supervisors: [
+        {
+          title: 'Supervised',
+          key: 'supervised',
+          count: supervisorsCount.supervised
+        },
+        { title: 'All', key: 'all', count: supervisorsCount.all }
+      ]
+    }
+
+    let { tab, sub } = queryString.parse(props.history.location.search)
+
+    // Fix limit to only available subs and tabs
+    tab = tab && tabs[tab] ? tab : 'topics'
+    sub =
+      sub && subTabs[tab].filter(s => s.key === sub).length > 0
+        ? sub
+        : tabs[tab].defaultSub
+
+    this.state = {
+      tabs,
+      subTabs,
+      tab,
+      sub
+    }
+
+    this.curriculumId = props.curriculum.data._id
     this.queryMap = {
       topics: props.getTopics,
       supervisors: props.getSupervisors
@@ -25,126 +79,44 @@ class ContentWrapper extends React.Component {
   }
 
   componentDidMount() {
-    this.queryMap[this.state.activeTab](
-      this.props.curriculum.data._id,
-      this.state.activeTab,
-      this.state.activeSubs.topics
-    )
+    const { tab, sub } = this.state
+    const { curriculumId, queryMap } = this
+    queryMap[tab]({ curriculumId, tab, sub })
+  }
+
+  tabUpdated([tab, sub]) {
+    this.writeURL({ tab, sub })
+    this.setState({ tab, sub })
+    const { curriculumId, queryMap } = this
+    queryMap[tab]({ curriculumId, tab, sub })
+    //TODO update document title
+  }
+
+  writeURL({ tab, sub }) {
+    // Fix only sub if not default
+    const newUrl =
+      this.props.history.location.pathname +
+      '?tab=' +
+      tab +
+      (sub && this.state.tabs[tab].defaultSub !== sub ? '&sub=' + sub : '')
+    this.props.history.replace(newUrl)
   }
 
   render() {
-    const { activeTab, activeSubs } = this.state
-    const { topics, supervisors } = this.props
-    const topicsCount = topics.count.all
-    const supervisorsCount = supervisors.count.all
+    const { tabs, tab, sub, subTabs } = this.state
 
     return (
       <div className="curriculum-content">
         <br />
         <br />
-        <Tabs
-          animated={{ tabPane: false }}
-          onChange={this.changeTab.bind(this)}
-          defaultActiveKey={activeTab}
-        >
-          <TabPane
-            disabled={topicsCount === 0}
-            tab={
-              <span>
-                <Icon type="file-text" />Teemad{' '}
-                {topicsCount > 0 && '| ' + topicsCount}
-              </span>
-            }
-            key="topics"
-          >
-            <Topics
-              topics={topics}
-              changeSub={this.changeSub.bind(this)}
-              activeSub={activeSubs.topics}
-              activeTab={activeTab}
-              loading={topics.loading}
-            />
-          </TabPane>
-          <TabPane
-            disabled={supervisorsCount === 0}
-            tab={
-              <span>
-                <Icon type="user" />Juhendajad{' '}
-                {supervisorsCount > 0 && '| ' + supervisorsCount}
-              </span>
-            }
-            key="supervisors"
-          >
-            <Supervisors
-              supervisors={supervisors}
-              changeSub={this.changeSub.bind(this)}
-              activeSub={activeSubs.supervisors}
-              activeTab={activeTab}
-              loading={supervisors.loading}
-            />
-          </TabPane>
-        </Tabs>
+        <TabsWrap
+          tabs={tabs}
+          subTabs={subTabs}
+          activeTab={tab}
+          activeSub={sub}
+          tabUpdated={this.tabUpdated.bind(this)}
+        />
       </div>
-    )
-  }
-
-  getActiveTab() {
-    const params = queryString.parse(this.props.history.location.search)
-    const allowedTabs = ['topics', 'supervisors']
-    const defaultTab = 'topics'
-    return (
-      (params.t && allowedTabs.indexOf(params.t) !== -1 ? params.t : null) ||
-      defaultTab
-    )
-  }
-
-  getActiveSubs() {
-    const params = queryString.parse(this.props.history.location.search)
-    const allowedTopicsSub = ['registered', 'available', 'defended', 'all']
-    const allowedSuperSub = ['supervised', 'all']
-    const defaultTopicSub = 'registered'
-    const defaultSuperSub = 'supervised'
-
-    return {
-      topics:
-        (params.sub && allowedTopicsSub.indexOf(params.sub) !== -1
-          ? params.sub
-          : null) || defaultTopicSub,
-      supervisors:
-        (params.sub && allowedSuperSub.indexOf(params.sub) !== -1
-          ? params.sub
-          : null) || defaultSuperSub
-    }
-  }
-
-  changeTab(value) {
-    //update URL
-    let newUrl = this.props.history.location.pathname + '?t=' + value
-    this.props.history.replace(newUrl)
-
-    this.setState({ activeTab: value })
-    this.setState({ activeSubs: this.getActiveSubs() })
-
-    this.queryMap[value](
-      this.props.curriculum.data._id,
-      value,
-      this.getActiveSubs()[value]
-    )
-  }
-
-  changeSub(e) {
-    const { value } = e.target
-
-    const currentLocation = this.props.history.location.pathname
-    const add = '?t=' + this.state.activeTab + '&sub=' + value
-    this.props.history.replace(currentLocation + add)
-
-    this.setState({ activeSubs: this.getActiveSubs() })
-
-    this.queryMap[this.state.activeTab](
-      this.props.curriculum.data._id,
-      this.state.activeTab,
-      value
     )
   }
 }

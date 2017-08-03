@@ -18,6 +18,7 @@ class Curriculum extends React.Component {
   componentWillUnmount() {
     // Reset all state params
     this.props.initCurriculum()
+    // only reset if exists
     if (this.props.topics.data.length > 0) this.props.initTopics()
     if (this.props.supervisors.data.length > 0) this.props.initSupervisors()
   }

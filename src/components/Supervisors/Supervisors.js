@@ -1,33 +1,32 @@
 import React from 'react'
 import { PropTypes } from 'prop-types'
 
-import { Table, Radio } from 'antd'
+import { Table } from 'antd'
 const { Column } = Table
-const RadioGroup = Radio.Group
-const RadioButton = Radio.Button
 
 const Supervisors = props => {
-  const { activeSub, changeSub, supervisors, loading } = props
+  const { activeTab, activeSub, supervisors } = props
+  const { data, count, loading } = supervisors
+
+  const pagination = {
+    pageSize: 10,
+    total: count[activeSub] || data.count,
+    page: 1
+  }
 
   return (
     <div>
-      <RadioGroup value={activeSub} onChange={changeSub}>
-        <RadioButton value="supervised">
-          Supervised | {supervisors.count.supervised}
-        </RadioButton>
-        <RadioButton value="all">All</RadioButton>
-      </RadioGroup>
       <br />
       <br />
       <Table
         size="middle"
         loading={{ spinning: loading, delay: 200 }}
-        pagination={{
-          total: supervisors.count,
-          page: 1
-        }}
+        pagination={
+          // fix for pagination shift when changing tabs
+          activeTab === 'supervisors' ? pagination : false
+        }
         rowKey={r => r._id}
-        dataSource={supervisors.data}
+        dataSource={data}
       >
         <Column
           title="Supervisor"
@@ -50,11 +49,9 @@ const sorterSupervisor = (a, b) => {
 }
 
 Supervisors.propTypes = {
-  activeTab: PropTypes.string.isRequired,
-  activeSub: PropTypes.string.isRequired,
-  changeSub: PropTypes.func.isRequired,
   supervisors: PropTypes.object.isRequired,
-  loading: PropTypes.bool.isRequired
+  activeTab: PropTypes.string.isRequired,
+  activeSub: PropTypes.string.isRequired
 }
 
 export default Supervisors

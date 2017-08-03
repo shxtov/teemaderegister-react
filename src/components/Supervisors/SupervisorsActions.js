@@ -7,7 +7,7 @@ export const initSupervisors = () => dispatch =>
 export const loadedSupervisorsCount = count => dispatch =>
   dispatch({ type: types.SUPERVISORS_LOADED_COUNT, count })
 
-export const getSupervisors = (_id, tab, sub) => dispatch => {
+export const getSupervisors = ({ curriculumId, tab, sub }) => dispatch => {
   dispatch({ type: types.SUPERVISORS_STARTED_LOADING })
 
   const q = {
@@ -15,7 +15,7 @@ export const getSupervisors = (_id, tab, sub) => dispatch => {
       sub
     }
   }
-  const url = '/curriculums/' + _id + '/' + tab
+  const url = '/curriculums/' + curriculumId + '/' + tab
 
   return Api('GET', url, q)
     .then(({ data, count }) => {

@@ -2,48 +2,36 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { PropTypes } from 'prop-types'
 
-import { Table, Radio } from 'antd'
+import { Table } from 'antd'
 const { Column } = Table
-const RadioGroup = Radio.Group
-const RadioButton = Radio.Button
 
 const Topics = props => {
-  const { activeTab, activeSub, changeSub, topics, loading } = props
+  const { activeTab, activeSub, topics } = props
+  const { data, count, loading } = topics
+
   const supervisors = {
     data: [{ profile: { firstName: 'Romil', lastName: 'Robtsenkov', _id: 1 } }]
   }
 
+  const pagination = {
+    pageSize: 10,
+    total: count[activeSub] || data.count,
+    page: 1
+  }
+
   return (
     <div>
-      <RadioGroup value={activeSub} onChange={changeSub}>
-        <RadioButton value="registered">
-          Registered | {topics.count.registered}
-        </RadioButton>
-        <RadioButton value="available">
-          Available | {topics.count.available}
-        </RadioButton>
-        <RadioButton value="defended">
-          Defended | {topics.count.defended}
-        </RadioButton>
-        <RadioButton value="all">All</RadioButton>
-      </RadioGroup>
       <br />
       <br />
       <Table
         size="middle"
         loading={{ spinning: loading, delay: 200 }}
-        pageSize={5}
         pagination={
-          // fix for pagination shift
-          activeTab === 'topics'
-            ? {
-              total: topics.count,
-              page: 1
-            }
-            : false
+          // fix for pagination shift when changing tabs
+          activeTab === 'topics' ? pagination : false
         }
         rowKey={r => r._id}
-        dataSource={topics.data}
+        dataSource={data}
       >
         <Column title="Title" dataIndex="title" key="_id" />
         <Column title="SE" dataIndex="types" key="types" render={renderType} />
@@ -92,11 +80,9 @@ const renderSupervisors = arr => {
 }
 
 Topics.propTypes = {
+  topics: PropTypes.object.isRequired,
   activeTab: PropTypes.string.isRequired,
-  activeSub: PropTypes.string.isRequired,
-  changeSub: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  topics: PropTypes.object.isRequired
+  activeSub: PropTypes.string.isRequired
 }
 
 export default Topics
