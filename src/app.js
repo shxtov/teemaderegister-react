@@ -3,11 +3,11 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
-import { Route, Switch, Link } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { Layout, LocaleProvider } from 'antd'
 import etEE from 'antd/lib/locale-provider/et_EE'
 
-const { Header, Content, Footer } = Layout
+const { Content, Footer } = Layout
 
 import HeaderWrap from './components/HeaderWrap'
 import RouteWrap from './Components/RouteWrap'
@@ -32,14 +32,7 @@ render(
     <BrowserRouter history={createBrowserHistory()}>
       <LocaleProvider locale={etEE}>
         <Layout className="layout">
-          <Header>
-            <div id="header-wrapper">
-              <Link to="/">
-                <div className="header-logo">Te</div>
-              </Link>
-              <Route component={HeaderWrap} />
-            </div>
-          </Header>
+          <Route component={HeaderWrap} />
           <Content>
             <div id="content-wrapper">
               <Switch>
