@@ -11,8 +11,7 @@ class Curriculum extends React.Component {
   }
 
   componentDidMount() {
-    const { abbreviation } = this.props.match.params
-    this.props.getCurriculum(abbreviation)
+    this.props.getCurriculum()
   }
 
   componentWillUnmount() {
@@ -37,7 +36,7 @@ class Curriculum extends React.Component {
         {!loading &&
           <div>
             <Breadcrumbs crumbs={this.getCrumbs(data.name)} />
-            <Meta {...this.props.curriculum} />
+            <Meta data={data} />
             <ContentWrapper {...this.props} />
           </div>}
       </div>
