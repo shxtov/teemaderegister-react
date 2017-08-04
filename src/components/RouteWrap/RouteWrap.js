@@ -39,7 +39,7 @@ export default (ComposedComponent, restrict) => {
   }
 
   const analytics = route => {
-    return route
+    //console.log(route)
   }
 
   return RouteWrap

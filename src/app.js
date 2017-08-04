@@ -1,16 +1,14 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
-import { createBrowserHistory } from 'history'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, BrowserRouter, browserHistory } from 'react-router-dom'
 import { Layout, LocaleProvider } from 'antd'
 import etEE from 'antd/lib/locale-provider/et_EE'
 
 const { Content, Footer } = Layout
 
 import HeaderWrap from './components/HeaderWrap'
-import RouteWrap from './Components/RouteWrap'
+import RouteWrap from './components/RouteWrap'
 
 import Home from './components/Home'
 import NotFound from './components/NotFound'
@@ -29,7 +27,7 @@ import './fonts/iconfont.woff'
 
 render(
   <Provider store={store}>
-    <BrowserRouter history={createBrowserHistory()}>
+    <BrowserRouter history={browserHistory}>
       <LocaleProvider locale={etEE}>
         <Layout className="layout">
           <Route component={HeaderWrap} />
