@@ -81,14 +81,14 @@ class ContentWrapper extends React.Component {
   componentDidMount() {
     const { tab, sub } = this.state
     const { curriculum, queryMap } = this
-    queryMap[tab]({ curriculum, sub })
+    queryMap[tab]({ curriculum, sub, initalLoad: true })
   }
 
   tabUpdated([tab, sub]) {
     this.writeURL({ tab, sub })
     this.setState({ tab, sub })
     const { curriculum, queryMap } = this
-    queryMap[tab]({ curriculum, sub })
+    queryMap[tab]({ curriculum, sub, initalLoad: false })
     //TODO update document title
     //TODO check if it is needed to update
   }

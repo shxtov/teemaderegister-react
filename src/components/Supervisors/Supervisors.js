@@ -5,6 +5,7 @@ import { Table } from 'antd'
 const { Column } = Table
 
 const Supervisors = props => {
+  console.log('Supervisors')
   const { supervisors } = props
   const { data, count, loading, query } = supervisors
   const { tab, sub } = query

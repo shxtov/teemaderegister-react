@@ -1,3 +1,4 @@
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Curriculum from './Curriculum'
 import { getCurriculum, initCurriculum } from './CurriculumActions.js'
@@ -13,11 +14,16 @@ const mapStateToProps = state => ({
   supervisors: state.supervisors
 })
 
-export default connect(mapStateToProps, {
-  getCurriculum,
-  initCurriculum,
-  getTopics,
-  initTopics,
-  getSupervisors,
-  initSupervisors
-})(Curriculum)
+const mapDispatchToProps = (dispatch, props) =>
+  bindActionCreators(
+    {
+      getCurriculum: () => getCurriculum(props.match.params.abbreviation),
+      initCurriculum,
+      getTopics,
+      initTopics,
+      getSupervisors,
+      initSupervisors
+    },
+    dispatch
+  )
+export default connect(mapStateToProps, mapDispatchToProps)(Curriculum)

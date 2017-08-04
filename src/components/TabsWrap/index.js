@@ -9,6 +9,8 @@ const RadioButton = Radio.Button
 class TabsWrap extends Component {
   constructor(props) {
     super(props)
+
+    this.updateTabs = this.updateTabs.bind(this)
   }
 
   createTabPanes(tabs, subTabs, activeSub) {
@@ -35,7 +37,7 @@ class TabsWrap extends Component {
     })
 
     return (
-      <RadioGroup value={activeSub} onChange={this.updateTabs.bind(this)}>
+      <RadioGroup value={activeSub} onChange={this.updateTabs}>
         {subs}
       </RadioGroup>
     )
@@ -75,7 +77,7 @@ class TabsWrap extends Component {
     return (
       <Tabs
         animated={{ tabPane: false }}
-        onChange={this.updateTabs.bind(this)}
+        onChange={this.updateTabs}
         defaultActiveKey={activeTab}
       >
         {this.createTabPanes(tabs, subTabs, activeSub)}

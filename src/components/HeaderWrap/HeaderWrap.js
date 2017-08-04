@@ -9,9 +9,16 @@ const { Header } = Layout
 import './HeaderWrap.scss'
 
 class HeaderWrap extends Component {
-  handleClick(e) {
-    console.log('click ', e)
+  constructor(props) {
+    super(props)
+    this.handleSearch = this.handleSearch.bind(this)
   }
+
+  // Disable update on every simple change
+  // shouldComponentUpdate(nextProps) {
+  //   const authChanged = this.props.auth.user !== nextProps.auth.user
+  //   return authChanged
+  // }
 
   handleSearch(value) {
     console.log(value)
@@ -31,7 +38,7 @@ class HeaderWrap extends Component {
               <Search
                 size="large"
                 placeholder="Search Te"
-                onSearch={this.handleSearch.bind(this)}
+                onSearch={this.handleSearch}
               />
             </div>
             {!isAuthenticated &&

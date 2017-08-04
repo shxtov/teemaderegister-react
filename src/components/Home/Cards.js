@@ -13,7 +13,7 @@ const colorMap = {
   PHD: noneBack
 }
 
-const TypeCollection = props => {
+const Cards = props => {
   const { type, collection } = props
 
   let items = []
@@ -56,9 +56,9 @@ const TypeCollection = props => {
   )
 }
 
-TypeCollection.propTypes = {
+Cards.propTypes = {
   type: PropTypes.string.isRequired,
   collection: PropTypes.array.isRequired
 }
 
-export default TypeCollection
+export default Cards

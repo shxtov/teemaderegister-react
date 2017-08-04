@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Home.scss'
 
-import TypeCollection from './TypeCollection'
+import Collection from './Collection'
 
 class Home extends React.Component {
   constructor(props) {
@@ -21,29 +21,10 @@ class Home extends React.Component {
         <div className="intro">
           <h1>Tere tulemast DTI uue teemaderegistri lehele</h1>
         </div>
-        {!loading && getCards(curriculums)}
+        {!loading && <Collection curriculums={curriculums} />}
       </div>
     )
   }
-}
-
-const getCards = curriculums => {
-  return curriculums.map(single => {
-    const { type, collection } = single
-    const typeMap = {
-      BA: 'Bakalaureuseõpe',
-      MA: 'Magistriõpe',
-      PHD: 'Doktoriõpe'
-    }
-    return (
-      <div className="home-curriculums" key={type}>
-        <h1>
-          {typeMap[type]}
-        </h1>
-        <TypeCollection type={type} collection={collection} />
-      </div>
-    )
-  })
 }
 
 Home.propTypes = {
