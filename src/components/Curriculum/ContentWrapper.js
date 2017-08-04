@@ -76,6 +76,8 @@ class ContentWrapper extends React.Component {
       topics: props.getTopics,
       supervisors: props.getSupervisors
     }
+
+    this.tabUpdated = this.tabUpdated.bind(this)
   }
 
   componentDidMount() {
@@ -115,7 +117,7 @@ class ContentWrapper extends React.Component {
           subTabs={subTabs}
           activeTab={tab}
           activeSub={sub}
-          tabUpdated={this.tabUpdated.bind(this)}
+          tabUpdated={this.tabUpdated}
         />
       </div>
     )

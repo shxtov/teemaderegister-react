@@ -84,7 +84,7 @@ const Topics = props => {
               value: s.profile.firstName + ' ' + s.profile.lastName
             }
           })}
-          render={renderSupervisors.bind(this)}
+          render={renderSupervisors}
         />
 
         {sub === 'registered' &&
