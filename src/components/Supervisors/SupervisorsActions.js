@@ -7,14 +7,11 @@ export const initSupervisors = () => dispatch =>
 export const loadedSupervisorsCount = count => dispatch =>
   dispatch({ type: types.SUPERVISORS_LOADED_COUNT, count })
 
-export const getSupervisors = ({ curriculum, sub }) => dispatch => {
-  dispatch({ type: types.SUPERVISORS_STARTED_LOADING })
+export const getSupervisors = params => dispatch => {
+  if (!params.hideLoading) dispatch({ type: types.TOPICS_STARTED_LOADING })
 
   const q = {
-    params: {
-      curriculum,
-      sub
-    }
+    params
   }
 
   return Api('GET', '/supervisors', q)

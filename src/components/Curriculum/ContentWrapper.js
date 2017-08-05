@@ -35,27 +35,47 @@ class ContentWrapper extends React.Component {
         {
           title: 'Registered',
           key: 'registered',
-          count: topicsCount.registered
+          count: topicsCount.registered,
+          columnKey: 'registered',
+          order: 'descend'
         },
         {
           title: 'Available',
           key: 'available',
-          count: topicsCount.available
+          count: topicsCount.available,
+          columnKey: 'accepted',
+          order: 'descend'
         },
-        { title: 'Defended', key: 'defended', count: topicsCount.defended }
+        {
+          title: 'Defended',
+          key: 'defended',
+          count: topicsCount.defended,
+          columnKey: 'defended',
+          order: 'descend'
+        }
         // no need for this { title: 'All', key: 'all', count: topicsCount.all }
       ],
       supervisors: [
         {
           title: 'Supervised',
           key: 'supervised',
-          count: supervisorsCount.supervised
+          count: supervisorsCount.supervised,
+          columnKey: 'supervisors',
+          order: 'ascend'
         },
-        { title: 'All', key: 'all', count: supervisorsCount.all }
+        {
+          title: 'All',
+          key: 'all',
+          count: supervisorsCount.all,
+          columnKey: 'supervisors',
+          order: 'ascend'
+        }
       ]
     }
 
-    let { tab, sub } = queryString.parse(props.history.location.search)
+    let { tab, sub, page, columnKey, order, filters } = queryString.parse(
+      props.history.location.search
+    )
 
     // Fix limit to only available subs and tabs
     tab = tab && tabs[tab] ? tab : 'topics'
@@ -64,11 +84,30 @@ class ContentWrapper extends React.Component {
         ? sub
         : tabs[tab].defaultSub
 
+    page = page || 1
+
+    // TODO better map subs as object keys, refactor
+    const subObj = subTabs[tab].filter(s => s.key === sub)[0]
+    this.defaultColumnKey = subObj.columnKey
+    this.defaultOrder = subObj.order
+    this.hiddenOrder = 'ascend'
+
+    columnKey = columnKey || this.defaultColumnKey
+    console.log(columnKey)
+    // FIX default ascend if not in url but there is columnKey
+    order = order ? order : columnKey ? this.defaultOrder : this.hiddenOrder
+    filters = filters ? JSON.parse(filters) : {}
+    console.log(order)
+
     this.state = {
       tabs,
       subTabs,
       tab,
-      sub
+      sub,
+      page,
+      filters,
+      columnKey,
+      order
     }
 
     this.curriculum = props.curriculum.data._id
@@ -78,31 +117,72 @@ class ContentWrapper extends React.Component {
     }
 
     this.tabUpdated = this.tabUpdated.bind(this)
+    this.handleTableChange = this.handleTableChange.bind(this)
   }
 
   componentDidMount() {
-    const { tab, sub } = this.state
+    const { tab, sub, page, columnKey, order, filters } = this.state
     const { curriculum, queryMap } = this
-    queryMap[tab]({ curriculum, sub, initalLoad: true })
+    queryMap[tab]({
+      curriculum,
+      tab,
+      sub,
+      hideLoading: true,
+      page,
+      columnKey,
+      order,
+      filters
+    })
   }
 
   tabUpdated([tab, sub]) {
+    const { subTabs } = this.state
+
+    const page = 1
+    const filters = {}
+
+    const subObj = subTabs[tab].filter(s => s.key === sub)[0]
+    const columnKey = subObj.columnKey
+    const order = subObj.order
+
     this.writeURL({ tab, sub })
-    this.setState({ tab, sub })
+    this.setState({ tab, sub, page, columnKey, order, filters })
     const { curriculum, queryMap } = this
-    queryMap[tab]({ curriculum, sub, initalLoad: false })
+    queryMap[tab]({ curriculum, tab, sub, page, columnKey, order, filters })
     //TODO update document title
     //TODO check if it is needed to update
   }
 
-  writeURL({ tab, sub }) {
+  writeURL({ tab, sub, page, columnKey, order, filters }) {
     // Fix only sub if not default
     const newUrl =
       this.props.history.location.pathname +
-      '?tab=' +
-      tab +
-      (sub && this.state.tabs[tab].defaultSub !== sub ? '&sub=' + sub : '')
+      '?' +
+      queryString.stringify({ tab }) +
+      (sub && this.state.tabs[tab].defaultSub !== sub
+        ? '&' + queryString.stringify({ sub })
+        : '') +
+      (page > 1 ? '&' + queryString.stringify({ page }) : '') +
+      (columnKey ? '&' + queryString.stringify({ columnKey }) : '') +
+      (order && order !== this.hiddenOrder
+        ? '&' + queryString.stringify({ order })
+        : '') +
+      (filters ? '&' + queryString.stringify({ filters }) : '')
+
     this.props.history.replace(newUrl)
+  }
+
+  handleTableChange(pagination, filters, sorter) {
+    const { columnKey, order } = sorter
+    const { current } = pagination
+    const { curriculum, queryMap } = this
+    const { tab, sub } = this.state
+    let page = current
+    this.setState({ page, columnKey, order, filters })
+    filters =
+      JSON.stringify(filters) !== '{}' ? JSON.stringify(filters) : undefined
+    this.writeURL({ tab, sub, page, columnKey, order, filters })
+    queryMap[tab]({ curriculum, tab, sub, page, columnKey, order, filters })
   }
 
   render() {
@@ -118,6 +198,7 @@ class ContentWrapper extends React.Component {
           activeTab={tab}
           activeSub={sub}
           tabUpdated={this.tabUpdated}
+          handleTableChange={this.handleTableChange}
         />
       </div>
     )

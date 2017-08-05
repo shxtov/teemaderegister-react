@@ -1,3 +1,22 @@
 .no-desc .ant-table-row-expand-icon {
   display: none;
 }
+//TODO move to parent comp css
+#main .ant-table-thead > tr > th {
+  background: #f7f7f7;
+}
+
+#main .ant-table-thead > tr > th.ant-table-column-sort {
+  background: #eee;
+}
+
+#main .align-col-right {
+  text-align: right;
+}
+
+#main .align-col-center {
+  text-align: center;
+  .ant-badge-status-text {
+    margin: 0;
+  }
+}

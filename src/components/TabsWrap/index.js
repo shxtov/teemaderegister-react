@@ -11,6 +11,7 @@ class TabsWrap extends Component {
     super(props)
 
     this.updateTabs = this.updateTabs.bind(this)
+    this.tabClicked = this.tabClicked.bind(this)
   }
 
   createTabPanes(tabs, subTabs, activeSub) {
@@ -19,7 +20,7 @@ class TabsWrap extends Component {
       return (
         <TabPane tab={this.createTabTitle(icon, title, count)} key={key}>
           {this.createSubTabs(subTabs[key], activeSub)}
-          <ContentElement />
+          <ContentElement handleTableChange={this.props.handleTableChange} />
         </TabPane>
       )
     })
@@ -59,7 +60,14 @@ class TabsWrap extends Component {
       </span>
     )
   }
-
+  tabClicked(e) {
+    // clear filters
+    // tab - e
+    const { activeTab, tabs, tabUpdated } = this.props
+    // tab updated
+    if (activeTab === e)
+      return tabUpdated([activeTab, tabs[activeTab].defaultSub])
+  }
   updateTabs(e) {
     // tab - e
     // sub - e.target.value
@@ -79,6 +87,7 @@ class TabsWrap extends Component {
         animated={{ tabPane: false }}
         onChange={this.updateTabs}
         defaultActiveKey={activeTab}
+        onTabClick={this.tabClicked}
       >
         {this.createTabPanes(tabs, subTabs, activeSub)}
       </Tabs>
@@ -91,7 +100,8 @@ TabsWrap.propTypes = {
   subTabs: PropTypes.object.isRequired,
   activeTab: PropTypes.string,
   activeSub: PropTypes.string,
-  tabUpdated: PropTypes.func.isRequired
+  tabUpdated: PropTypes.func.isRequired,
+  handleTableChange: PropTypes.func.isRequired
 }
 
 export default TabsWrap
