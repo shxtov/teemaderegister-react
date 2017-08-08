@@ -8,9 +8,13 @@ export const loadedTopicsCount = count => dispatch =>
   dispatch({ type: types.TOPICS_LOADED_COUNT, count })
 
 // TODO separate server side route to pass more params for filter and sort etc
-export const getTopics = params => dispatch => {
-  if (!params.hideLoading) dispatch({ type: types.TOPICS_STARTED_LOADING })
+export const getTopics = (params, showLoading) => dispatch => {
+  if (showLoading) dispatch({ type: types.TOPICS_STARTED_LOADING })
 
+  // TODO exclude local variables filters and showLoading
+  // send showloading separately
+
+  //console.log(params)
   const q = {
     params
   }

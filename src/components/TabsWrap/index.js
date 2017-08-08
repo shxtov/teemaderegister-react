@@ -14,22 +14,23 @@ class TabsWrap extends Component {
     this.tabClicked = this.tabClicked.bind(this)
   }
 
-  createTabPanes(tabs, subTabs, activeSub) {
+  createTabPanes(tabs) {
     return Object.keys(tabs).map(key => {
-      const { title, icon, count, ContentElement } = tabs[key]
+      const { title, icon, count, ContentElement, subs } = tabs[key]
       return (
         <TabPane tab={this.createTabTitle(icon, title, count)} key={key}>
-          {this.createSubTabs(subTabs[key], activeSub)}
+          {this.createSubTabs(subs)}
           <ContentElement handleTableChange={this.props.handleTableChange} />
         </TabPane>
       )
     })
   }
 
-  createSubTabs(subTabs) {
-    const activeSub = this.props.activeSub || subTabs[0].key
-    const subs = subTabs.map(sub => {
-      const { title, key, count } = sub
+  createSubTabs(subs) {
+    const { activeSub } = this.props
+
+    subs = Object.keys(subs).map(key => {
+      const { title, count } = subs[key]
       return (
         <RadioButton value={key} key={key}>
           {this.createSubTitle(title, count)}
@@ -81,7 +82,7 @@ class TabsWrap extends Component {
   }
 
   render() {
-    const { tabs, subTabs, activeSub, activeTab } = this.props
+    const { tabs, activeTab } = this.props
     return (
       <Tabs
         animated={{ tabPane: false }}
@@ -89,7 +90,7 @@ class TabsWrap extends Component {
         defaultActiveKey={activeTab}
         onTabClick={this.tabClicked}
       >
-        {this.createTabPanes(tabs, subTabs, activeSub)}
+        {this.createTabPanes(tabs)}
       </Tabs>
     )
   }
@@ -97,7 +98,6 @@ class TabsWrap extends Component {
 
 TabsWrap.propTypes = {
   tabs: PropTypes.object.isRequired,
-  subTabs: PropTypes.object.isRequired,
   activeTab: PropTypes.string,
   activeSub: PropTypes.string,
   tabUpdated: PropTypes.func.isRequired,

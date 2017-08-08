@@ -1,7 +1,8 @@
 import React from 'react'
 import queryString from 'query-string'
 import { PropTypes } from 'prop-types'
-
+import { removeEmpty } from '../../utils/helpers'
+import setUrl from '../../utils/setUrl'
 import Topics from '../Topics'
 import Supervisors from '../Supervisors'
 import TabsWrap from '../TabsWrap'
@@ -13,107 +14,104 @@ class ContentWrapper extends React.Component {
     const topicsCount = props.topics.count
     const supervisorsCount = props.supervisors.count
 
-    const tabs = {
+    this.tabs = {
       topics: {
         icon: 'file-text',
         title: 'Topics',
-        defaultSub: 'registered',
+        sub: 'registered',
         count: topicsCount.all,
-        ContentElement: Topics
+        ContentElement: Topics,
+        subs: {
+          registered: {
+            title: 'Registered',
+            count: topicsCount.registered,
+            columnKey: 'registered',
+            order: 'descend'
+          },
+          available: {
+            title: 'Available',
+            count: topicsCount.available,
+            columnKey: 'accepted',
+            order: 'descend'
+          },
+          defended: {
+            title: 'Defended',
+            count: topicsCount.defended,
+            columnKey: 'defended',
+            order: 'descend'
+          }
+        }
       },
       supervisors: {
         icon: 'user',
         title: 'Supervisors',
-        defaultSub: 'supervised',
+        sub: 'supervised',
         count: supervisorsCount.all,
-        ContentElement: Supervisors
+        ContentElement: Supervisors,
+        subs: {
+          supervised: {
+            title: 'Supervised',
+            count: supervisorsCount.supervised,
+            columnKey: 'supervisor',
+            order: 'ascend'
+          },
+          all: {
+            title: 'All',
+            count: supervisorsCount.all,
+            columnKey: 'supervisor',
+            order: 'ascend'
+          }
+        }
       }
     }
 
-    const subTabs = {
-      topics: [
-        {
-          title: 'Registered',
-          key: 'registered',
-          count: topicsCount.registered,
-          columnKey: 'registered',
-          order: 'descend'
-        },
-        {
-          title: 'Available',
-          key: 'available',
-          count: topicsCount.available,
-          columnKey: 'accepted',
-          order: 'descend'
-        },
-        {
-          title: 'Defended',
-          key: 'defended',
-          count: topicsCount.defended,
-          columnKey: 'defended',
-          order: 'descend'
-        }
-        // no need for this { title: 'All', key: 'all', count: topicsCount.all }
-      ],
-      supervisors: [
-        {
-          title: 'Supervised',
-          key: 'supervised',
-          count: supervisorsCount.supervised,
-          columnKey: 'supervisors',
-          order: 'ascend'
-        },
-        {
-          title: 'All',
-          key: 'all',
-          count: supervisorsCount.all,
-          columnKey: 'supervisors',
-          order: 'ascend'
-        }
-      ]
-    }
-
-    let { tab, sub, page, columnKey, order, filters } = queryString.parse(
-      props.history.location.search
-    )
-
-    // Fix limit to only available subs and tabs
-    tab = tab && tabs[tab] ? tab : 'topics'
-    sub =
-      sub && subTabs[tab].filter(s => s.key === sub).length > 0
-        ? sub
-        : tabs[tab].defaultSub
-
-    page = page || 1
-
-    // TODO better map subs as object keys, refactor
-    const subObj = subTabs[tab].filter(s => s.key === sub)[0]
-    this.defaultColumnKey = subObj.columnKey
-    this.defaultOrder = subObj.order
-    this.hiddenOrder = 'ascend'
-
-    columnKey = columnKey || this.defaultColumnKey
-    console.log(columnKey)
-    // FIX default ascend if not in url but there is columnKey
-    order = order ? order : columnKey ? this.defaultOrder : this.hiddenOrder
-    filters = filters ? JSON.parse(filters) : {}
-    console.log(order)
-
-    this.state = {
-      tabs,
-      subTabs,
+    let {
       tab,
       sub,
-      page,
-      filters,
-      columnKey,
-      order
-    }
 
-    this.curriculum = props.curriculum.data._id
+      //pagination
+      page,
+
+      //sort
+      columnKey,
+      order,
+
+      //filters
+      types,
+      curriculums
+    } = queryString.parse(props.history.location.search, {
+      arrayFormat: 'bracket'
+    })
+
+    this.defaultPage = 1
+    page = page || this.defaultPage
+
+    // Fix limit to only available subs and tabs
+    this.defaultTab = 'topics'
+    tab = tab && this.tabs[tab] ? tab : this.defaultTab
+    const tabObj = this.tabs[tab]
+
+    sub = sub && tabObj.subs[sub] ? sub : tabObj.sub
+    const subObj = tabObj.subs[sub]
+    columnKey = columnKey || subObj.columnKey
+
+    // FIX default ascend if not in url but there is columnKey
+    this.defaultOrder = 'ascend'
+    order = order ? order : subObj.order
+
     this.queryMap = {
       topics: props.getTopics,
       supervisors: props.getSupervisors
+    }
+
+    this.state = {
+      tab,
+      sub,
+      page,
+      columnKey,
+      order,
+      types,
+      curriculums
     }
 
     this.tabUpdated = this.tabUpdated.bind(this)
@@ -121,82 +119,85 @@ class ContentWrapper extends React.Component {
   }
 
   componentDidMount() {
-    const { tab, sub, page, columnKey, order, filters } = this.state
-    const { curriculum, queryMap } = this
-    queryMap[tab]({
-      curriculum,
-      tab,
+    this.makeQuery()
+  }
+
+  getDefaults({ tab, sub }) {
+    const tabObj = this.tabs[tab]
+
+    sub = sub || tabObj.sub
+    const { columnKey, order } = tabObj.subs[sub]
+    return {
       sub,
-      hideLoading: true,
-      page,
       columnKey,
       order,
-      filters
-    })
+      page: this.defaultPage,
+      types: undefined,
+      curriculums: undefined
+    }
+  }
+
+  makeQuery(showLoading) {
+    const { tab } = this.state
+    const curriculumId = this.props.curriculum.data._id
+    this.queryMap[tab](
+      Object.assign({ curriculumId }, this.state),
+      showLoading || false
+    )
   }
 
   tabUpdated([tab, sub]) {
-    const { subTabs } = this.state
+    const newState = Object.assign({ tab }, this.getDefaults({ tab, sub }))
+    const showLoading = true
 
-    const page = 1
-    const filters = {}
+    this.setState(newState, () => {
+      this.writeURL()
+      this.makeQuery(showLoading)
+    })
 
-    const subObj = subTabs[tab].filter(s => s.key === sub)[0]
-    const columnKey = subObj.columnKey
-    const order = subObj.order
-
-    this.writeURL({ tab, sub })
-    this.setState({ tab, sub, page, columnKey, order, filters })
-    const { curriculum, queryMap } = this
-    queryMap[tab]({ curriculum, tab, sub, page, columnKey, order, filters })
     //TODO update document title
     //TODO check if it is needed to update
   }
 
-  writeURL({ tab, sub, page, columnKey, order, filters }) {
-    // Fix only sub if not default
-    const newUrl =
-      this.props.history.location.pathname +
-      '?' +
-      queryString.stringify({ tab }) +
-      (sub && this.state.tabs[tab].defaultSub !== sub
-        ? '&' + queryString.stringify({ sub })
-        : '') +
-      (page > 1 ? '&' + queryString.stringify({ page }) : '') +
-      (columnKey ? '&' + queryString.stringify({ columnKey }) : '') +
-      (order && order !== this.hiddenOrder
-        ? '&' + queryString.stringify({ order })
-        : '') +
-      (filters ? '&' + queryString.stringify({ filters }) : '')
+  writeURL() {
+    const { replace, location } = this.props.history
+    const { tab, sub, columnKey } = this.state
 
-    this.props.history.replace(newUrl)
+    // FIX overwrite sub to be default sub no matter what,
+    // to preserve other subs in url
+    let defaults = this.getDefaults({ tab, sub })
+    defaults = Object.assign(defaults, {
+      tab: this.defaultTab,
+      sub: this.tabs[tab].sub,
+      order:
+        columnKey === defaults.columnKey ? defaults.order : this.defaultOrder
+    })
+
+    setUrl(replace, location.pathname, this.state, defaults)
   }
 
   handleTableChange(pagination, filters, sorter) {
     const { columnKey, order } = sorter
-    const { current } = pagination
-    const { curriculum, queryMap } = this
-    const { tab, sub } = this.state
-    let page = current
-    this.setState({ page, columnKey, order, filters })
-    filters =
-      JSON.stringify(filters) !== '{}' ? JSON.stringify(filters) : undefined
-    this.writeURL({ tab, sub, page, columnKey, order, filters })
-    queryMap[tab]({ curriculum, tab, sub, page, columnKey, order, filters })
+    const page = pagination.current
+    filters = removeEmpty(filters)
+    const { types, curriculums } = filters
+    const showLoading = true
+
+    this.setState({ page, columnKey, order, types, curriculums }, () => {
+      this.writeURL()
+      this.makeQuery(showLoading)
+    })
   }
 
   render() {
-    const { tabs, tab, sub, subTabs } = this.state
-
     return (
       <div className="curriculum-content">
         <br />
         <br />
         <TabsWrap
-          tabs={tabs}
-          subTabs={subTabs}
-          activeTab={tab}
-          activeSub={sub}
+          tabs={this.tabs}
+          activeTab={this.state.tab}
+          activeSub={this.state.sub}
           tabUpdated={this.tabUpdated}
           handleTableChange={this.handleTableChange}
         />

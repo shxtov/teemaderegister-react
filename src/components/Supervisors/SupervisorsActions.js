@@ -7,8 +7,8 @@ export const initSupervisors = () => dispatch =>
 export const loadedSupervisorsCount = count => dispatch =>
   dispatch({ type: types.SUPERVISORS_LOADED_COUNT, count })
 
-export const getSupervisors = params => dispatch => {
-  if (!params.hideLoading) dispatch({ type: types.TOPICS_STARTED_LOADING })
+export const getSupervisors = (params, showLoading) => dispatch => {
+  if (showLoading) dispatch({ type: types.TOPICS_STARTED_LOADING })
 
   const q = {
     params

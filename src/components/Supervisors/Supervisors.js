@@ -45,8 +45,8 @@ const Supervisors = props => {
         <Column
           title="Supervisor"
           dataIndex="profile"
-          key="supervisors"
-          sortOrder={columnKey === 'supervisors' && order}
+          key="supervisor"
+          sortOrder={columnKey === 'supervisor' && order}
           render={renderSupervisor}
           sorter={true}
         />

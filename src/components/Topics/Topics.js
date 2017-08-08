@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { PropTypes } from 'prop-types'
 import moment from 'moment'
 
-import { Table, Badge, Tooltip, Icon, Button, Input } from 'antd'
+import { Table, Badge, Tooltip, Icon } from 'antd'
 const { Column } = Table
 
 import './Topics.scss'
@@ -18,7 +18,7 @@ class Topics extends React.Component {
   render() {
     const { topics, curriculum, handleTableChange } = this.props
     let { data, count, loading, query } = topics
-    const { tab, sub, page, columnKey, order, filters } = query
+    const { tab, sub, page, columnKey, order, types, curriculums } = query
     const { name, type } = curriculum.data // TODO check if curriculum has SE or KU
     const currentPage = page ? parseInt(page) : 1
 
@@ -58,7 +58,9 @@ class Topics extends React.Component {
           {sub === 'available' &&
             <Column
               className="align-col-center"
-              filters={[{ text: 'Sobib teistele õppekavadele', value: 'ÕK' }]}
+              filters={[
+                { text: 'Sobib teistele õppekavadele', value: 'others' }
+              ]}
               filterMultiple={false}
               title={
                 <Tooltip placement="top" title={'Sobib teistele õppekavadele'}>
@@ -67,9 +69,7 @@ class Topics extends React.Component {
               }
               dataIndex="curriculums"
               key="curriculums"
-              filteredValue={
-                filters && filters.curriculums ? filters.curriculums : null
-              }
+              filteredValue={curriculums || null}
               render={renderCurriculums}
             />}
 
@@ -100,7 +100,7 @@ class Topics extends React.Component {
               }
               dataIndex="types"
               key="types"
-              filteredValue={filters && filters.types ? filters.types : null}
+              filteredValue={types || null}
               render={renderType}
             />}
           {(sub === 'registered' || sub === 'defended') &&
@@ -117,9 +117,6 @@ class Topics extends React.Component {
             title="Supervisor(s)"
             dataIndex="supervisors"
             key="supervisors"
-            filteredValue={
-              filters && filters.supervisors ? filters.supervisors : null
-            }
             render={renderSupervisors}
           />
 
@@ -179,7 +176,7 @@ const renderFile = file => {
   )
 }
 
-const renderTitle = (title, item) => {
+const renderTitle = title => {
   return (
     <span>
       {title}
