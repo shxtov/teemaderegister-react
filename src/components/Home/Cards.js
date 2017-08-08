@@ -19,7 +19,7 @@ const Cards = props => {
   let items = []
 
   collection.forEach((c, i) => {
-    let { abbreviation, name, _id, languages } = c
+    let { abbreviation, names, slugs, _id, languages } = c
     const cardStyle = {
       backgroundImage: 'url(' + colorMap[type] + ')'
     }
@@ -30,7 +30,7 @@ const Cards = props => {
 
     items.push(
       <Col key={i} sm={12} md={8}>
-        <Link to={'/curriculum/' + abbreviation}>
+        <Link to={'/curriculum/' + slugs.et}>
           <Card
             key={_id}
             className="curriculum-card"
@@ -38,7 +38,7 @@ const Cards = props => {
             bordered={true}
           >
             <h2>
-              {name}
+              {names.et}
             </h2>
             <p>
               {abbreviation} | {languages}

@@ -20,8 +20,7 @@ class Meta extends PureComponent {
 
   render() {
     let {
-      name,
-      nameEng,
+      names,
       abbreviation,
       type,
       languages,
@@ -50,11 +49,11 @@ class Meta extends PureComponent {
         }}
       >
         <h1>
-          {name}
+          {names.et}
         </h1>
         <i>
           <h3>
-            {abbreviation} | {nameEng}
+            {abbreviation} | {names.en}
           </h3>
         </i>
         <br />

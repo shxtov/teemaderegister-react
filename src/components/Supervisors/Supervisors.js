@@ -107,7 +107,7 @@ const renderSupervisor = profile => {
   const linkContent = profile.firstName + ' ' + profile.lastName
 
   // TODO replace with slug
-  const url = '/supervisor/' + profile._id
+  const url = '/supervisor/' + profile.slug
 
   return (
     <Link key={profile._id} to={url}>

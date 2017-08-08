@@ -225,7 +225,7 @@ const renderSupervisors = arr => {
         : profile.firstName + ' ' + profile.lastName
 
     // TODO replace with slug
-    const url = '/supervisor/' + _id
+    const url = '/supervisor/' + profile.slug
 
     return (
       <Link key={_id} to={url}>

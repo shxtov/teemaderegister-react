@@ -35,7 +35,7 @@ class Curriculum extends React.Component {
       <div id="curriculum-page">
         {!loading &&
           <div>
-            <Breadcrumbs crumbs={this.getCrumbs(data.name)} />
+            <Breadcrumbs crumbs={this.getCrumbs(data.names.et)} />
             <Meta data={data} />
             <ContentWrapper {...this.props} />
           </div>}
