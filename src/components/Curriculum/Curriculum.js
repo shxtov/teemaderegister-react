@@ -1,15 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Breadcrumbs from '../Breadcrumbs'
 
+import Breadcrumbs from '../Breadcrumbs'
+import TableWrap from '../TableWrap'
+import getTabs from '../../utils/getTabs'
 import Meta from './Meta'
-import ContentWrapper from './ContentWrapper'
 
 class Curriculum extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   componentDidMount() {
     this.props.getCurriculum()
   }
@@ -17,9 +14,7 @@ class Curriculum extends React.Component {
   componentWillUnmount() {
     // Reset all state params
     this.props.initCurriculum()
-    // only reset if exists
-    if (this.props.topics.data.length > 0) this.props.initTopics()
-    if (this.props.supervisors.data.length > 0) this.props.initSupervisors()
+    this.props.initTableContent()
   }
 
   getCrumbs(name) {
@@ -31,13 +26,18 @@ class Curriculum extends React.Component {
 
   render() {
     const { data, loading } = this.props.curriculum
+    const { topics, supervisors } = this.props
     return (
       <div id="curriculum-page">
         {!loading &&
           <div>
             <Breadcrumbs crumbs={this.getCrumbs(data.names.et)} />
             <Meta data={data} />
-            <ContentWrapper {...this.props} />
+            <TableWrap
+              tabs={getTabs({ topics, supervisors })}
+              queryExtend={{ curriculumId: data._id }}
+              history={this.props.history}
+            />
           </div>}
       </div>
     )
@@ -48,12 +48,14 @@ Curriculum.propTypes = {
   curriculum: PropTypes.object.isRequired,
   getCurriculum: PropTypes.func.isRequired,
   initCurriculum: PropTypes.func.isRequired,
-  initSupervisors: PropTypes.func.isRequired,
-  initTopics: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
+
+  topics: PropTypes.object.isRequired,
   supervisors: PropTypes.object.isRequired,
-  topics: PropTypes.object.isRequired
+  initTableContent: PropTypes.func.isRequired,
+
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired
 }
 
 export default Curriculum

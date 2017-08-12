@@ -1,19 +1,18 @@
 import * as types from '../../constants/ActionTypes'
-import { loadedTopicsCount } from '../Topics/TopicsActions'
-import { loadedSupervisorsCount } from '../Supervisors/SupervisorsActions'
 import Api from '../../utils/api'
+
+import { loadedTableContentCount } from '../TableContent/TableContentActions'
 
 export const initCurriculum = () => dispatch => {
   dispatch({ type: types.CURRICULUM_INIT })
 }
 
-export const getCurriculum = abbreviation => dispatch => {
-  return Api('GET', '/curriculums/' + abbreviation)
+export const getCurriculum = slug => dispatch => {
+  return Api('GET', '/curriculums/' + slug)
     .then(response => {
       const { data, supervisors, topics } = response
 
-      dispatch(loadedTopicsCount(topics))
-      dispatch(loadedSupervisorsCount(supervisors))
+      dispatch(loadedTableContentCount({ topics, supervisors }))
       dispatch({ type: types.CURRICULUM_LOADED, data })
     })
     .catch(err => {

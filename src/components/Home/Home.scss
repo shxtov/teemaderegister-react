@@ -35,4 +35,13 @@
 .ant-table-thead > tr > th,
 .ant-table-tbody > tr > td {
   word-break: normal;
+  a {
+    height: 100%;
+    width: 100%;
+    display: inline-block;
+  }
+}
+
+.recharts-cartesian-axis-tick-value tspan {
+  color: #6bcaba;
 }
