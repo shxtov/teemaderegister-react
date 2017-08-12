@@ -59,8 +59,7 @@ class TableContent extends React.Component {
           }
           rowKey={r => r._id}
           bordered
-        >
-          {Columns({
+          columns={Columns({
             // for creating columns
             sub,
             names,
@@ -75,7 +74,7 @@ class TableContent extends React.Component {
             types,
             curriculums
           })}
-        </Table>
+        />
       </div>
     )
   }
