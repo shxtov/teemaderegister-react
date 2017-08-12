@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 
+import TableContent from '../TableContent'
 import { Tabs, Icon, Radio } from 'antd'
-const { TabPane } = Tabs
-const RadioGroup = Radio.Group
-const RadioButton = Radio.Button
 
 class TabsWrap extends Component {
   constructor(props) {
@@ -16,12 +14,15 @@ class TabsWrap extends Component {
 
   createTabPanes(tabs) {
     return Object.keys(tabs).map(key => {
-      const { title, icon, count, ContentElement, subs } = tabs[key]
+      const { title, icon, count, subs } = tabs[key]
       return (
-        <TabPane tab={this.createTabTitle(icon, title, count)} key={key}>
+        <Tabs.TabPane tab={this.createTabTitle(icon, title, count)} key={key}>
           {this.createSubTabs(subs)}
-          <ContentElement handleTableChange={this.props.handleTableChange} />
-        </TabPane>
+          <TableContent
+            tableKey={key}
+            handleTableChange={this.props.handleTableChange}
+          />
+        </Tabs.TabPane>
       )
     })
   }
@@ -32,16 +33,16 @@ class TabsWrap extends Component {
     subs = Object.keys(subs).map(key => {
       const { title, count } = subs[key]
       return (
-        <RadioButton value={key} key={key}>
+        <Radio.Button value={key} key={key}>
           {this.createSubTitle(title, count)}
-        </RadioButton>
+        </Radio.Button>
       )
     })
 
     return (
-      <RadioGroup value={activeSub} onChange={this.updateTabs}>
+      <Radio.Group value={activeSub} onChange={this.updateTabs}>
         {subs}
-      </RadioGroup>
+      </Radio.Group>
     )
   }
 
