@@ -6,6 +6,8 @@ import home from '../components/Home/HomeReducers'
 import login from '../components/Login/LoginReducers'
 import supervisors from '../components/Supervisors/SupervisorsReducers'
 import topics from '../components/Topics/TopicsReducers'
+import supervisor from '../components/Supervisor/SupervisorReducers'
+import tableContent from '../components/TableContent/TableContentReducers'
 
 const rootReducer = combineReducers({
   auth,
@@ -13,7 +15,9 @@ const rootReducer = combineReducers({
   home,
   login,
   supervisors,
-  topics
+  topics,
+  supervisor,
+  tableContent
 })
 
 export default rootReducer
