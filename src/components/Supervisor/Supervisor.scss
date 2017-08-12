@@ -1,0 +1,11 @@
+#supervisor-page {
+  .ant-card-body {
+    padding: 15px;
+  }
+
+  .defendedCard {
+    .ant-card-body {
+      padding-bottom: 0;
+    }
+  }
+}
