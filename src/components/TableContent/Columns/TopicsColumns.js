@@ -1,9 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 
 import { Badge, Tooltip, Icon } from 'antd'
-
-import moment from 'moment'
 
 export default params => {
   const columns = getColumnNames(params)
@@ -19,19 +18,25 @@ const typesMap = {
   PHD: 'Doktoritöö'
 }
 
-const title = ({ columnKey, order }) => ({
-  title: 'Title',
-  dataIndex: 'title',
-  key: 'title',
+const accepted = ({ columnKey, order }) => ({
+  title: 'Added',
+  className: 'align-col-right',
+  dataIndex: 'accepted',
+  key: 'accepted',
+  render: renderDate,
   sorter: true,
-  sortOrder: columnKey === 'title' && order,
-  render: title => {
-    let content = (
-      <span>
-        {title}
-      </span>
-    )
-    return content
+  sortOrder: columnKey === 'accepted' && order
+})
+
+const author = ({ columnKey, order }) => ({
+  title: 'Author',
+  dataIndex: 'author',
+  key: 'author',
+  sortOrder: columnKey === 'author' && order,
+  sorter: true,
+  render: author => {
+    if (!author) return '-'
+    return author.firstName + ' ' + author.lastName
   }
 })
 
@@ -54,23 +59,14 @@ const curriculums = ({ curriculums }) => ({
   }
 })
 
-const detailTypes = () => ({
-  className: 'align-col-left',
-  dataIndex: 'types',
-  key: 'types',
-  title: 'Types',
-  render: types => {
-    if (types.length === 0) return null
-    return types.map((t, i) => {
-      const content = i < types.length - 1 && types.length > 1 ? t + ', ' : t
-
-      return (
-        <Tooltip key={t} placement="topLeft" title={typesMap[t]}>
-          {content}
-        </Tooltip>
-      )
-    })
-  }
+const defended = ({ columnKey, order }) => ({
+  title: 'Defended',
+  className: 'align-col-right',
+  dataIndex: 'defended',
+  key: 'defended',
+  render: renderDate,
+  sorter: true,
+  sortOrder: columnKey === 'defended' && order
 })
 
 const detailCurriculums = () => ({
@@ -103,46 +99,51 @@ const detailCurriculums = () => ({
   }
 })
 
-const types = ({ columnKey, order, sub, types }) => ({
-  className: 'align-col-center',
-  filterMultiple: false,
-  // TODO other text value for other tabs
-  filters: [
-    {
-      text: sub === 'available' ? 'Sobib seminaritööks' : 'Seminaritöö',
-      value: 'SE'
-    }
-  ],
-  sorter: true,
-  sortOrder: columnKey === 'types' && order,
-  title: (
-    <Tooltip
-      placement="top"
-      title={sub === 'available' ? 'Sobib seminaritööks' : 'Seminaritöö'}
-    >
-      {'SE'}
-    </Tooltip>
-  ),
+const detailTypes = () => ({
+  className: 'align-col-left',
   dataIndex: 'types',
   key: 'types',
-  filteredValue: types || null,
+  title: 'Types',
   render: types => {
-    let content = null
-    if (types.indexOf('SE') !== -1) content = <Badge status="default" />
+    if (types.length === 0) return null
+    return types.map((t, i) => {
+      const content = i < types.length - 1 && types.length > 1 ? t + ', ' : t
+
+      return (
+        <Tooltip key={t} placement="topLeft" title={typesMap[t]}>
+          {content}
+        </Tooltip>
+      )
+    })
+  }
+})
+
+const file = ({ columnKey, order }) => ({
+  title: '',
+  className: 'align-col-right',
+  dataIndex: 'file',
+  key: 'file',
+  sortOrder: columnKey === 'file' && order,
+  render: file => {
+    let content = (
+      <span>
+        <a style={{ display: 'inline' }} href={file} target="_blank">
+          <Icon type="file-pdf" style={{ fontSize: '15px' }} />
+        </a>
+      </span>
+    )
     return content
   }
 })
 
-const author = ({ columnKey, order }) => ({
-  title: 'Author',
-  dataIndex: 'author',
-  key: 'author',
-  sortOrder: columnKey === 'author' && order,
+const registered = ({ columnKey, order }) => ({
+  title: 'Registered',
+  dataIndex: 'registered',
+  key: 'registered',
+  className: 'align-col-right',
+  render: renderDate,
   sorter: true,
-  render: author => {
-    if (!author) return '-'
-    return author.firstName + ' ' + author.lastName
-  }
+  sortOrder: columnKey === 'registered' && order
 })
 
 const supervisors = () => ({
@@ -169,50 +170,48 @@ const supervisors = () => ({
   }
 })
 
-const registered = ({ columnKey, order }) => ({
-  title: 'Registered',
-  dataIndex: 'registered',
-  key: 'registered',
-  className: 'align-col-right',
-  render: renderDate,
+const title = ({ columnKey, order }) => ({
+  title: 'Title',
+  dataIndex: 'title',
+  key: 'title',
   sorter: true,
-  sortOrder: columnKey === 'registered' && order
-})
-
-const defended = ({ columnKey, order }) => ({
-  title: 'Defended',
-  className: 'align-col-right',
-  dataIndex: 'defended',
-  key: 'defended',
-  render: renderDate,
-  sorter: true,
-  sortOrder: columnKey === 'defended' && order
-})
-
-const accepted = ({ columnKey, order }) => ({
-  title: 'Added',
-  className: 'align-col-right',
-  dataIndex: 'accepted',
-  key: 'accepted',
-  render: renderDate,
-  sorter: true,
-  sortOrder: columnKey === 'accepted' && order
-})
-
-const file = ({ columnKey, order }) => ({
-  title: '',
-  className: 'align-col-right',
-  dataIndex: 'file',
-  key: 'file',
-  sortOrder: columnKey === 'file' && order,
-  render: file => {
+  sortOrder: columnKey === 'title' && order,
+  render: title => {
     let content = (
       <span>
-        <a style={{ display: 'inline' }} href={file} target="_blank">
-          <Icon type="file-pdf" style={{ fontSize: '15px' }} />
-        </a>
+        {title}
       </span>
     )
+    return content
+  }
+})
+
+const types = ({ columnKey, order, sub, types }) => ({
+  className: 'align-col-center',
+  filterMultiple: false,
+  // TODO other text value for other tabs
+  filters: [
+    {
+      text: sub === 'available' ? 'Sobib seminaritööks' : 'Seminaritöö',
+      value: 'SE'
+    }
+  ],
+  sorter: true,
+  sortOrder: columnKey === 'types' && order,
+  title: (
+    <Tooltip
+      placement="top"
+      title={sub === 'available' ? 'Sobib seminaritööks' : 'Seminaritöö'}
+    >
+      {'SE'}
+    </Tooltip>
+  ),
+  dataIndex: 'types',
+  key: 'types',
+  filteredValue: types || null,
+  render: types => {
+    let content = null
+    if (types.indexOf('SE') !== -1) content = <Badge status="default" />
     return content
   }
 })
@@ -260,15 +259,15 @@ const getColumnNames = ({ sub, names, type, supervisor }) => {
 }
 
 const definedColumns = {
-  title,
+  accepted,
+  author,
   curriculums,
+  defended,
   detailCurriculums,
   detailTypes,
-  accepted,
+  file,
   registered,
-  defended,
-  types,
   supervisors,
-  author,
-  file
+  title,
+  types
 }
