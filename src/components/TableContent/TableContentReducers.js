@@ -26,12 +26,13 @@ export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
   case types.TABLE_CONTENT_LOADED_COUNT: {
     const { topics, supervisors } = action
-    const o = {
-      ...state
+    return {
+      ...state,
+      topics: topics ? { ...state.topics, count: topics } : state.topics,
+      supervisors: supervisors
+        ? { ...state.supervisors, count: supervisors }
+        : state.supervisors
     }
-    if (topics) o.topics.count = topics
-    if (supervisors) o.supervisors.count = supervisors
-    return o
   }
   case types.TABLE_CONTENT_STARTED_LOADING:
     return {
@@ -40,13 +41,28 @@ export default function(state = INITIAL_STATE, action) {
     }
   case types.TABLE_CONTENT_LOADED: {
     const { data, count, query } = action
-    const o = {
+    const countObj = {}
+    countObj[query.sub] = count
+    return {
       ...state,
-      loading: false
+      loading: false,
+      topics:
+          query.tab === 'topics'
+            ? {
+              data,
+              query,
+              count: Object.assign({ ...state.topics.count }, countObj)
+            }
+            : state.topics,
+      supervisors:
+          query.tab === 'supervisors'
+            ? {
+              data,
+              query,
+              count: Object.assign({ ...state.supervisors.count }, countObj)
+            }
+            : state.supervisors
     }
-    o[query.tab] = Object.assign(o[query.tab], { data, query })
-    o[query.tab].count[query.sub] = count
-    return o
   }
   case types.TABLE_CONTENT_INIT:
     return INITIAL_STATE
