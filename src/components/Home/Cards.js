@@ -20,9 +20,7 @@ const Cards = props => {
 
   collection.forEach((c, i) => {
     let { abbreviation, names, slugs, _id, languages } = c
-    const cardStyle = {
-      backgroundImage: 'url(' + colorMap[type] + ')'
-    }
+    const cardBackground = { backgroundImage: 'url(' + colorMap[type] + ')' }
     languages = languages.map(
       (l, i) =>
         l + ((i !== languages.length - 1) & (languages.length > 1) ? '/' : '')
@@ -34,7 +32,7 @@ const Cards = props => {
           <Card
             key={_id}
             className="curriculum-card"
-            style={cardStyle}
+            style={cardBackground}
             bordered={true}
           >
             <h2>

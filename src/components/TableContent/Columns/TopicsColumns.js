@@ -90,7 +90,7 @@ const detailCurriculums = () => ({
           placement="topLeft"
           title={c.names.et + ' ' + c.type}
         >
-          <Link style={{ width: 'auto', paddingRight: 3 }} to={url}>
+          <Link className="cur-link" to={url}>
             {content}
           </Link>
         </Tooltip>
@@ -127,8 +127,8 @@ const file = ({ columnKey, order }) => ({
   render: file => {
     let content = (
       <span>
-        <a style={{ display: 'inline' }} href={file} target="_blank">
-          <Icon type="file-pdf" style={{ fontSize: '15px' }} />
+        <a className="inline-link" href={file} target="_blank">
+          <Icon type="file-pdf" className="icon-15" />
         </a>
       </span>
     )

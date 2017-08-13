@@ -6,6 +6,8 @@ import TableWrap from '../TableWrap'
 import getTabs from '../../utils/getTabs'
 import Meta from './Meta'
 
+import './Curriculum.scss'
+
 class Curriculum extends React.Component {
   componentDidMount() {
     this.props.getCurriculum()

@@ -39,15 +39,10 @@ class Meta extends PureComponent {
         l + ((i !== languages.length - 1) & (languages.length > 1) ? '/' : '')
     )
 
+    const metaBackGround = { backgroundImage: 'url(' + colorMap[type] + ')' }
+
     return (
-      <div
-        style={{
-          backgroundImage: 'url(' + colorMap[type] + ')',
-          backgroundPosition: 'center center',
-          backgroundSize: 'cover',
-          padding: '15px'
-        }}
-      >
+      <div id="curriculum-meta" style={metaBackGround}>
         <h1>
           {names.et}
         </h1>
@@ -64,14 +59,10 @@ class Meta extends PureComponent {
         <div className="c-representative">
           <Tooltip title={'Õppekava kuraator'}>
             <Avatar
+              className="curriculum-avatar"
               shape="square"
               size="small"
               icon="user"
-              style={{
-                backgroundColor: 'rgba(0,0,0,0.7)',
-                display: 'inline-table',
-                marginRight: '5px'
-              }}
             />
             <span>
               {profile.firstName + ' ' + profile.lastName}
