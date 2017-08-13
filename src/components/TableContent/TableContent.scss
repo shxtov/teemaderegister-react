@@ -33,3 +33,9 @@
 .icon-15 {
   font-size: 15px;
 }
+
+.ant-tabs-tabpane-inactive {
+  .ant-pagination {
+    display: none;
+  }
+}
