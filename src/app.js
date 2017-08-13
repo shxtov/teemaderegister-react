@@ -15,6 +15,7 @@ import NotFound from './components/NotFound'
 import Login from './components/Login'
 import Curriculum from './components/Curriculum'
 import Supervisor from './components/Supervisor'
+import Search from './components/Search'
 
 import store from './store'
 
@@ -37,6 +38,7 @@ render(
               <Switch>
                 <Route exact path="/" restrict component={RouteWrap(Home)} />
                 <Route exact path="/login" component={RouteWrap(Login)} />
+                <Route path="/search" component={RouteWrap(Search)} />
                 <Route
                   path="/curriculum/:slug"
                   component={RouteWrap(Curriculum)}

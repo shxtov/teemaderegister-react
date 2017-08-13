@@ -1,6 +1,49 @@
-.header-wrapper {
-  .search {
+#main {
+  .ant-layout-header {
+    // height: 48px;
+    // line-height: 48px;
+    padding: 0;
+  }
+  .ant-input-search input {
+    background-color: transparent;
+    border-color: transparent;
+    background-color: #5f5f5f;
+    color: white;
+  }
+  .ant-input-search input::placeholder {
+    color: lightgray;
+  }
+  .ant-input-search .ant-input-search-icon {
+    color: lightgray;
+  }
+}
+
+#header-wrapper {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 16px;
+
+  .header-logo {
+    margin: 0 20px 0 5px;
     float: left;
-    width: 60%;
+    font-size: 2em;
+    color: #fff;
+  }
+
+  .header-content {
+    .search {
+      float: left;
+      width: 60%;
+    }
+
+    .header-login {
+      float: right;
+
+      a,
+      a:hover {
+        color: #fff;
+        font-size: 1.2em;
+      }
+    }
   }
 }

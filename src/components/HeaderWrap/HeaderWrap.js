@@ -33,12 +33,13 @@ class HeaderWrap extends Component {
           <Link to="/">
             <div className="header-logo">Te</div>
           </Link>
-          <div className="header-wrapper">
+          <div className="header-content">
             <div className="search">
               <Search
                 size="large"
                 placeholder="Search Te"
                 onSearch={this.handleSearch}
+                defaultValue={'romil'}
               />
             </div>
             {!isAuthenticated &&
