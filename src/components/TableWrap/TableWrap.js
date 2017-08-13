@@ -10,7 +10,7 @@ class TableWrap extends React.Component {
   constructor(props) {
     super(props)
 
-    this.tabs = props.tabs || {}
+    this.tabs = props.tabs
     this.defaultTab = props.defaultTab || 'topics'
     this.queryExtend = props.queryExtend || {}
 
@@ -136,7 +136,7 @@ class TableWrap extends React.Component {
         <br />
         <br />
         <TabsWrap
-          tabs={this.tabs}
+          tabs={this.props.tabs}
           activeTab={this.state.tab}
           activeSub={this.state.sub}
           tabUpdated={this.tabUpdated}
