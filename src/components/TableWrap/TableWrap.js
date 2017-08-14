@@ -18,6 +18,9 @@ class TableWrap extends React.Component {
       tab,
       sub,
 
+      //search
+      q,
+
       //pagination
       page,
 
@@ -50,6 +53,7 @@ class TableWrap extends React.Component {
     this.state = {
       tab,
       sub,
+      q,
       page,
       columnKey,
       order,
@@ -63,6 +67,17 @@ class TableWrap extends React.Component {
 
   componentDidMount() {
     this.makeQuery()
+  }
+
+  componentWillUpdate(nextProps) {
+    // trigger content load on new searchword
+    // make search query and override state q
+    if (nextProps.search.q !== this.props.search.q) {
+      this.tabs = nextProps.tabs // update tabs count
+      this.setState({ q: nextProps.search.q }, () => {
+        this.makeQuery({ showLoading: true }, { q: nextProps.search.q })
+      })
+    }
   }
 
   getDefaults({ tab, sub }) {
@@ -80,9 +95,18 @@ class TableWrap extends React.Component {
     }
   }
 
-  makeQuery(showLoading) {
+  makeQuery(showLoading, q) {
+    // dont do query if no count
+    const { tab, sub } = this.state
+    if (this.tabs[tab].subs[sub].count === 0) {
+      // create object to only clear active tab data
+      const obj = {}
+      obj[tab] = true
+      return this.props.finishLoading(obj)
+    }
+
     this.props.getTableContent(
-      Object.assign(this.queryExtend, this.state),
+      Object.assign(this.queryExtend, this.state, q),
       showLoading || false
     )
   }
@@ -148,11 +172,13 @@ class TableWrap extends React.Component {
 }
 
 TableWrap.propTypes = {
-  tabs: PropTypes.object,
+  tabs: PropTypes.object.isRequired,
   defaultTab: PropTypes.object,
   queryExtend: PropTypes.object,
+  search: PropTypes.object.isRequired,
 
   getTableContent: PropTypes.func.isRequired,
+  finishLoading: PropTypes.func.isRequired,
 
   history: PropTypes.object.isRequired
 }

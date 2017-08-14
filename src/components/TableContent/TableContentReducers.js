@@ -39,6 +39,17 @@ export default function(state = INITIAL_STATE, action) {
       ...state,
       loading: true
     }
+  case types.TABLE_CONTENT_FINISH_LOADING: {
+    const { topics, supervisors } = action
+    return {
+      ...state,
+      topics: topics ? { ...state.topics, data: [] } : state.topics,
+      supervisors: supervisors
+        ? { ...state.supervisors, data: [] }
+        : state.supervisors,
+      loading: false
+    }
+  }
   case types.TABLE_CONTENT_LOADED: {
     const { data, count, query } = action
     const countObj = {}

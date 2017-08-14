@@ -1,6 +1,15 @@
 import { connect } from 'react-redux'
 import TableWrap from './TableWrap'
 
-import { getTableContent } from '../TableContent/TableContentActions'
+import {
+  getTableContent,
+  finishLoading
+} from '../TableContent/TableContentActions'
 
-export default connect(null, { getTableContent })(TableWrap)
+const mapStateToProps = state => ({
+  search: state.search
+})
+
+export default connect(mapStateToProps, { getTableContent, finishLoading })(
+  TableWrap
+)

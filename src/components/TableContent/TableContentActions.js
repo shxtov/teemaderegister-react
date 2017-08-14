@@ -7,6 +7,9 @@ export const initTableContent = () => dispatch =>
 export const loadedTableContentCount = ({ topics, supervisors }) => dispatch =>
   dispatch({ type: types.TABLE_CONTENT_LOADED_COUNT, topics, supervisors })
 
+export const finishLoading = ({ topics, supervisors }) => dispatch =>
+  dispatch({ type: types.TABLE_CONTENT_FINISH_LOADING, topics, supervisors })
+
 export const getTableContent = (params, showLoading) => dispatch => {
   if (showLoading) dispatch({ type: types.TABLE_CONTENT_STARTED_LOADING })
 

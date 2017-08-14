@@ -1,5 +1,5 @@
-import { removeTokenAndUser } from '../../actions/TokenActions'
 import Api from '../../utils/api'
+import { removeTokenAndUser } from '../../actions/TokenActions'
 
 export const logout = () => dispatch => {
   return Api('POST', '/auth/logout')
