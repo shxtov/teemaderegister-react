@@ -40,13 +40,17 @@ export default function(state = INITIAL_STATE, action) {
       loading: true
     }
   case types.TABLE_CONTENT_FINISH_LOADING: {
-    const { topics, supervisors } = action
+    const { params } = action
     return {
       ...state,
-      topics: topics ? { ...state.topics, data: [] } : state.topics,
-      supervisors: supervisors
-        ? { ...state.supervisors, data: [] }
-        : state.supervisors,
+      topics:
+          params.tab === 'topics'
+            ? { ...state.topics, data: [], query: params }
+            : state.topics,
+      supervisors:
+          params.tab === 'supervisors'
+            ? { ...state.supervisors, data: [], query: params }
+            : state.supervisors,
       loading: false
     }
   }

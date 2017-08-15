@@ -102,7 +102,10 @@ class TableWrap extends React.Component {
       // create object to only clear active tab data
       const obj = {}
       obj[tab] = true
-      return this.props.finishLoading(obj)
+      console.log(sub)
+      return this.props.finishLoading(
+        Object.assign(this.queryExtend, this.state, q)
+      )
     }
 
     this.props.getTableContent(
