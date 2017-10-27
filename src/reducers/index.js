@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import auth from './auth'
+import auth from '../components/RouteWrap/RouteWrapReducers'
 import curriculum from '../components/Curriculum/CurriculumReducers'
 import home from '../components/Home/HomeReducers'
 import login from '../components/Login/LoginReducers'

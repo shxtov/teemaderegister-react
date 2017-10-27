@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getToken } from '../actions/TokenActions'
+import { getToken } from './jwt'
 import nprogress from 'nprogress'
 const BASE_URL = '/api'
 // nprogress.configure({ showSpinner: false }) // disable spinner
@@ -20,7 +20,7 @@ function makeConfig (method, url, query) {
   }
 
   // IF TOKEN ADD TO REQUEST
-  let token = getToken()
+  const token = getToken()
   if (token) {
     config.headers = {
       Authorization: 'Bearer ' + token

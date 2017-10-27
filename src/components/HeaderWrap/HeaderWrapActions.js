@@ -1,5 +1,6 @@
 import Api from '../../utils/api'
-import { removeTokenAndUser } from '../../actions/TokenActions'
+import { clearToken } from '../../utils/jwt'
+import * as types from '../../constants/ActionTypes'
 
 export const logout = () => dispatch => {
   return Api('POST', '/auth/logout')
@@ -7,9 +8,12 @@ export const logout = () => dispatch => {
       dispatch(completeLogout())
     })
     .catch(() => {
-      console.log('already logged out')
+      console.warn('already logged out')
       dispatch(completeLogout())
     })
 }
 
-const completeLogout = () => dispatch => dispatch(removeTokenAndUser())
+const completeLogout = () => dispatch => {
+  clearToken()
+  dispatch({ type: types.AUTH_RESET })
+}

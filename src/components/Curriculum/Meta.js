@@ -21,7 +21,7 @@ class Meta extends PureComponent {
       type,
       languages,
       representative
-    } = this.props.data
+    } = this.props.meta
 
     const { profile } = representative
     const typeMap = {
@@ -71,7 +71,7 @@ class Meta extends PureComponent {
 }
 
 Meta.propTypes = {
-  data: PropTypes.object.isRequired
+  meta: PropTypes.object.isRequired
 }
 
 export default Meta

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import queryString from 'query-string'
 import { Redirect } from 'react-router-dom'
+import { getToken } from '../../utils/jwt'
 import Breadcrumbs from '../Breadcrumbs'
 import { Row, Col, Form, Icon, Input, Button, message, Tooltip } from 'antd'
 import './login.scss'
@@ -23,7 +24,7 @@ class Login extends React.Component {
       this.setState({ loading: nextProps.loading })
       if (nextProps.hasLoginError) {
         console.log(nextProps.loginError)
-        message.error(nextProps.loginError.msg)
+        message.error(nextProps.loginError.message)
         // nextProps.loginError.map(err => message.error(err.msg))
       }
     }
@@ -46,7 +47,7 @@ class Login extends React.Component {
         // show user loading
         window.setTimeout(() => {
           this.props.login(values)
-        }, 1000)
+        }, 1500)
       }
     })
   }
@@ -57,12 +58,11 @@ class Login extends React.Component {
 
     const params = queryString.parse(this.props.location.search)
     const redirect = params.redirect || '/'
-    const { isAuthenticated } = this.props.auth
 
     const crumbs = [{ url: this.props.location.pathname, name: 'Sign In' }]
 
     // TODO no redirect after logout?
-    if (isAuthenticated) {
+    if (getToken()) {
       return <Redirect to={redirect} />
     }
 

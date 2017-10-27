@@ -1,34 +1,21 @@
 import Api from '../../utils/api'
-import store from '../../store'
 import * as types from '../../constants/ActionTypes'
 
-import {
-  getToken,
-  setToken,
-  setUser,
-  removeTokenAndUser
-} from '../../actions/TokenActions'
+import { clearToken, setToken } from '../../utils/jwt'
 
-export const checkUser = isAuthenticated => {
+export const checkUser = () => {
   return dispatch => {
-    if (!getToken()) {
-      if (isAuthenticated) dispatch(setUser())
-      return dispatch({ type: types.AUTH_FINISH })
-    }
+    dispatch({ type: types.AUTH_START })
 
     Api('GET', '/users/me')
       .then(data => {
         const { user, token } = data
-        if (token) dispatch(setToken(token))
-
-        // only update if other user id
-        if (store.getState().auth.user._id === user._id) {
-          return dispatch({ type: types.AUTH_FINISH })
-        }
-        return dispatch(setUser(user))
+        if (token) setToken(token)
+        dispatch({ type: types.AUTH_SET, user, token })
       })
       .catch(() => {
-        return dispatch(removeTokenAndUser())
+        clearToken()
+        return dispatch({ type: types.AUTH_RESET })
       })
   }
 }

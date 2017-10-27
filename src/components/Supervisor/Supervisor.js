@@ -42,9 +42,7 @@ class Supervisor extends React.Component {
   }
 
   render () {
-    const { topics, supervisor } = this.props
-    const { loading, data, count } = supervisor
-
+    const { topics, supervisor: { loading, data, count } } = this.props
     const { profile } = data
     return (
       <div id='supervisor-page'>

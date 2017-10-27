@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import queryString from 'query-string'
 
 import setUrl from '../../utils/setUrl'
-import { Form, Input, Layout } from 'antd'
+import { Form, Input, Layout, Button } from 'antd'
 import './HeaderWrap.scss'
 
 const Search = Input.Search
@@ -59,7 +59,7 @@ class HeaderWrap extends Component {
 
   render () {
     const { getFieldDecorator } = this.props.form
-    const { isAuthenticated, user } = this.props.auth
+    const { isAuthenticated } = this.props.auth
 
     return (
       <Header>
@@ -84,12 +84,9 @@ class HeaderWrap extends Component {
                 <Link to='/login'>Sign in</Link>
               </div>}
             {isAuthenticated &&
-              <div>
-                <p>
-                  Welcome {user.email}{' '}
-                  <button onClick={this.props.logout}>logout</button>
-                </p>
-              </div>}
+            <div className='header-login'>
+              <Button onClick={this.props.logout} ghost icon='logout' title='logout' />
+            </div>}
           </div>
         </div>
       </Header>

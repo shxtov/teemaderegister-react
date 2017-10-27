@@ -30,7 +30,7 @@ class TableContent extends React.Component {
     let { data, count, query } = this.props.tableContent[tableKey]
     const { sub, page, columnKey, order, types, curriculums } = query
 
-    const { names, type } = curriculum.data // TODO check if curriculum has SE or KU
+    const { names, type } = curriculum.meta // TODO check if curriculum has SE or KU
 
     const currentPage = page ? parseInt(page) : 1
 

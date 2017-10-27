@@ -7,9 +7,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  checkUser: auth => dispatch(checkUser(auth.isAuthenticated))
+  checkUser: () => dispatch(checkUser())
 })
-export default (ComposedComponent, restrict) => {
+export default (ComposedComponent, restrict = false) => {
   return connect(mapStateToProps, mapDispatchToProps)(
     RouteWrap(ComposedComponent, restrict)
   )

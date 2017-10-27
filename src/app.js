@@ -12,6 +12,7 @@ import Login from './components/Login'
 import Curriculum from './components/Curriculum'
 import Supervisor from './components/Supervisor'
 import Search from './components/Search'
+import Admin from './components/Admin'
 
 import store from './store'
 
@@ -37,7 +38,7 @@ render(
           <Content>
             <div id='content-wrapper'>
               <Switch>
-                <Route exact path='/' restrict component={RouteWrap(Home)} />
+                <Route exact path='/' component={RouteWrap(Home)} />
                 <Route exact path='/login' component={RouteWrap(Login)} />
                 <Route path='/search' component={RouteWrap(Search)} />
                 <Route
@@ -48,9 +49,9 @@ render(
                   path='/supervisor/:slug'
                   component={RouteWrap(Supervisor)}
                 />
+                <Route exact restrict path='/admin' component={RouteWrap(Admin, true)} />
                 <Route component={RouteWrap(NotFound)} />
               </Switch>
-              <Route component={RouteWrap(NotFound)} />
             </div>
           </Content>
           <Footer>

@@ -27,17 +27,17 @@ class Curriculum extends React.Component {
   }
 
   render () {
-    const { data, loading } = this.props.curriculum
+    const { meta, loading } = this.props.curriculum
     const { topics, supervisors } = this.props
     return (
       <div id='curriculum-page'>
         {!loading &&
           <div>
-            <Breadcrumbs crumbs={this.getCrumbs(data.names.et)} />
-            <Meta data={data} />
+            <Breadcrumbs crumbs={this.getCrumbs(meta.names.et)} />
+            <Meta meta={meta} />
             <TableWrap
               tabs={getTabs({ topics, supervisors })}
-              queryExtend={{ curriculumId: data._id }}
+              queryExtend={{ curriculumId: meta._id }}
               history={this.props.history}
             />
           </div>}

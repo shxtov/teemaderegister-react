@@ -4,10 +4,10 @@ export const LOGIN_IN_PROGRESS = 'LOGIN_IN_PROGRESS'
 export const LOGIN_FINISHED = 'LOGIN_FINISHED'
 
 // auth
-export const AUTH_SET_USER = 'AUTH_SET_USER'
-export const AUTH_RESET_USER = 'AUTH_RESET_USER'
+export const AUTH_SET = 'AUTH_SET'
+export const AUTH_RESET = 'AUTH_RESET'
+export const AUTH_START = 'AUTH_START'
 export const AUTH_FINISH = 'AUTH_FINISH'
-export const AUTH_SET_TOKEN = 'AUTH_SET_TOKEN'
 
 // home
 export const CURRICULUMS_LOADED = 'CURRICULUMS_LOADED'

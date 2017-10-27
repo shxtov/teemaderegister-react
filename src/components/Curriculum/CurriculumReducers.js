@@ -1,7 +1,7 @@
 import * as types from '../../constants/ActionTypes'
 
 const INITIAL_STATE = {
-  data: {},
+  meta: {},
   loading: true
 }
 export default function (state = INITIAL_STATE, action) {
@@ -10,7 +10,7 @@ export default function (state = INITIAL_STATE, action) {
       const { meta } = action
       return {
         ...state,
-        data: meta,
+        meta,
         loading: false
       }
     }

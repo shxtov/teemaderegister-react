@@ -4,22 +4,40 @@ import { Redirect } from 'react-router'
 
 export default (ComposedComponent, restrict) => {
   class RouteWrap extends React.Component {
-    componentWillMount () {
-      this.props.checkUser(this.props.auth)
+    constructor (props) {
+      super(props)
+      this.state = { allowPageLoad: false }
+    }
+
+    componentDidMount () {
+      this.props.checkUser()
       analytics(this.props.location.pathname)
     }
 
-    render () {
-      let { isAuthenticated, authInProgress } = this.props.auth
-      let { pathname } = this.props.location
+    componentWillReceiveProps (nextProps) {
+      if (this.props.auth.authInProgress === true &&
+        nextProps.auth.authInProgress === false) {
+        // auth finished, allow to load page
+        this.setState({ allowPageLoad: true })
+      }
+    }
 
-      if (restrict && !isAuthenticated && !authInProgress) {
+    render () {
+      const { allowPageLoad } = this.state
+
+      const {
+        auth: { isAuthenticated },
+        location: { pathname }
+      } = this.props
+
+      if (restrict && !isAuthenticated && allowPageLoad) {
         const redirect = {
           pathname: '/login',
           search: '?redirect=' + pathname
         }
+
         return <Redirect to={redirect} />
-      } else if (!authInProgress) {
+      } else if (allowPageLoad) {
         return <ComposedComponent {...this.props} />
       } else {
         // loading...
@@ -39,7 +57,7 @@ export default (ComposedComponent, restrict) => {
   }
 
   const analytics = route => {
-    // console.log(route)
+    console.log(route)
   }
 
   return RouteWrap
