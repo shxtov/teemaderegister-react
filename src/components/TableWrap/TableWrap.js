@@ -7,7 +7,7 @@ import setUrl from '../../utils/setUrl'
 import TabsWrap from '../TabsWrap'
 
 class TableWrap extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.tabs = props.tabs
@@ -18,17 +18,17 @@ class TableWrap extends React.Component {
       tab,
       sub,
 
-      //search
+      // search
       q,
 
-      //pagination
+      // pagination
       page,
 
-      //sort
+      // sort
       columnKey,
       order,
 
-      //all allowed filters
+      // all allowed filters
       types,
       curriculums
     } = queryString.parse(props.history.location.search, {
@@ -48,7 +48,7 @@ class TableWrap extends React.Component {
 
     // FIX default ascend if not in url but there is columnKey
     this.defaultOrder = 'ascend'
-    order = order ? order : subObj.order
+    order = order || subObj.order
 
     this.state = {
       tab,
@@ -65,11 +65,11 @@ class TableWrap extends React.Component {
     this.handleTableChange = this.handleTableChange.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.makeQuery()
   }
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate (nextProps) {
     // trigger content load on new searchword
     // make search query and override state q
     if (nextProps.search.q !== this.props.search.q) {
@@ -80,7 +80,7 @@ class TableWrap extends React.Component {
     }
   }
 
-  getDefaults({ tab, sub }) {
+  getDefaults ({ tab, sub }) {
     const tabObj = this.tabs[tab]
 
     sub = sub || tabObj.sub
@@ -95,7 +95,7 @@ class TableWrap extends React.Component {
     }
   }
 
-  makeQuery(showLoading, q) {
+  makeQuery (showLoading, q) {
     // dont do query if no count
     const { tab, sub } = this.state
     if (this.tabs[tab].subs[sub].count === 0) {
@@ -114,7 +114,7 @@ class TableWrap extends React.Component {
     )
   }
 
-  tabUpdated([tab, sub]) {
+  tabUpdated ([tab, sub]) {
     const newState = Object.assign({ tab }, this.getDefaults({ tab, sub }))
     const showLoading = true
 
@@ -123,11 +123,11 @@ class TableWrap extends React.Component {
       this.makeQuery(showLoading)
     })
 
-    //TODO update document title
-    //TODO check if it is needed to update
+    // TODO update document title
+    // TODO check if it is needed to update
   }
 
-  writeURL() {
+  writeURL () {
     const { replace, location } = this.props.history
     const { tab, sub, columnKey } = this.state
 
@@ -144,7 +144,7 @@ class TableWrap extends React.Component {
     setUrl(replace, location.pathname, this.state, defaults)
   }
 
-  handleTableChange(pagination, filters, sorter) {
+  handleTableChange (pagination, filters, sorter) {
     const { columnKey, order } = sorter
     const page = pagination.current
     filters = removeEmpty(filters)
@@ -157,9 +157,9 @@ class TableWrap extends React.Component {
     })
   }
 
-  render() {
+  render () {
     return (
-      <div className="curriculum-content">
+      <div className='curriculum-content'>
         <br />
         <br />
         <TabsWrap

@@ -2,10 +2,6 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Route, Switch, BrowserRouter, browserHistory } from 'react-router-dom'
-import { Layout, LocaleProvider } from 'antd'
-import etEE from 'antd/lib/locale-provider/et_EE'
-
-const { Content, Footer } = Layout
 
 import HeaderWrap from './components/HeaderWrap'
 import RouteWrap from './components/RouteWrap'
@@ -27,28 +23,34 @@ import './fonts/iconfont.svg'
 import './fonts/iconfont.ttf'
 import './fonts/iconfont.woff'
 
+import { Layout, LocaleProvider } from 'antd'
+import etEE from 'antd/lib/locale-provider/et_EE'
+
+const { Content, Footer } = Layout
+
 render(
   <Provider store={store}>
     <BrowserRouter history={browserHistory}>
       <LocaleProvider locale={etEE}>
-        <Layout className="layout">
+        <Layout className='layout'>
           <Route component={HeaderWrap} />
           <Content>
-            <div id="content-wrapper">
+            <div id='content-wrapper'>
               <Switch>
-                <Route exact path="/" restrict component={RouteWrap(Home)} />
-                <Route exact path="/login" component={RouteWrap(Login)} />
-                <Route path="/search" component={RouteWrap(Search)} />
+                <Route exact path='/' restrict component={RouteWrap(Home)} />
+                <Route exact path='/login' component={RouteWrap(Login)} />
+                <Route path='/search' component={RouteWrap(Search)} />
                 <Route
-                  path="/curriculum/:slug"
+                  path='/curriculum/:slug'
                   component={RouteWrap(Curriculum)}
                 />
                 <Route
-                  path="/supervisor/:slug"
+                  path='/supervisor/:slug'
                   component={RouteWrap(Supervisor)}
                 />
                 <Route component={RouteWrap(NotFound)} />
               </Switch>
+              <Route component={RouteWrap(NotFound)} />
             </div>
           </Content>
           <Footer>

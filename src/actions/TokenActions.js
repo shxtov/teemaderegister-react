@@ -1,3 +1,4 @@
+/* globals localStorage */
 import store from '../store'
 import * as types from '../constants/ActionTypes'
 

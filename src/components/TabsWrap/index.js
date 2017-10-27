@@ -5,14 +5,14 @@ import TableContent from '../TableContent'
 import { Tabs, Icon, Radio } from 'antd'
 
 class TabsWrap extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.updateTabs = this.updateTabs.bind(this)
     this.tabClicked = this.tabClicked.bind(this)
   }
 
-  createTabPanes(tabs) {
+  createTabPanes (tabs) {
     return Object.keys(tabs).map(key => {
       const { title, icon, count, subs } = tabs[key]
       return (
@@ -27,7 +27,7 @@ class TabsWrap extends Component {
     })
   }
 
-  createSubTabs(subs) {
+  createSubTabs (subs) {
     const { activeSub } = this.props
 
     subs = Object.keys(subs).map(key => {
@@ -46,7 +46,7 @@ class TabsWrap extends Component {
     )
   }
 
-  createTabTitle(icon, title, count) {
+  createTabTitle (icon, title, count) {
     return (
       <span>
         <Icon type={icon} />
@@ -55,22 +55,21 @@ class TabsWrap extends Component {
     )
   }
 
-  createSubTitle(title, count) {
+  createSubTitle (title, count) {
     return (
       <span>
         {title} {count > 0 && '| ' + count}
       </span>
     )
   }
-  tabClicked(e) {
+  tabClicked (e) {
     // clear filters
     // tab - e
     const { activeTab, tabs, tabUpdated } = this.props
     // tab updated
-    if (activeTab === e)
-      return tabUpdated([activeTab, tabs[activeTab].defaultSub])
+    if (activeTab === e) { return tabUpdated([activeTab, tabs[activeTab].defaultSub]) }
   }
-  updateTabs(e) {
+  updateTabs (e) {
     // tab - e
     // sub - e.target.value
     const { tabs, activeTab, tabUpdated } = this.props
@@ -82,7 +81,7 @@ class TabsWrap extends Component {
     return tabUpdated([newTab, newSub])
   }
 
-  render() {
+  render () {
     const { tabs, activeTab } = this.props
     return (
       <Tabs

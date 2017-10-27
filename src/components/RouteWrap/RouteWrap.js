@@ -4,12 +4,12 @@ import { Redirect } from 'react-router'
 
 export default (ComposedComponent, restrict) => {
   class RouteWrap extends React.Component {
-    componentWillMount() {
+    componentWillMount () {
       this.props.checkUser(this.props.auth)
       analytics(this.props.location.pathname)
     }
 
-    render() {
+    render () {
       let { isAuthenticated, authInProgress } = this.props.auth
       let { pathname } = this.props.location
 
@@ -39,7 +39,7 @@ export default (ComposedComponent, restrict) => {
   }
 
   const analytics = route => {
-    //console.log(route)
+    // console.log(route)
   }
 
   return RouteWrap

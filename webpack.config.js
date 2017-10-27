@@ -20,7 +20,7 @@ console.log(
 const extractSCSS = new ExtractTextPlugin('css/style.[contenthash:10].css')
 const extractLESS = new ExtractTextPlugin('css/antd.[contenthash:10].css')
 
-const isExternal = function(module) {
+const isExternal = function (module) {
   var context = module.context
   if (typeof context !== 'string') {
     return false
@@ -46,10 +46,10 @@ const plugins = [
     : null,
   extractSCSS,
   extractLESS,
-  //TODO merge css files via merge-files-webpack-plugin
+  // TODO merge css files via merge-files-webpack-plugin
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendors',
-    minChunks: function(module) {
+    minChunks: function (module) {
       return isExternal(module)
     }
   }),
@@ -57,31 +57,29 @@ const plugins = [
     name: 'manifest'
   }),
   new HtmlWebpackPlugin({
-    //hash: DEVELOPMENT ? true : false, // if needed to force remove caching issues while in dev
+    // hash: DEVELOPMENT ? true : false, // if needed to force remove caching issues while in dev
     template: SRC_DIR + '/index.html',
     minify: {
-      collapseWhitespace: PRODUCTION ? true : false // this is for minifying HTML in PRODUCTION
+      collapseWhitespace: !!PRODUCTION // this is for minifying HTML in PRODUCTION
     }
   }),
   PRODUCTION
-    ? (
-      new webpack.optimize.UglifyJsPlugin({
-        comments: false,
-        compress: {
-          warnings: false,
-          drop_console: true
-        },
-        minimize: true,
-        sourceMap: true
-      }),
+    ? (new webpack.optimize.UglifyJsPlugin({
+      comments: false,
+      compress: {
+        warnings: false,
+        drop_console: true
+      },
+      minimize: true,
+      sourceMap: true
+    }),
       new CompressionPlugin({
         asset: '[path].gz[query]',
         algorithm: 'gzip',
         test: /\.js$|\.css$|\.html$/,
         threshold: 10240, // only if file size > 10.24 kb
         minRatio: 0.8
-      })
-    )
+      }))
     : null
 ].filter(p => p)
 
@@ -92,13 +90,17 @@ const rules = [
     use: {
       loader: 'babel-loader',
       options: {
-        plugins: [['import', { libraryName: 'antd', style: true }]]
+        presets: ['es2015', 'react', 'stage-0'],
+        plugins: [
+          'transform-object-rest-spread',
+          'transform-do-expressions',
+          ['import', { libraryName: 'antd', style: true }]
+        ]
       }
     }
   },
   {
     test: /media\/([^/]*)\.(jpe?g|png|gif|svg)$/i,
-    exclude: [/node_modules/],
     use: [
       {
         loader: 'url-loader',
@@ -108,7 +110,6 @@ const rules = [
   },
   {
     test: /fonts\/([^/]*)\.(woff|woff2|eot|ttf|svg)$/,
-    exclude: /node_modules/,
     use: [
       {
         loader: 'url-loader',
@@ -119,7 +120,6 @@ const rules = [
   // TODO add autoprefixer like autoprefixer?browsers=last 2 version
   {
     test: /\.scss$/,
-    exclude: /node_modules/,
     use: extractSCSS.extract({
       fallback: 'style-loader',
       use: [
@@ -165,13 +165,14 @@ module.exports = {
     chunkFilename: '[chunkhash].js'
   },
   devServer: {
-    host: 'localhost',
+    // host: 'localhost',
     port: 3446, // preferred port
     contentBase: BUILD_DIR,
     compress: true,
     historyApiFallback: true,
     hot: true,
     inline: true,
-    noInfo: true
+    noInfo: true,
+    watchOptions: { poll: true }
   }
 }

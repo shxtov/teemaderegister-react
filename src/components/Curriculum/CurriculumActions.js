@@ -9,11 +9,10 @@ export const initCurriculum = () => dispatch => {
 
 export const getCurriculum = slug => dispatch => {
   return Api('GET', '/curriculums/' + slug)
-    .then(response => {
-      const { data, supervisors, topics } = response
-
+    .then(data => {
+      const { meta, supervisors, topics } = data
       dispatch(loadedTableContentCount({ topics, supervisors }))
-      dispatch({ type: types.CURRICULUM_LOADED, data })
+      dispatch({ type: types.CURRICULUM_LOADED, meta })
     })
     .catch(err => {
       // TODO handle errors

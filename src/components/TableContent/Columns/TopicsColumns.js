@@ -45,7 +45,7 @@ const curriculums = ({ curriculums }) => ({
   filters: [{ text: 'Sobib teistele õppekavadele', value: 'others' }],
   filterMultiple: false,
   title: (
-    <Tooltip placement="top" title={'Sobib teistele õppekavadele'}>
+    <Tooltip placement='top' title={'Sobib teistele õppekavadele'}>
       {'ÕK'}
     </Tooltip>
   ),
@@ -54,7 +54,7 @@ const curriculums = ({ curriculums }) => ({
   filteredValue: curriculums || null,
   render: curriculums => {
     let content = null
-    if (curriculums.length > 1) content = <Badge status="default" />
+    if (curriculums.length > 1) content = <Badge status='default' />
     return content
   }
 })
@@ -87,10 +87,10 @@ const detailCurriculums = () => ({
       return (
         <Tooltip
           key={c._id}
-          placement="topLeft"
+          placement='topLeft'
           title={c.names.et + ' ' + c.type}
         >
-          <Link className="cur-link" to={url}>
+          <Link className='cur-link' to={url}>
             {content}
           </Link>
         </Tooltip>
@@ -110,7 +110,7 @@ const detailTypes = () => ({
       const content = i < types.length - 1 && types.length > 1 ? t + ', ' : t
 
       return (
-        <Tooltip key={t} placement="topLeft" title={typesMap[t]}>
+        <Tooltip key={t} placement='topLeft' title={typesMap[t]}>
           {content}
         </Tooltip>
       )
@@ -127,8 +127,8 @@ const file = ({ columnKey, order }) => ({
   render: file => {
     let content = (
       <span>
-        <a className="inline-link" href={file} target="_blank">
-          <Icon type="file-pdf" className="icon-15" />
+        <a className='inline-link' href={file} target='_blank'>
+          <Icon type='file-pdf' className='icon-15' />
         </a>
       </span>
     )
@@ -200,7 +200,7 @@ const types = ({ columnKey, order, sub, types }) => ({
   sortOrder: columnKey === 'types' && order,
   title: (
     <Tooltip
-      placement="top"
+      placement='top'
       title={sub === 'available' ? 'Sobib seminaritööks' : 'Seminaritöö'}
     >
       {'SE'}
@@ -211,7 +211,7 @@ const types = ({ columnKey, order, sub, types }) => ({
   filteredValue: types || null,
   render: types => {
     let content = null
-    if (types.indexOf('SE') !== -1) content = <Badge status="default" />
+    if (types.indexOf('SE') !== -1) content = <Badge status='default' />
     return content
   }
 })

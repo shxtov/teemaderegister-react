@@ -5,13 +5,13 @@ import queryString from 'query-string'
 
 import setUrl from '../../utils/setUrl'
 import { Form, Input, Layout } from 'antd'
+import './HeaderWrap.scss'
+
 const Search = Input.Search
 const { Header } = Layout
 
-import './HeaderWrap.scss'
-
 class HeaderWrap extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.handleSearch = this.handleSearch.bind(this)
@@ -30,14 +30,14 @@ class HeaderWrap extends Component {
   //   return authChanged
   // }
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate (nextProps) {
     // remove searchword if removed from props
     if (this.props.search.q && !nextProps.search.q) {
       nextProps.form.setFieldsValue({ searchField: '' })
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (this.defaultSearch) {
       this.props.getSearchCounts(this.defaultSearch)
       this.props.form.setFieldsInitialValue({
@@ -46,7 +46,7 @@ class HeaderWrap extends Component {
     }
   }
 
-  handleSearch(value) {
+  handleSearch (value) {
     this.props.getSearchCounts(value)
     setUrl(
       this.props.history.replace,
@@ -57,31 +57,31 @@ class HeaderWrap extends Component {
     )
   }
 
-  render() {
+  render () {
     const { getFieldDecorator } = this.props.form
     const { isAuthenticated, user } = this.props.auth
 
     return (
       <Header>
-        <div id="header-wrapper">
-          <Link to="/">
-            <div className="header-logo">Te</div>
+        <div id='header-wrapper'>
+          <Link to='/'>
+            <div className='header-logo'>Te</div>
           </Link>
-          <div className="header-content">
-            <div className="search">
+          <div className='header-content'>
+            <div className='search'>
               <Form>
                 {getFieldDecorator('searchField')(
                   <Search
-                    size="large"
-                    placeholder="Search title or supervisor"
+                    size='large'
+                    placeholder='Search title or supervisor'
                     onSearch={this.handleSearch}
                   />
                 )}
               </Form>
             </div>
             {!isAuthenticated &&
-              <div className="header-login">
-                <Link to="/login">Sign in</Link>
+              <div className='header-login'>
+                <Link to='/login'>Sign in</Link>
               </div>}
             {isAuthenticated &&
               <div>

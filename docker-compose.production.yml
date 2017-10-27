@@ -1,0 +1,15 @@
+version: "2"
+services:
+
+  TRreact:
+    container_name: "TRreactProd"
+    command: npm run build
+
+  TRnginx:
+    container_name: "TRnginxProd"
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx.production.conf:/etc/nginx/nginx.conf:ro
+      - ./dist:/var/www/react-weather-fe/dist
+      - /etc/letsencrypt:/etc/letsencrypt

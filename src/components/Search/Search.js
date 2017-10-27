@@ -8,25 +8,21 @@ import getTabs from '../../utils/getTabs'
 import './Search.scss'
 
 class Search extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
-  componentWillUnmount() {
+  componentWillUnmount () {
     // Reset all state params
     this.props.initTableContent()
     this.props.initSearch()
   }
 
-  getCrumbs() {
+  getCrumbs () {
     return [{ url: null, name: 'Search' }]
   }
 
-  render() {
+  render () {
     const { topics, supervisors, search } = this.props
     const { loading } = search
     return (
-      <div id="search-page">
+      <div id='search-page'>
         {!loading &&
           <div>
             <Breadcrumbs crumbs={this.getCrumbs()} />

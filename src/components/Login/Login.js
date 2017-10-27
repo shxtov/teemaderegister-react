@@ -4,12 +4,12 @@ import queryString from 'query-string'
 import { Redirect } from 'react-router-dom'
 import Breadcrumbs from '../Breadcrumbs'
 import { Row, Col, Form, Icon, Input, Button, message, Tooltip } from 'antd'
-const FormItem = Form.Item
-
 import './login.scss'
 
+const FormItem = Form.Item
+
 class Login extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       loading: props.loading
@@ -17,28 +17,28 @@ class Login extends React.Component {
     this.submit = this.submit.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     // You don't have to do this check first, but it can help prevent an unneeded render
     if (nextProps.loading !== this.state.loading) {
       this.setState({ loading: nextProps.loading })
       if (nextProps.hasLoginError) {
         console.log(nextProps.loginError)
         message.error(nextProps.loginError.msg)
-        //nextProps.loginError.map(err => message.error(err.msg))
+        // nextProps.loginError.map(err => message.error(err.msg))
       }
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     let emailInput = this.props.form.getFieldInstance('email').refs.input
     emailInput.focus()
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.props.initLogin()
   }
 
-  submit(e) {
+  submit (e) {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -51,7 +51,7 @@ class Login extends React.Component {
     })
   }
 
-  render() {
+  render () {
     const { getFieldDecorator } = this.props.form
     const { loading } = this.state
 
@@ -67,14 +67,14 @@ class Login extends React.Component {
     }
 
     return (
-      <div id="login-page">
+      <div id='login-page'>
         <Breadcrumbs crumbs={crumbs} />
         <Row gutter={8}>
           <Col span={8} />
           <Col xs={24} sm={8}>
-            <Form onSubmit={this.submit} className="login-form">
-              <h2 className="center">
-                Sign in to <span className="emphisize-title">Te</span>
+            <Form onSubmit={this.submit} className='login-form'>
+              <h2 className='center'>
+                Sign in to <span className='emphisize-title'>Te</span>
               </h2>
               <FormItem>
                 {getFieldDecorator('email', {
@@ -82,7 +82,7 @@ class Login extends React.Component {
                     { required: true, message: 'Please input your email!' },
                     { type: 'email', message: 'Please enter correct email' }
                   ]
-                })(<Input prefix={<Icon type="user" />} placeholder="Email" />)}
+                })(<Input prefix={<Icon type='user' />} placeholder='Email' />)}
               </FormItem>
               <FormItem>
                 {getFieldDecorator('password', {
@@ -91,25 +91,25 @@ class Login extends React.Component {
                   ]
                 })(
                   <Input
-                    prefix={<Icon type="lock" />}
-                    type="password"
-                    placeholder="Password"
+                    prefix={<Icon type='lock' />}
+                    type='password'
+                    placeholder='Password'
                   />
                 )}
               </FormItem>
               <FormItem>
                 <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="login-form-button"
+                  type='primary'
+                  htmlType='submit'
+                  className='login-form-button'
                   loading={loading}
                 >
                   Log in
                 </Button>
                 <p>
                   <Tooltip
-                    placement="topLeft"
-                    title="If you do not have account please contact your school administrator"
+                    placement='topLeft'
+                    title='If you do not have account please contact your school administrator'
                   >
                     <span>do not have account?</span>
                   </Tooltip>

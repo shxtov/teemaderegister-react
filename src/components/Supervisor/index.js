@@ -10,7 +10,6 @@ import {
 
 const mapStateToProps = state => ({
   supervisor: state.supervisor,
-
   topics: state.tableContent.topics
 })
 

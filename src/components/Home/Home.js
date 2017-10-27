@@ -5,21 +5,17 @@ import './Home.scss'
 import Collection from './Collection'
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
-  componentDidMount() {
+  componentDidMount () {
     this.props.getCurriculums()
   }
 
-  render() {
+  render () {
     const { loading, curriculums } = this.props.home
 
     return (
-      <div id="home-page">
-        <div className="intro">
-          <h1>Tere tulemast DTI uue teemaderegistri lehele</h1>
+      <div id='home-page'>
+        <div className='intro'>
+          <h1>Tere tulemast DTI uue teemaderegistri lehele!!!!</h1>
         </div>
         {!loading && <Collection curriculums={curriculums} />}
       </div>

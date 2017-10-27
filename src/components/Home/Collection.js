@@ -17,7 +17,7 @@ const Collection = props => {
         const { type, collection } = single
 
         return (
-          <div className="home-curriculums" key={type}>
+          <div className='home-curriculums' key={type}>
             <h1>
               {typeMap[type]}
             </h1>

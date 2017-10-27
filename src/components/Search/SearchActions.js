@@ -11,12 +11,12 @@ export const setSearch = q => dispatch => {
 }
 
 export const getSearchCounts = q => dispatch => {
-  //dispatch({ type: types.SEARCH_STARTED_LOADING })
+  // dispatch({ type: types.SEARCH_STARTED_LOADING })
 
   return Api('GET', '/search/counts', { params: { q } })
     .then(response => {
       const { supervisors, topics } = response
-      //console.log(response)
+      // console.log(response)
 
       dispatch(loadedTableContentCount({ topics, supervisors }))
       dispatch({ type: types.SEARCH_LOADED, q })

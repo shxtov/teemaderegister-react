@@ -21,7 +21,7 @@ export const checkUser = isAuthenticated => {
         const { user, token } = data
         if (token) dispatch(setToken(token))
 
-        //only update if other user id
+        // only update if other user id
         if (store.getState().auth.user._id === user._id) {
           return dispatch({ type: types.AUTH_FINISH })
         }

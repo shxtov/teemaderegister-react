@@ -9,11 +9,7 @@ import getTabs from '../../utils/getTabs'
 import './Supervisor.scss'
 
 class Supervisor extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     // FIX new supervisor slug update view
     const isNewSlug =
       this.props.match.params.slug !== nextProps.match.params.slug
@@ -24,34 +20,34 @@ class Supervisor extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.props.getSupervisor()
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     // Reset all state params
     this.init()
   }
 
-  init() {
+  init () {
     this.props.initSupervisor()
     this.props.initTableContent()
   }
 
-  getCrumbs(name) {
+  getCrumbs (name) {
     return [
       { url: null, name: 'Supervisor' },
       { url: this.props.location.pathname, name }
     ]
   }
 
-  render() {
+  render () {
     const { topics, supervisor } = this.props
     const { loading, data, count } = supervisor
 
     const { profile } = data
     return (
-      <div id="supervisor-page">
+      <div id='supervisor-page'>
         {!loading &&
           <div>
             <Breadcrumbs

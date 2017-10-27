@@ -1,10 +1,10 @@
-const BASE_URL = '/api'
 import axios from 'axios'
 import { getToken } from '../actions/TokenActions'
 import nprogress from 'nprogress'
+const BASE_URL = '/api'
 // nprogress.configure({ showSpinner: false }) // disable spinner
 
-function makeConfig(method, url, query) {
+function makeConfig (method, url, query) {
   let config = {
     method: method,
     baseURL: BASE_URL, // `baseURL` will be prepended to `url` unless `url` is absolute.
@@ -19,7 +19,7 @@ function makeConfig(method, url, query) {
     config.params = query.params
   }
 
-  //IF TOKEN ADD TO REQUEST
+  // IF TOKEN ADD TO REQUEST
   let token = getToken()
   if (token) {
     config.headers = {
@@ -30,7 +30,7 @@ function makeConfig(method, url, query) {
   return config
 }
 
-export default function(method, url, query) {
+export default function (method, url, query) {
   let config = makeConfig(method, url, query)
   // TODO if already started continue progressbar (from auth)
   nprogress.start()
@@ -44,8 +44,8 @@ export default function(method, url, query) {
     })
     .catch(err => {
       if (err.status === 403) {
-        //TODO redirect for user auth error
-        //dispatch same as logout
+        // TODO redirect for user auth error
+        // dispatch same as logout
         console.log('not authorized')
       }
       nprogress.done()

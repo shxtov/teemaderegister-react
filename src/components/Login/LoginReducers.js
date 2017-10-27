@@ -5,27 +5,27 @@ const INITIAL_STATE = {
   hasError: false,
   error: {}
 }
-export default function(state = INITIAL_STATE, action) {
+export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
-  case types.LOGIN_INIT:
-    return INITIAL_STATE
-  case types.LOGIN_IN_PROGRESS:
-    return {
-      ...state,
-      loading: true
-    }
+    case types.LOGIN_INIT:
+      return INITIAL_STATE
+    case types.LOGIN_IN_PROGRESS:
+      return {
+        ...state,
+        loading: true
+      }
 
-  case types.LOGIN_FINISHED:
-    return {
-      ...state,
-      loading: false,
-      hasError: action.error ? true : false,
-      error: action.error || {}
-    }
+    case types.LOGIN_FINISHED:
+      return {
+        ...state,
+        loading: false,
+        hasError: !!action.error,
+        error: action.error || {}
+      }
 
-  default:
-    return {
-      ...state
-    }
+    default:
+      return {
+        ...state
+      }
   }
 }

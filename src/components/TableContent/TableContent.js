@@ -8,7 +8,7 @@ import { Table } from 'antd'
 import './TableContent.scss'
 
 class TableContent extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.columnsMap = {
@@ -17,7 +17,7 @@ class TableContent extends React.Component {
     }
   }
 
-  render() {
+  render () {
     const {
       tableKey,
       curriculum,
@@ -28,7 +28,7 @@ class TableContent extends React.Component {
 
     let { loading } = this.props.tableContent
     let { data, count, query } = this.props.tableContent[tableKey]
-    const { tab, sub, page, columnKey, order, types, curriculums } = query
+    const { sub, page, columnKey, order, types, curriculums } = query
 
     const { names, type } = curriculum.data // TODO check if curriculum has SE or KU
 
@@ -47,7 +47,7 @@ class TableContent extends React.Component {
       <div>
         <br />
         <Table
-          size="small"
+          size='small'
           loading={{ spinning: loading, delay: 200 }}
           onChange={handleTableChange}
           dataSource={data}
@@ -70,7 +70,7 @@ class TableContent extends React.Component {
             columnKey,
             order,
 
-            //filters
+            // filters
             types,
             curriculums
           })}

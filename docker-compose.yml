@@ -1,0 +1,33 @@
+version: "2"
+services:
+
+  TRreact:
+    image: teemaderegister-react
+    container_name: "TRreact"
+    networks:
+      - main
+    build: .
+    ports:
+      - "3446:3446"
+    volumes:
+      - .:/var/www/teemaderegister-react
+      - /var/www/teemaderegister-react/node_modules
+    command: npm run dev
+  
+  TRnginx:
+    image: nginx
+    container_name: "TRnginx"
+    depends_on:
+      - TRreact
+    networks:
+      - main
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+
+networks:
+  main:
+    external: 
+      name: teemaderegisterbe_main
+

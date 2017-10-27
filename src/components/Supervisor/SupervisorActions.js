@@ -9,20 +9,18 @@ export const initSupervisor = () => dispatch => {
 
 export const getSupervisor = slug => dispatch => {
   return Api('GET', '/supervisors/' + slug)
-    .then(response => {
-      const { data, count } = response
-
+    .then(({ supervisor, counts }) => {
       dispatch(
         loadedTableContentCount({
           topics: {
-            available: count.available,
-            registered: count.registered.all,
-            defended: count.defended.all,
-            all: count.all
+            available: counts.available,
+            registered: counts.registered.all,
+            defended: counts.defended.all,
+            all: counts.all
           }
         })
       )
-      dispatch({ type: types.SUPERVISOR_LOADED, data, count })
+      dispatch({ type: types.SUPERVISOR_LOADED, supervisor, counts })
     })
     .catch(err => {
       // TODO handle errors

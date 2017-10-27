@@ -5,22 +5,22 @@ const INITIAL_STATE = {
   count: {},
   loading: true
 }
-export default function(state = INITIAL_STATE, action) {
+export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
-  case types.SUPERVISOR_LOADED: {
-    const { data, count } = action
-    return {
-      ...state,
-      data,
-      count,
-      loading: false
+    case types.SUPERVISOR_LOADED: {
+      const { supervisor, counts } = action
+      return {
+        ...state,
+        data: supervisor,
+        count: counts,
+        loading: false
+      }
     }
-  }
-  case types.SUPERVISOR_INIT:
-    return INITIAL_STATE
-  default:
-    return {
-      ...state
-    }
+    case types.SUPERVISOR_INIT:
+      return INITIAL_STATE
+    default:
+      return {
+        ...state
+      }
   }
 }

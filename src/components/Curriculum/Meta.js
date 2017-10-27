@@ -14,11 +14,7 @@ const colorMap = {
 }
 
 class Meta extends PureComponent {
-  constructor(props) {
-    super(props)
-  }
-
-  render() {
+  render () {
     let {
       names,
       abbreviation,
@@ -42,7 +38,7 @@ class Meta extends PureComponent {
     const metaBackGround = { backgroundImage: 'url(' + colorMap[type] + ')' }
 
     return (
-      <div id="curriculum-meta" style={metaBackGround}>
+      <div id='curriculum-meta' style={metaBackGround}>
         <h1>
           {names.et}
         </h1>
@@ -56,13 +52,13 @@ class Meta extends PureComponent {
           {typeMap[type]} - {languages}
         </h4>
         <br />
-        <div className="c-representative">
+        <div className='c-representative'>
           <Tooltip title={'Õppekava kuraator'}>
             <Avatar
-              className="curriculum-avatar"
-              shape="square"
-              size="small"
-              icon="user"
+              className='curriculum-avatar'
+              shape='square'
+              size='small'
+              icon='user'
             />
             <span>
               {profile.firstName + ' ' + profile.lastName}

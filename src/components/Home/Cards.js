@@ -31,9 +31,9 @@ const Cards = props => {
         <Link to={'/curriculum/' + slugs.et}>
           <Card
             key={_id}
-            className="curriculum-card"
+            className='curriculum-card'
             style={cardBackground}
-            bordered={true}
+            bordered
           >
             <h2>
               {names.et}

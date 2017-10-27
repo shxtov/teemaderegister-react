@@ -1,0 +1,21 @@
+version: "2"
+services:
+
+  TRreact:
+    container_name: "TRreactProd"
+    command: "echo 'skipping container...'"
+
+  TRnginx:
+    container_name: "TRnginxProd"
+    networks:
+      - main
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.production-pre-ssl.conf:/etc/nginx/nginx.conf:ro
+      - /data/letsencrypt:/data/letsencrypt
+
+networks:
+  main:
+    external: 
+      name: reactweatherbe_main

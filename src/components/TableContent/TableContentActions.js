@@ -13,12 +13,9 @@ export const finishLoading = params => dispatch =>
 export const getTableContent = (params, showLoading) => dispatch => {
   if (showLoading) dispatch({ type: types.TABLE_CONTENT_STARTED_LOADING })
 
-  const q = {
-    params
-  }
-  return Api('GET', '/' + params.tab, q)
-    .then(({ data, count, query }) => {
-      dispatch({ type: types.TABLE_CONTENT_LOADED, data, count, query })
+  return Api('GET', '/' + params.tab, { params })
+    .then(({ topics, supervisors, count, query }) => {
+      dispatch({ type: types.TABLE_CONTENT_LOADED, topics, supervisors, count, query })
     })
     .catch(err => {
       // TODO handle errors

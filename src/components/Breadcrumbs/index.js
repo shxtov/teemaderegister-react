@@ -25,15 +25,15 @@ const Breadcrumbs = props => {
   })
 
   const breadcrumbItems = [
-    <Breadcrumb.Item key="home">
-      <Link to="/">
-        <Icon type="home" />
+    <Breadcrumb.Item key='home'>
+      <Link to='/'>
+        <Icon type='home' />
       </Link>
     </Breadcrumb.Item>
   ].concat(extraBreadcrumbItems)
 
   return (
-    <div id="breadcrumb-wrapper">
+    <div id='breadcrumb-wrapper'>
       <Breadcrumb>
         {breadcrumbItems}
       </Breadcrumb>

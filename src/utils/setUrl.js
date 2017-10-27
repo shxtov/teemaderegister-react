@@ -13,12 +13,12 @@ export default (action, location, params, defaults) => {
 
   params = removeEmpty(params)
   const { filters } = params
-  //if filters add each filter to params separately
+  // if filters add each filter to params separately
   if (filters) {
     Object.keys(filters).forEach(key => {
-      filters[key]
+      // filters[key]
 
-      //allow single alues for now
+      // allow single alues for now
       if (!params[key]) params[key] = filters[key]
     })
 
