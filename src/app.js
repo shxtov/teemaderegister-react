@@ -3,20 +3,19 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Route, Switch, BrowserRouter, browserHistory } from 'react-router-dom'
 
-import HeaderWrap from './components/HeaderWrap'
-import RouteWrap from './components/RouteWrap'
+import HeaderWrapContainer from './containers/HeaderWrapContainer'
+import RouteWrapContainer from './containers/RouteWrapContainer'
 
-import Home from './components/Home'
+import HomeContainer from './containers/HomeContainer'
 import NotFound from './components/NotFound'
-import Login from './components/Login'
-import Curriculum from './components/Curriculum'
-import Supervisor from './components/Supervisor'
-import Search from './components/Search'
-import Admin from './components/Admin'
+import LoginContainer from './containers/LoginContainer'
+import CurriculumContainer from './containers/CurriculumContainer'
+import SupervisorContainer from './containers/SupervisorContainer'
+import SearchContainer from './containers/SearchContainer'
 
 import store from './store'
 
-import './app.scss'
+import '../styles/main.scss'
 
 // import antd fonts for webpack
 import './fonts/iconfont.eot'
@@ -34,23 +33,22 @@ render(
     <BrowserRouter history={browserHistory}>
       <LocaleProvider locale={etEE}>
         <Layout className='layout'>
-          <Route component={HeaderWrap} />
+          <Route component={HeaderWrapContainer} />
           <Content>
             <div id='content-wrapper'>
               <Switch>
-                <Route exact path='/' component={RouteWrap(Home)} />
-                <Route exact path='/login' component={RouteWrap(Login)} />
-                <Route path='/search' component={RouteWrap(Search)} />
+                <Route exact path='/' component={RouteWrapContainer(HomeContainer)} />
+                <Route exact path='/login' component={RouteWrapContainer(LoginContainer)} />
+                <Route path='/search' component={RouteWrapContainer(SearchContainer)} />
                 <Route
                   path='/curriculum/:slug'
-                  component={RouteWrap(Curriculum)}
+                  component={RouteWrapContainer(CurriculumContainer)}
                 />
                 <Route
                   path='/supervisor/:slug'
-                  component={RouteWrap(Supervisor)}
+                  component={RouteWrapContainer(SupervisorContainer)}
                 />
-                <Route exact restrict path='/admin' component={RouteWrap(Admin, true)} />
-                <Route component={RouteWrap(NotFound)} />
+                <Route component={RouteWrapContainer(NotFound)} />
               </Switch>
             </div>
           </Content>

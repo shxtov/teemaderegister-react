@@ -85,7 +85,7 @@ const plugins = [
 
 const rules = [
   {
-    test: /\.js$/,
+    test: /\.jsx?$/,
     exclude: /node_modules/,
     use: {
       loader: 'babel-loader',
@@ -157,6 +157,9 @@ module.exports = {
   // externals: { jquery: "jQuery" }, jquery is external and available at the global variable jQuery
   module: {
     rules
+  },
+  resolve: {
+    extensions: ['.js', '.jsx']
   },
   output: {
     path: BUILD_DIR,

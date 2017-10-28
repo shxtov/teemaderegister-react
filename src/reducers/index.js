@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux'
 
-import auth from '../components/RouteWrap/RouteWrapReducers'
-import curriculum from '../components/Curriculum/CurriculumReducers'
-import home from '../components/Home/HomeReducers'
-import login from '../components/Login/LoginReducers'
-import supervisor from '../components/Supervisor/SupervisorReducers'
-import tableContent from '../components/TableContent/TableContentReducers'
-import search from '../components/Search/SearchReducer'
+import auth from './RouteWrapReducers'
+import curriculum from './CurriculumReducers'
+import home from './HomeReducers'
+import login from './LoginReducers'
+import supervisor from './SupervisorReducers'
+import tableContent from './TableContentReducers'
+import search from './SearchReducer'
 
 const rootReducer = combineReducers({
   auth,
