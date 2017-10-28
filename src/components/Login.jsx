@@ -5,8 +5,18 @@ import { Redirect } from 'react-router-dom'
 import { getToken } from '../utils/jwt'
 import Breadcrumbs from './Breadcrumbs'
 import { Row, Col, Form, Icon, Input, Button, message, Tooltip } from 'antd'
-
 const FormItem = Form.Item
+
+const propTypes = {
+  initLogin: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  auth: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  form: PropTypes.object.isRequired,
+  loginError: PropTypes.object.isRequired,
+  hasLoginError: PropTypes.bool.isRequired
+}
 
 class Login extends React.Component {
   constructor (props) {
@@ -123,15 +133,6 @@ class Login extends React.Component {
   }
 }
 
-Login.propTypes = {
-  initLogin: PropTypes.func.isRequired,
-  login: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  auth: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
-  loginError: PropTypes.object.isRequired,
-  hasLoginError: PropTypes.bool.isRequired
-}
+Login.propTypes = propTypes
 
 export default Form.create()(Login)

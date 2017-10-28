@@ -3,8 +3,21 @@ import PropTypes from 'prop-types'
 
 import Breadcrumbs from './Breadcrumbs'
 import SupervisorMeta from './SupervisorMeta'
-import TableWrapContainer from '../containers/TableWrapContainer'
+import TableWrap from '../components/TableWrap'
 import getTabs from '../utils/getTabs'
+
+const propTypes = {
+  supervisor: PropTypes.object.isRequired,
+  getSupervisor: PropTypes.func.isRequired,
+  initSupervisor: PropTypes.func.isRequired,
+
+  topics: PropTypes.object.isRequired,
+  initTableContent: PropTypes.func.isRequired,
+
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired
+}
 
 class Supervisor extends React.Component {
   componentWillReceiveProps (nextProps) {
@@ -40,7 +53,15 @@ class Supervisor extends React.Component {
   }
 
   render () {
-    const { topics, supervisor: { loading, data, count } } = this.props
+    const {
+      topics,
+      supervisor,
+      supervisor: { loading, data, count },
+      getTableContent,
+      clearTableContent,
+      tableContent
+    } = this.props
+
     const { profile } = data
     return (
       <div id='supervisor-page'>
@@ -53,10 +74,14 @@ class Supervisor extends React.Component {
             />
             <br />
             <SupervisorMeta data={data} count={count} />
-            <TableWrapContainer
+            <TableWrap
               tabs={getTabs({ topics })}
               queryExtend={{ supervisorId: data._id }}
               history={this.props.history}
+              getTableContent={getTableContent}
+              clearTableContent={clearTableContent}
+              supervisor={supervisor}
+              tableContent={tableContent}
             />
           </div>}
       </div>
@@ -64,17 +89,6 @@ class Supervisor extends React.Component {
   }
 }
 
-Supervisor.propTypes = {
-  supervisor: PropTypes.object.isRequired,
-  getSupervisor: PropTypes.func.isRequired,
-  initSupervisor: PropTypes.func.isRequired,
-
-  topics: PropTypes.object.isRequired,
-  initTableContent: PropTypes.func.isRequired,
-
-  history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired
-}
+Supervisor.propTypes = propTypes
 
 export default Supervisor

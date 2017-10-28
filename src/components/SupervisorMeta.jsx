@@ -3,6 +3,11 @@ import { PropTypes } from 'prop-types'
 import { Row, Col, Icon, Popover, Card } from 'antd'
 import { ResponsiveContainer, Tooltip, AreaChart, Area, XAxis } from 'recharts'
 
+const propTypes = {
+  data: PropTypes.object.isRequired,
+  count: PropTypes.object.isRequired
+}
+
 class SupervisorMeta extends PureComponent {
   renderTooltip (data) {
     if (!data.payload || !data.payload[0]) return null
@@ -176,9 +181,6 @@ class SupervisorMeta extends PureComponent {
   }
 }
 
-SupervisorMeta.propTypes = {
-  data: PropTypes.object.isRequired,
-  count: PropTypes.object.isRequired
-}
+SupervisorMeta.propTypes = propTypes
 
 export default SupervisorMeta

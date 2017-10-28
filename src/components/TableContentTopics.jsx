@@ -223,7 +223,7 @@ const getColumnNames = ({ sub, names, type, supervisor }) => {
 
   // TODO check for other types of works in curriculum SE or KT
   const isInformaticsBa = names && names.et === 'Informaatika' && type === 'BA'
-  const isSupervisorPage = !!supervisor.data.profile
+  const isSupervisorPage = !!supervisor
 
   if (sub === 'registered') {
     if (isSupervisorPage) {

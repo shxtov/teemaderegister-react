@@ -3,6 +3,11 @@ import PropTypes from 'prop-types'
 
 import HomeCollection from './HomeCollection'
 
+const propTypes = {
+  getCurriculums: PropTypes.func.isRequired,
+  home: PropTypes.object.isRequired
+}
+
 class Home extends React.Component {
   componentDidMount () {
     this.props.getCurriculums()
@@ -22,9 +27,6 @@ class Home extends React.Component {
   }
 }
 
-Home.propTypes = {
-  getCurriculums: PropTypes.func.isRequired,
-  home: PropTypes.object.isRequired
-}
+Home.propTypes = propTypes
 
 export default Home

@@ -6,14 +6,16 @@ import Supervisor from '../components/Supervisor'
 import { getSupervisor, initSupervisor } from '../actions/SupervisorActions'
 import {
   getTableContent,
-  initTableContent
+  initTableContent,
+  clearTableContent
 } from '../actions/TableContentActions'
 
 const SupervisorContainer = props => <Supervisor {...props} />
 
 const mapStateToProps = state => ({
   supervisor: state.supervisor,
-  topics: state.tableContent.topics
+  topics: state.tableContent.topics,
+  tableContent: state.tableContent
 })
 
 const mapDispatchToProps = (dispatch, props) =>
@@ -23,7 +25,8 @@ const mapDispatchToProps = (dispatch, props) =>
       initSupervisor,
 
       getTableContent,
-      initTableContent
+      initTableContent,
+      clearTableContent
     },
     dispatch
   )

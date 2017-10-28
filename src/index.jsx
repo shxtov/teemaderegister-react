@@ -3,6 +3,14 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Route, Switch, BrowserRouter, browserHistory } from 'react-router-dom'
 
+import {
+  INDEX_PATH,
+  LOGIN_PATH,
+  CURRICULUM_PATH,
+  SEARCH_PATH,
+  SUPERVISOR_PATH
+} from './constants/RouterConstants'
+
 import HeaderWrapContainer from './containers/HeaderWrapContainer'
 import RouteWrapContainer from './containers/RouteWrapContainer'
 
@@ -13,11 +21,11 @@ import CurriculumContainer from './containers/CurriculumContainer'
 import SupervisorContainer from './containers/SupervisorContainer'
 import SearchContainer from './containers/SearchContainer'
 
-import store from './store'
+import store from './store/configureStore'
 
 import '../styles/main.scss'
 
-// import antd fonts for webpack
+// antd fonts
 import './fonts/iconfont.eot'
 import './fonts/iconfont.svg'
 import './fonts/iconfont.ttf'
@@ -37,15 +45,15 @@ render(
           <Content>
             <div id='content-wrapper'>
               <Switch>
-                <Route exact path='/' component={RouteWrapContainer(HomeContainer)} />
-                <Route exact path='/login' component={RouteWrapContainer(LoginContainer)} />
-                <Route path='/search' component={RouteWrapContainer(SearchContainer)} />
+                <Route exact path={INDEX_PATH} component={RouteWrapContainer(HomeContainer)} />
+                <Route exact path={LOGIN_PATH} component={RouteWrapContainer(LoginContainer)} />
+                <Route path={SEARCH_PATH} component={RouteWrapContainer(SearchContainer)} />
                 <Route
-                  path='/curriculum/:slug'
+                  path={CURRICULUM_PATH}
                   component={RouteWrapContainer(CurriculumContainer)}
                 />
                 <Route
-                  path='/supervisor/:slug'
+                  path={SUPERVISOR_PATH}
                   component={RouteWrapContainer(SupervisorContainer)}
                 />
                 <Route component={RouteWrapContainer(NotFound)} />
@@ -59,5 +67,5 @@ render(
       </LocaleProvider>
     </BrowserRouter>
   </Provider>,
-  document.querySelector('#main')
+  document.getElementById('main')
 )

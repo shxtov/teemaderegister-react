@@ -2,14 +2,18 @@ import React from 'react'
 import { PropTypes } from 'prop-types'
 import HomeCards from './HomeCards'
 
-const typeMap = {
-  BA: 'Bakalaureuseõpe',
-  MA: 'Magistriõpe',
-  PHD: 'Doktoriõpe'
+const propTypes = {
+  curriculums: PropTypes.array.isRequired
 }
 
 const HomeCollection = props => {
   const { curriculums } = props
+
+  const typeMap = {
+    BA: 'Bakalaureuseõpe',
+    MA: 'Magistriõpe',
+    PHD: 'Doktoriõpe'
+  }
 
   return (
     <div>
@@ -29,8 +33,6 @@ const HomeCollection = props => {
   )
 }
 
-HomeCollection.propTypes = {
-  curriculums: PropTypes.array.isRequired
-}
+HomeCollection.propTypes = propTypes
 
 export default HomeCollection

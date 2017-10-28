@@ -1,8 +1,16 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 
-import TableContentContainer from '../containers/TableContentContainer'
+import TableContent from '../components/TableContent'
 import { Tabs, Icon, Radio } from 'antd'
+
+const propTypes = {
+  tabs: PropTypes.object.isRequired,
+  activeTab: PropTypes.string,
+  activeSub: PropTypes.string,
+  tabUpdated: PropTypes.func.isRequired,
+  handleTableChange: PropTypes.func.isRequired
+}
 
 class TabsWrap extends Component {
   constructor (props) {
@@ -18,9 +26,12 @@ class TabsWrap extends Component {
       return (
         <Tabs.TabPane tab={this.createTabTitle(icon, title, count)} key={key}>
           {this.createSubTabs(subs)}
-          <TableContentContainer
+          <TableContent
             tableKey={key}
             handleTableChange={this.props.handleTableChange}
+            tableContent={this.props.tableContent}
+            curriculum={this.props.curriculum}
+            supervisor={this.props.supervisor}
           />
         </Tabs.TabPane>
       )
@@ -96,12 +107,6 @@ class TabsWrap extends Component {
   }
 }
 
-TabsWrap.propTypes = {
-  tabs: PropTypes.object.isRequired,
-  activeTab: PropTypes.string,
-  activeSub: PropTypes.string,
-  tabUpdated: PropTypes.func.isRequired,
-  handleTableChange: PropTypes.func.isRequired
-}
+TabsWrap.propTypes = propTypes
 
 export default TabsWrap

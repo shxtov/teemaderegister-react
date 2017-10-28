@@ -2,6 +2,8 @@ import * as types from '../constants/ActionTypes'
 import Api from '../utils/Api'
 import { loadedTableContentCount } from './TableContentActions'
 
+import { SEARCH_COUNTS_URL } from '../constants/ApiConstants'
+
 export const initSearch = () => dispatch => {
   dispatch({ type: types.SEARCH_INIT })
 }
@@ -11,9 +13,9 @@ export const setSearch = q => dispatch => {
 }
 
 export const getSearchCounts = q => dispatch => {
-  // dispatch({ type: types.SEARCH_STARTED_LOADING })
+  // dispatch({ type: types.SEARCH_START })
 
-  return Api('GET', '/search/counts', { params: { q } })
+  return Api('GET', SEARCH_COUNTS_URL, { params: { q } })
     .then(response => {
       const { supervisors, topics } = response
       // console.log(response)

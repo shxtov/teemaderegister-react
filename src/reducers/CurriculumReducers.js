@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   meta: {},
   loading: true
 }
-export default function (state = INITIAL_STATE, action) {
+export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.CURRICULUM_LOADED: {
       const { meta } = action

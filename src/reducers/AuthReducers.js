@@ -3,21 +3,17 @@ import * as types from '../constants/ActionTypes'
 const INITIAL_STATE = {
   user: {},
   isAuthenticated: false,
-  authInProgress: true
+  authInProgress: false
 }
-export default function (state = INITIAL_STATE, action) {
+export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.AUTH_START:
       return {
         ...state,
         authInProgress: true
       }
-    case types.AUTH_FINISH:
-      return {
-        ...state,
-        authInProgress: false
-      }
-    case types.AUTH_SET:
+
+    case types.AUTH_LOADED:
       const { user } = action
       return {
         ...state,
@@ -25,12 +21,9 @@ export default function (state = INITIAL_STATE, action) {
         user: user,
         authInProgress: false
       }
-    case types.AUTH_RESET:
-      return {
-        user: {},
-        isAuthenticated: false,
-        authInProgress: false
-      }
+
+    case types.AUTH_INIT:
+      return INITIAL_STATE
 
     default:
       return {

@@ -8,6 +8,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 
 const BUILD_DIR = path.resolve(__dirname, './dist')
 const SRC_DIR = path.resolve(__dirname, './src')
+const STYLE_DIR = path.resolve(__dirname, './styles')
 const PRODUCTION = process.env.NODE_ENV === 'production'
 const VISUALIZE = process.env.visualization === 'true'
 console.log(
@@ -34,7 +35,7 @@ const isExternal = function (module) {
 const fs = require('fs')
 const lessToJs = require('less-vars-to-js')
 const themeVariables = lessToJs(
-  fs.readFileSync(SRC_DIR + '/ant-default-vars.less', 'utf8')
+  fs.readFileSync(STYLE_DIR + '/antd/ant-default-vars.less', 'utf8')
 )
 themeVariables['@icon-url'] = '\'/fonts/iconfont\''
 
@@ -90,7 +91,7 @@ const rules = [
     use: {
       loader: 'babel-loader',
       options: {
-        presets: ['es2015', 'react', 'stage-0'],
+        presets: ['latest', 'react', 'stage-0'],
         plugins: [
           'transform-object-rest-spread',
           'transform-do-expressions',
@@ -151,7 +152,7 @@ module.exports = {
   devtool: 'source-map',
   stats: 'normal',
   entry: {
-    app: [SRC_DIR + '/app.js']
+    app: [SRC_DIR + '/index.jsx']
   },
   plugins: plugins,
   // externals: { jquery: "jQuery" }, jquery is external and available at the global variable jQuery

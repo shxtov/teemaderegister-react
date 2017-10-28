@@ -9,6 +9,18 @@ import { Form, Input, Layout, Button } from 'antd'
 const Search = Input.Search
 const { Header } = Layout
 
+const propTypes = {
+  auth: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
+
+  setSearch: PropTypes.func.isRequired,
+  getSearchCounts: PropTypes.func.isRequired,
+  search: PropTypes.object.isRequired,
+  form: PropTypes.object.isRequired,
+
+  history: PropTypes.object.isRequired
+}
+
 class HeaderWrap extends Component {
   constructor (props) {
     super(props)
@@ -93,16 +105,6 @@ class HeaderWrap extends Component {
   }
 }
 
-HeaderWrap.propTypes = {
-  auth: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired,
-
-  setSearch: PropTypes.func.isRequired,
-  getSearchCounts: PropTypes.func.isRequired,
-  search: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
-
-  history: PropTypes.object.isRequired
-}
+HeaderWrap.propTypes = propTypes
 
 export default Form.create()(HeaderWrap)

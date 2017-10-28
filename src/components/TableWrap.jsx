@@ -2,9 +2,21 @@ import React from 'react'
 import { PropTypes } from 'prop-types'
 import queryString from 'query-string'
 
-import { removeEmpty } from '../utils/helpers'
+import { removeEmpty } from '../utils/Helpers'
 import setUrl from '../utils/setUrl'
 import TabsWrap from './TabsWrap'
+
+const propTypes = {
+  tabs: PropTypes.object.isRequired,
+  defaultTab: PropTypes.object,
+  queryExtend: PropTypes.object,
+  search: PropTypes.object,
+
+  getTableContent: PropTypes.func.isRequired,
+  clearTableContent: PropTypes.func.isRequired,
+
+  history: PropTypes.object.isRequired
+}
 
 class TableWrap extends React.Component {
   constructor (props) {
@@ -72,7 +84,7 @@ class TableWrap extends React.Component {
   componentWillUpdate (nextProps) {
     // trigger content load on new searchword
     // make search query and override state q
-    if (nextProps.search.q !== this.props.search.q) {
+    if (nextProps.search && nextProps.search.q !== this.props.search.q) {
       this.tabs = nextProps.tabs // update tabs count
       this.setState({ q: nextProps.search.q }, () => {
         this.makeQuery({ showLoading: true }, { q: nextProps.search.q })
@@ -98,20 +110,17 @@ class TableWrap extends React.Component {
   makeQuery (showLoading, q) {
     // dont do query if no count
     const { tab, sub } = this.state
+    const query = Object.assign(this.queryExtend, this.state, q)
+
     if (this.tabs[tab].subs[sub].count === 0) {
       // create object to only clear active tab data
       const obj = {}
       obj[tab] = true
       console.log(sub)
-      return this.props.finishLoading(
-        Object.assign(this.queryExtend, this.state, q)
-      )
+      return this.props.clearTableContent(query)
     }
 
-    this.props.getTableContent(
-      Object.assign(this.queryExtend, this.state, q),
-      showLoading || false
-    )
+    this.props.getTableContent(query, showLoading || false)
   }
 
   tabUpdated ([tab, sub]) {
@@ -168,22 +177,15 @@ class TableWrap extends React.Component {
           activeSub={this.state.sub}
           tabUpdated={this.tabUpdated}
           handleTableChange={this.handleTableChange}
+          tableContent={this.props.tableContent}
+          supervisor={this.props.supervisor}
+          curriculum={this.props.curriculum}
         />
       </div>
     )
   }
 }
 
-TableWrap.propTypes = {
-  tabs: PropTypes.object.isRequired,
-  defaultTab: PropTypes.object,
-  queryExtend: PropTypes.object,
-  search: PropTypes.object.isRequired,
-
-  getTableContent: PropTypes.func.isRequired,
-  finishLoading: PropTypes.func.isRequired,
-
-  history: PropTypes.object.isRequired
-}
+TableWrap.propTypes = propTypes
 
 export default TableWrap

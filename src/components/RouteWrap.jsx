@@ -3,6 +3,16 @@ import PropTypes from 'prop-types'
 import { Redirect } from 'react-router'
 
 export default (ComposedComponent, restrict) => {
+  const propTypes = {
+    auth: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    checkUser: PropTypes.func.isRequired
+  }
+
+  const contextTypes = {
+    router: PropTypes.object.isRequired
+  }
+
   class RouteWrap extends React.Component {
     constructor (props) {
       super(props)
@@ -11,7 +21,7 @@ export default (ComposedComponent, restrict) => {
 
     componentDidMount () {
       this.props.checkUser()
-      analytics(this.props.location.pathname)
+      this.analytics(this.props.location.pathname)
     }
 
     componentWillReceiveProps (nextProps) {
@@ -20,6 +30,10 @@ export default (ComposedComponent, restrict) => {
         // auth finished, allow to load page
         this.setState({ allowPageLoad: true })
       }
+    }
+
+    analytics (route) {
+      // console.log(route)
     }
 
     render () {
@@ -46,19 +60,8 @@ export default (ComposedComponent, restrict) => {
     }
   }
 
-  RouteWrap.propTypes = {
-    auth: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    checkUser: PropTypes.func.isRequired
-  }
-
-  RouteWrap.contextTypes = {
-    router: PropTypes.object.isRequired
-  }
-
-  const analytics = route => {
-    console.log(route)
-  }
+  RouteWrap.propTypes = propTypes
+  RouteWrap.contextTypes = contextTypes
 
   return RouteWrap
 }

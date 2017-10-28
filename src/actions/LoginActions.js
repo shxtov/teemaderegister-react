@@ -1,22 +1,21 @@
+import Api from '../utils/Api'
 import * as types from '../constants/ActionTypes'
 import { setToken } from '../utils/jwt'
-import Api from '../utils/Api'
+
+import { AUTH_LOCAL_LOGIN_URL } from '../constants/ApiConstants'
 
 export const initLogin = () => dispatch => dispatch({ type: types.LOGIN_INIT })
 
 export const login = creds => dispatch => {
-  dispatch({ type: types.LOGIN_IN_PROGRESS })
-  const query = {
-    data: creds
-  }
-  return Api('POST', '/auth/local/login', query)
+  dispatch({ type: types.LOGIN_START })
+
+  return Api('POST', AUTH_LOCAL_LOGIN_URL, { data: creds })
     .then(data => {
       setToken(data.token)
-      dispatch({ type: types.LOGIN_FINISHED })
-    })
-    .catch(err => {
+      dispatch({ type: types.LOGIN_LOADED })
+    }).catch(err => {
       console.log(err)
       const error = err.data
-      dispatch({ type: types.LOGIN_FINISHED, error })
+      dispatch({ type: types.LOGIN_LOADED, error })
     })
 }

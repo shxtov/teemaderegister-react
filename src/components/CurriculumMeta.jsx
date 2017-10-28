@@ -7,35 +7,42 @@ import noneBack from '../media/none-cur-back.svg'
 import halfBack from '../media/half-cur-back.svg'
 import fullBack from '../media/full-cur-back.svg'
 
-const colorMap = {
-  BA: fullBack,
-  MA: halfBack,
-  PHD: noneBack
+const propTypes = {
+  meta: PropTypes.object.isRequired
 }
 
 class CurriculumMeta extends PureComponent {
+  constructor (props) {
+    super(props)
+
+    this.colorMap = {
+      BA: fullBack,
+      MA: halfBack,
+      PHD: noneBack
+    }
+
+    this.typeMap = {
+      BA: 'Bakalaureuseõpe',
+      MA: 'Magistriõpe',
+      PHD: 'Doktoriõpe'
+    }
+  }
+
   render () {
     let {
       names,
       abbreviation,
       type,
       languages,
-      representative
+      representative: { profile }
     } = this.props.meta
-
-    const { profile } = representative
-    const typeMap = {
-      BA: 'Bakalaureuseõpe',
-      MA: 'Magistriõpe',
-      PHD: 'Doktoriõpe'
-    }
 
     languages = languages.map(
       (l, i) =>
         l + ((i !== languages.length - 1) & (languages.length > 1) ? '/' : '')
     )
 
-    const metaBackGround = { backgroundImage: 'url(' + colorMap[type] + ')' }
+    const metaBackGround = { backgroundImage: 'url(' + this.colorMap[type] + ')' }
 
     return (
       <div id='curriculum-meta' style={metaBackGround}>
@@ -49,7 +56,7 @@ class CurriculumMeta extends PureComponent {
         </i>
         <br />
         <h4>
-          {typeMap[type]} - {languages}
+          {this.typeMap[type]} - {languages}
         </h4>
         <br />
         <div className='c-representative'>
@@ -70,8 +77,6 @@ class CurriculumMeta extends PureComponent {
   }
 }
 
-CurriculumMeta.propTypes = {
-  meta: PropTypes.object.isRequired
-}
+CurriculumMeta.propTypes = propTypes
 
 export default CurriculumMeta

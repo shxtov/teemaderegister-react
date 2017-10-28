@@ -1,13 +1,10 @@
 import axios from 'axios'
 import { getToken } from './jwt'
 import nprogress from 'nprogress'
-const BASE_URL = '/api'
-// nprogress.configure({ showSpinner: false }) // disable spinner
 
-function makeConfig (method, url, query) {
+const makeConfig = (method, url, query) => {
   let config = {
     method: method,
-    baseURL: BASE_URL, // `baseURL` will be prepended to `url` unless `url` is absolute.
     url: url
   }
 
@@ -30,7 +27,7 @@ function makeConfig (method, url, query) {
   return config
 }
 
-export default function (method, url, query) {
+export default (method, url, query) => {
   let config = makeConfig(method, url, query)
   // TODO if already started continue progressbar (from auth)
   nprogress.start()

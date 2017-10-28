@@ -1,6 +1,11 @@
 import * as types from '../constants/ActionTypes'
 import Api from '../utils/Api'
 
+import {
+  CURRICULUMS_URL,
+  CURRICULUM_SLUG_URL
+} from '../constants/ApiConstants'
+
 import { loadedTableContentCount } from './TableContentActions'
 
 export const initCurriculum = () => dispatch => {
@@ -8,7 +13,7 @@ export const initCurriculum = () => dispatch => {
 }
 
 export const getCurriculums = () => dispatch => {
-  return Api('GET', '/curriculums')
+  return Api('GET', CURRICULUMS_URL)
     .then(data => dispatch({
       type: types.CURRICULUMS_LOADED,
       curriculums: data.curriculums
@@ -20,7 +25,7 @@ export const getCurriculums = () => dispatch => {
 }
 
 export const getCurriculum = slug => dispatch => {
-  return Api('GET', '/curriculums/' + slug)
+  return Api('GET', CURRICULUM_SLUG_URL.replace(':slug', slug))
     .then(data => {
       const { meta, supervisors, topics } = data
       dispatch(loadedTableContentCount({ topics, supervisors }))

@@ -72,22 +72,16 @@ const definedColumns = {
   supervisor
 }
 
-const getColumnNames = () => {
-  let columns = [
-    'supervisor',
-    'registered',
-    'available',
-    'defendedLastYear',
-    'defended'
-  ] // default
-
-  return columns
-}
+const columnNames = [
+  'supervisor',
+  'registered',
+  'available',
+  'defendedLastYear',
+  'defended'
+] // default
 
 export default params => {
-  const { sub, names, type } = params
-  const columns = getColumnNames({ sub, names, type })
-  return columns.map(c => {
+  return columnNames.map(c => {
     return definedColumns[c](params)
   })
 }

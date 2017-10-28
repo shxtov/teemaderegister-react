@@ -4,9 +4,9 @@ const INITIAL_STATE = {
   q: '',
   loading: true
 }
-export default function (state = INITIAL_STATE, action) {
+export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case types.SEARCH_STARTED_LOADING:
+    case types.SEARCH_START:
       return {
         ...state,
         loading: true
@@ -19,6 +19,7 @@ export default function (state = INITIAL_STATE, action) {
         q
       }
     }
+
     case types.SEARCH_LOADED: {
       const { q } = action
       return {
@@ -27,8 +28,10 @@ export default function (state = INITIAL_STATE, action) {
         loading: false
       }
     }
+
     case types.SEARCH_INIT:
       return INITIAL_STATE
+
     default:
       return {
         ...state

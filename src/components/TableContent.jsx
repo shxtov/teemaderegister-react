@@ -1,17 +1,27 @@
 import React from 'react'
 import { PropTypes } from 'prop-types'
 
-import TopicsColumns from './TopicsColumns'
-import SupervisorsColumns from './SupervisorsColumns'
+import TableContentTopics from './TableContentTopics'
+import TableContentSupervisors from './TableContentSupervisors'
 import { Table } from 'antd'
+
+const propTypes = {
+  tableKey: PropTypes.string.isRequired,
+  tableContent: PropTypes.object.isRequired,
+
+  curriculum: PropTypes.object,
+  supervisor: PropTypes.object,
+
+  handleTableChange: PropTypes.func.isRequired
+}
 
 class TableContent extends React.Component {
   constructor (props) {
     super(props)
 
     this.columnsMap = {
-      topics: TopicsColumns,
-      supervisors: SupervisorsColumns
+      topics: TableContentTopics,
+      supervisors: TableContentSupervisors
     }
   }
 
@@ -28,7 +38,8 @@ class TableContent extends React.Component {
     let { data, count, query } = this.props.tableContent[tableKey]
     const { sub, page, columnKey, order, types, curriculums } = query
 
-    const { names, type } = curriculum.meta // TODO check if curriculum has SE or KU
+    // TODO check if curriculum has SE or KU
+    const { meta: { names, type } } = curriculum || { meta: {} }
 
     const currentPage = page ? parseInt(page) : 1
 
@@ -86,14 +97,6 @@ const renderExpandedRow = record => {
   )
 }
 
-TableContent.propTypes = {
-  tableKey: PropTypes.string.isRequired,
-  tableContent: PropTypes.object.isRequired,
-
-  curriculum: PropTypes.object.isRequired,
-  supervisor: PropTypes.object.isRequired,
-
-  handleTableChange: PropTypes.func.isRequired
-}
+TableContent.propTypes = propTypes
 
 export default TableContent

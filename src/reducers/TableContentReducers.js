@@ -22,9 +22,9 @@ const INITIAL_STATE = {
   loading: true
 }
 
-export default function (state = INITIAL_STATE, action) {
+export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case types.TABLE_CONTENT_LOADED_COUNT: {
+    case types.TABLE_COUNT_LOADED: {
       const { topics, supervisors } = action
       return {
         ...state,
@@ -34,12 +34,14 @@ export default function (state = INITIAL_STATE, action) {
         : state.supervisors
       }
     }
-    case types.TABLE_CONTENT_STARTED_LOADING:
+
+    case types.TABLE_START:
       return {
         ...state,
         loading: true
       }
-    case types.TABLE_CONTENT_FINISH_LOADING: {
+
+    case types.TABLE_CLEAR: {
       const { params } = action
       return {
         ...state,
@@ -54,7 +56,8 @@ export default function (state = INITIAL_STATE, action) {
         loading: false
       }
     }
-    case types.TABLE_CONTENT_LOADED: {
+
+    case types.TABLE_LOADED: {
       const { topics, supervisors, count, query } = action
       const countObj = {}
       countObj[query.sub] = count
@@ -79,8 +82,10 @@ export default function (state = INITIAL_STATE, action) {
             : state.supervisors
       }
     }
-    case types.TABLE_CONTENT_INIT:
+
+    case types.TABLE_INIT:
       return INITIAL_STATE
+
     default:
       return {
         ...state

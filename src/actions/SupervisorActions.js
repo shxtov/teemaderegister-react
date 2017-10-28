@@ -3,12 +3,14 @@ import Api from '../utils/Api'
 
 import { loadedTableContentCount } from './TableContentActions'
 
+import { SUPERVISOR_SLUG_URL } from '../constants/ApiConstants'
+
 export const initSupervisor = () => dispatch => {
   dispatch({ type: types.SUPERVISOR_INIT })
 }
 
 export const getSupervisor = slug => dispatch => {
-  return Api('GET', '/supervisors/' + slug)
+  return Api('GET', SUPERVISOR_SLUG_URL.replace(':slug', slug))
     .then(({ supervisor, counts }) => {
       dispatch(
         loadedTableContentCount({

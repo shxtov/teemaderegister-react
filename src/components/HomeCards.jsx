@@ -13,6 +13,11 @@ const colorMap = {
   PHD: noneBack
 }
 
+const propTypes = {
+  type: PropTypes.string.isRequired,
+  collection: PropTypes.array.isRequired
+}
+
 const HomeCards = props => {
   const { type, collection } = props
 
@@ -54,9 +59,6 @@ const HomeCards = props => {
   )
 }
 
-HomeCards.propTypes = {
-  type: PropTypes.string.isRequired,
-  collection: PropTypes.array.isRequired
-}
+HomeCards.propTypes = propTypes
 
 export default HomeCards

@@ -6,16 +6,17 @@ import Curriculum from '../components/Curriculum'
 import { getCurriculum, initCurriculum } from '../actions/CurriculumActions'
 import {
   getTableContent,
-  initTableContent
+  initTableContent,
+  clearTableContent
 } from '../actions/TableContentActions'
 
 const CurriculumContainer = props => <Curriculum {...props} />
 
 const mapStateToProps = state => ({
   curriculum: state.curriculum,
-
   topics: state.tableContent.topics,
-  supervisors: state.tableContent.supervisors
+  supervisors: state.tableContent.supervisors,
+  tableContent: state.tableContent
 })
 
 const mapDispatchToProps = (dispatch, props) =>
@@ -25,7 +26,8 @@ const mapDispatchToProps = (dispatch, props) =>
       initCurriculum,
 
       getTableContent,
-      initTableContent
+      initTableContent,
+      clearTableContent
     },
     dispatch
   )

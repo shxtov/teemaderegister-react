@@ -1,21 +1,32 @@
 import * as types from '../constants/ActionTypes'
 import Api from '../utils/Api'
 
+import {
+  SUPERVISORS_URL,
+  TOPICS_URL
+} from '../constants/ApiConstants'
+
 export const initTableContent = () => dispatch =>
-  dispatch({ type: types.TABLE_CONTENT_INIT })
+  dispatch({ type: types.TABLE_INIT })
 
 export const loadedTableContentCount = ({ topics, supervisors }) => dispatch =>
-  dispatch({ type: types.TABLE_CONTENT_LOADED_COUNT, topics, supervisors })
+  dispatch({ type: types.TABLE_COUNT_LOADED, topics, supervisors })
 
-export const finishLoading = params => dispatch =>
-  dispatch({ type: types.TABLE_CONTENT_FINISH_LOADING, params })
+export const clearTableContent = params => dispatch =>
+  dispatch({ type: types.TABLE_CLEAR, params })
 
 export const getTableContent = (params, showLoading) => dispatch => {
-  if (showLoading) dispatch({ type: types.TABLE_CONTENT_STARTED_LOADING })
+  if (showLoading) dispatch({ type: types.TABLE_START })
 
-  return Api('GET', '/' + params.tab, { params })
+  const API_URL = params.tab === 'topics'
+    ? TOPICS_URL
+    : params.tab === 'supervisors'
+      ? SUPERVISORS_URL
+      : TOPICS_URL // default
+
+  return Api('GET', API_URL, { params })
     .then(({ topics, supervisors, count, query }) => {
-      dispatch({ type: types.TABLE_CONTENT_LOADED, topics, supervisors, count, query })
+      dispatch({ type: types.TABLE_LOADED, topics, supervisors, count, query })
     })
     .catch(err => {
       // TODO handle errors
