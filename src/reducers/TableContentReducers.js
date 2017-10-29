@@ -30,8 +30,8 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         topics: topics ? { ...state.topics, count: topics } : state.topics,
         supervisors: supervisors
-        ? { ...state.supervisors, count: supervisors }
-        : state.supervisors
+          ? { ...state.supervisors, count: supervisors }
+          : state.supervisors
       }
     }
 
