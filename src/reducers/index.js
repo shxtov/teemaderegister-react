@@ -4,18 +4,18 @@ import auth from './AuthReducers'
 import curriculum from './CurriculumReducers'
 import home from './HomeReducers'
 import login from './LoginReducers'
+import search from './SearchReducer'
 import supervisor from './SupervisorReducers'
 import tableContent from './TableContentReducers'
-import search from './SearchReducer'
 
 const rootReducer = combineReducers({
   auth,
   curriculum,
   home,
   login,
+  search,
   supervisor,
-  tableContent,
-  search
+  tableContent
 })
 
 export default rootReducer

@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   meta: {},
   loading: true
 }
+
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.CURRICULUM_LOADED: {
@@ -14,8 +15,10 @@ export default (state = INITIAL_STATE, action) => {
         loading: false
       }
     }
+
     case types.CURRICULUM_INIT:
       return INITIAL_STATE
+
     default:
       return {
         ...state

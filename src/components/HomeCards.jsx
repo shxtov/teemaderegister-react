@@ -7,26 +7,40 @@ import noneBack from '../media/none-home-back.svg'
 import halfBack from '../media/half-home-back.svg'
 import fullBack from '../media/full-home-back.svg'
 
-const colorMap = {
-  BA: fullBack,
-  MA: halfBack,
-  PHD: noneBack
-}
+const { array, arrayOf, shape, string } = PropTypes
 
 const propTypes = {
-  type: PropTypes.string.isRequired,
-  collection: PropTypes.array.isRequired
+  collection: arrayOf(
+    PropTypes.shape({
+      _id: string.isRequired,
+      abbreviation: string.isRequired,
+      languages: array.isRequired,
+      names: shape({
+        et: string.isRequired
+      }).isRequired,
+      slugs: shape({
+        et: string.isRequired
+      }).isRequired
+    }).isRequired
+  ).isRequired,
+  type: string.isRequired
 }
 
 const HomeCards = props => {
   const { type, collection } = props
 
+  const colorMap = {
+    BA: fullBack,
+    MA: halfBack,
+    PHD: noneBack
+  }
+
   let items = []
 
   collection.forEach((c, i) => {
-    let { abbreviation, names, slugs, _id, languages } = c
+    const { abbreviation, names, slugs, _id, languages } = c
     const cardBackground = { backgroundImage: 'url(' + colorMap[type] + ')' }
-    languages = languages.map(
+    const languageList = languages.map(
       (l, i) =>
         l + ((i !== languages.length - 1) & (languages.length > 1) ? '/' : '')
     )
@@ -44,7 +58,7 @@ const HomeCards = props => {
               {names.et}
             </h2>
             <p>
-              {abbreviation} | {languages}
+              {abbreviation} | {languageList}
             </p>
           </Card>
         </Link>

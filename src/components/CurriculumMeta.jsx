@@ -7,8 +7,18 @@ import noneBack from '../media/none-cur-back.svg'
 import halfBack from '../media/half-cur-back.svg'
 import fullBack from '../media/full-cur-back.svg'
 
+const { array, object, shape, string } = PropTypes
+
 const propTypes = {
-  meta: PropTypes.object.isRequired
+  meta: PropTypes.shape({
+    abbreviation: string.isRequired,
+    languages: array.isRequired,
+    names: object.isRequired,
+    representative: shape({
+      profile: object.isRequired
+    }).isRequired,
+    type: string.isRequired
+  })
 }
 
 class CurriculumMeta extends PureComponent {
@@ -29,15 +39,17 @@ class CurriculumMeta extends PureComponent {
   }
 
   render () {
-    let {
-      names,
-      abbreviation,
-      type,
-      languages,
-      representative: { profile }
-    } = this.props.meta
+    const {
+      meta: {
+        abbreviation,
+        languages,
+        names,
+        representative: { profile },
+        type
+      }
+    } = this.props
 
-    languages = languages.map(
+    const languageList = languages.map(
       (l, i) =>
         l + ((i !== languages.length - 1) & (languages.length > 1) ? '/' : '')
     )
@@ -56,7 +68,7 @@ class CurriculumMeta extends PureComponent {
         </i>
         <br />
         <h4>
-          {this.typeMap[type]} - {languages}
+          {this.typeMap[type]} - {languageList}
         </h4>
         <br />
         <div className='c-representative'>

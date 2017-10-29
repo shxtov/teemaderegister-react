@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   isAuthenticated: false,
   authInProgress: false
 }
+
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.AUTH_START:

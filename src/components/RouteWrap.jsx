@@ -3,10 +3,17 @@ import PropTypes from 'prop-types'
 import { Redirect } from 'react-router'
 
 export default (ComposedComponent, restrict) => {
+  const { bool, func, shape, string } = PropTypes
+
   const propTypes = {
-    auth: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    checkUser: PropTypes.func.isRequired
+    auth: shape({
+      authInProgress: bool.isRequired,
+      isAuthenticated: bool.isRequired
+    }).isRequired,
+    checkUser: func.isRequired,
+    location: shape({
+      pathname: string.isRequired
+    }).isRequired
   }
 
   const contextTypes = {

@@ -6,18 +6,24 @@ import TableWrap from '../components/TableWrap'
 import getTabs from '../utils/getTabs'
 import CurriculumMeta from './CurriculumMeta'
 
+const { bool, func, object, shape } = PropTypes
+
 const propTypes = {
-  curriculum: PropTypes.object.isRequired,
-  getCurriculum: PropTypes.func.isRequired,
-  initCurriculum: PropTypes.func.isRequired,
-
-  topics: PropTypes.object.isRequired,
-  supervisors: PropTypes.object.isRequired,
-  initTableContent: PropTypes.func.isRequired,
-
-  history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired
+  clearTableContent: func.isRequired,
+  curriculum: shape({
+    meta: object.isRequired,
+    loading: bool.isRequired
+  }).isRequired,
+  getCurriculum: func.isRequired,
+  getTableContent: func.isRequired,
+  history: object.isRequired,
+  initCurriculum: func.isRequired,
+  initTableContent: func.isRequired,
+  location: object.isRequired,
+  match: object.isRequired,
+  supervisors: object.isRequired,
+  tableContent: object.isRequired,
+  topics: object.isRequired
 }
 
 class Curriculum extends React.Component {
@@ -40,13 +46,13 @@ class Curriculum extends React.Component {
 
   render () {
     const {
+      clearTableContent,
       curriculum,
       curriculum: { meta, loading },
-      topics,
-      supervisors,
       getTableContent,
-      clearTableContent,
-      tableContent
+      supervisors,
+      tableContent,
+      topics
     } = this.props
 
     return (
@@ -56,12 +62,12 @@ class Curriculum extends React.Component {
             <Breadcrumbs crumbs={this.getCrumbs(meta.names.et)} />
             <CurriculumMeta meta={meta} />
             <TableWrap
-              tabs={getTabs({ topics, supervisors })}
-              queryExtend={{ curriculumId: meta._id }}
-              history={this.props.history}
-              getTableContent={getTableContent}
               clearTableContent={clearTableContent}
               curriculum={curriculum}
+              getTableContent={getTableContent}
+              history={this.props.history}
+              queryExtend={{ curriculumId: meta._id }}
+              tabs={getTabs({ topics, supervisors })}
               tableContent={tableContent}
             />
           </div>}

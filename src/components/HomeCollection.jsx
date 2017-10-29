@@ -2,8 +2,15 @@ import React from 'react'
 import { PropTypes } from 'prop-types'
 import HomeCards from './HomeCards'
 
+const { array, arrayOf, shape, string } = PropTypes
+
 const propTypes = {
-  curriculums: PropTypes.array.isRequired
+  curriculums: arrayOf(
+    shape({
+      collection: array.isRequired,
+      type: string.isRequired
+    }).isRequired
+  )
 }
 
 const HomeCollection = props => {

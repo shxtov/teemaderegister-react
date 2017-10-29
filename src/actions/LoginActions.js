@@ -6,7 +6,7 @@ import { AUTH_LOCAL_LOGIN_URL } from '../constants/ApiConstants'
 
 export const initLogin = () => dispatch => dispatch({ type: types.LOGIN_INIT })
 
-export const login = creds => dispatch => {
+export const triggerLogin = creds => dispatch => {
   dispatch({ type: types.LOGIN_START })
 
   return Api('POST', AUTH_LOCAL_LOGIN_URL, { data: creds })
@@ -14,7 +14,6 @@ export const login = creds => dispatch => {
       setToken(data.token)
       dispatch({ type: types.LOGIN_LOADED })
     }).catch(err => {
-      console.log(err)
       const error = err.data
       dispatch({ type: types.LOGIN_LOADED, error })
     })

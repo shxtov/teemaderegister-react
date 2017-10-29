@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   curriculums: [],
   loading: true
 }
+
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.CURRICULUMS_LOADED: {
@@ -14,6 +15,7 @@ export default (state = INITIAL_STATE, action) => {
         loading: false
       }
     }
+
     default:
       return {
         ...state

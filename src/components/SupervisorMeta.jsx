@@ -3,9 +3,19 @@ import { PropTypes } from 'prop-types'
 import { Row, Col, Icon, Popover, Card } from 'antd'
 import { ResponsiveContainer, Tooltip, AreaChart, Area, XAxis } from 'recharts'
 
+const { object, shape, string } = PropTypes
+
 const propTypes = {
-  data: PropTypes.object.isRequired,
-  count: PropTypes.object.isRequired
+  count: shape({
+    registered: object.isRequired,
+    defended: object.isRequired
+  }).isRequired,
+  data: shape({
+    profile: shape({
+      firstName: string,
+      lastName: string
+    }).isRequired
+  }).isRequired
 }
 
 class SupervisorMeta extends PureComponent {
@@ -47,26 +57,27 @@ class SupervisorMeta extends PureComponent {
   }
 
   render () {
-    const { data, count } = this.props
-    const registeredTypes = count.registered.types
-    const defendedTypes = count.defended.types
-    const { profile } = data
+    const {
+      count: {
+        registered,
+        defended
+      },
+      data: {
+        profile: {
+          firstName,
+          lastName
+        }
+      }
+    } = this.props
 
-    const name = profile.firstName + ' ' + profile.lastName
+    const name = `${firstName} ${lastName}`
+    const imgSrc = `http://via.placeholder.com/150/b1e3da/ffffff/?text=${firstName[0]} ${lastName[0]}`
 
     return (
       <div className='supervisors-meta'>
         <Row className='meta-row' gutter={24} type='flex'>
           <Col sm={13} md={12} className='profile'>
-            <img
-              className='profile-image'
-              src={
-                'http://via.placeholder.com/150/b1e3da/ffffff/?text=' +
-                profile.firstName[0] +
-                ' ' +
-                profile.lastName[0]
-              }
-            />
+            <img className='profile-image' src={imgSrc} />
             <div className='details'>
               <h1>
                 {name}
@@ -108,10 +119,10 @@ class SupervisorMeta extends PureComponent {
 
             <span className='count'>
               <Popover
-                content={this.renderPopover(registeredTypes)}
+                content={this.renderPopover(registered.types)}
                 placement='right'
               >
-                {count.registered.all}
+                {registered.all}
                 <Icon className='info-icon' type='info-circle-o' />
               </Popover>
             </span>
@@ -121,7 +132,7 @@ class SupervisorMeta extends PureComponent {
           <Card className='defendedCard'>
             <ResponsiveContainer height={103}>
               <AreaChart
-                data={count.defended.chartData}
+                data={defended.chartData}
                 margin={{ top: 5, right: 5, bottom: 5, left: 120 }}
               >
                 <defs>
@@ -166,10 +177,10 @@ class SupervisorMeta extends PureComponent {
               </span>
               <span className='count'>
                 <Popover
-                  content={this.renderPopover(defendedTypes)}
+                  content={this.renderPopover(defended.types)}
                   placement='right'
                 >
-                  {count.defended.all}
+                  {defended.all}
                   <Icon className='info-icon' type='info-circle-o' />
                 </Popover>
               </span>

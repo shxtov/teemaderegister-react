@@ -4,12 +4,17 @@ import { PropTypes } from 'prop-types'
 import TableContent from '../components/TableContent'
 import { Tabs, Icon, Radio } from 'antd'
 
+const { func, object, string } = PropTypes
+
 const propTypes = {
-  tabs: PropTypes.object.isRequired,
-  activeTab: PropTypes.string,
-  activeSub: PropTypes.string,
-  tabUpdated: PropTypes.func.isRequired,
-  handleTableChange: PropTypes.func.isRequired
+  activeSub: string,
+  activeTab: string,
+  curriculum: object,
+  handleTableChange: func.isRequired,
+  supervisor: object,
+  tabUpdated: func.isRequired,
+  tableContent: object.isRequired,
+  tabs: object.isRequired
 }
 
 class TabsWrap extends Component {
@@ -20,18 +25,19 @@ class TabsWrap extends Component {
     this.tabClicked = this.tabClicked.bind(this)
   }
 
-  createTabPanes (tabs) {
+  createTabPanes (curriculum, handleTableChange, supervisor, tableContent, tabs) {
     return Object.keys(tabs).map(key => {
       const { title, icon, count, subs } = tabs[key]
+
       return (
         <Tabs.TabPane tab={this.createTabTitle(icon, title, count)} key={key}>
           {this.createSubTabs(subs)}
           <TableContent
+            curriculum={curriculum}
+            handleTableChange={handleTableChange}
+            supervisor={supervisor}
+            tableContent={tableContent}
             tableKey={key}
-            handleTableChange={this.props.handleTableChange}
-            tableContent={this.props.tableContent}
-            curriculum={this.props.curriculum}
-            supervisor={this.props.supervisor}
           />
         </Tabs.TabPane>
       )
@@ -93,7 +99,15 @@ class TabsWrap extends Component {
   }
 
   render () {
-    const { tabs, activeTab } = this.props
+    const {
+      curriculum,
+      handleTableChange,
+      supervisor,
+      tableContent,
+      tabs,
+      activeTab
+    } = this.props
+
     return (
       <Tabs
         animated={{ tabPane: false }}
@@ -101,7 +115,13 @@ class TabsWrap extends Component {
         defaultActiveKey={activeTab}
         onTabClick={this.tabClicked}
       >
-        {this.createTabPanes(tabs)}
+        {this.createTabPanes(
+          curriculum,
+          handleTableChange,
+          supervisor,
+          tableContent,
+          tabs
+        )}
       </Tabs>
     )
   }

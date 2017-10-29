@@ -18,8 +18,6 @@ export const getSearchCounts = q => dispatch => {
   return Api('GET', SEARCH_COUNTS_URL, { params: { q } })
     .then(response => {
       const { supervisors, topics } = response
-      // console.log(response)
-
       dispatch(loadedTableContentCount({ topics, supervisors }))
       dispatch({ type: types.SEARCH_LOADED, q })
     })

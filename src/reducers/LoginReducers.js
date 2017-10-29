@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   hasError: false,
   error: {}
 }
+
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.LOGIN_START:

@@ -3,11 +3,21 @@ import { PropTypes } from 'prop-types'
 import { Breadcrumb, Icon } from 'antd'
 import { Link } from 'react-router-dom'
 
+const { arrayOf, shape, string } = PropTypes
+
+const propTypes = {
+  crumbs: arrayOf(
+    shape({
+      name: string.isRequired,
+      url: string
+    }))
+}
+
 const Breadcrumbs = props => {
   const { crumbs } = props
 
   const extraBreadcrumbItems = crumbs.map(crumb => {
-    const { url, name } = crumb
+    const { name, url } = crumb
 
     const link = url
       ? <Link to={url}>
@@ -39,8 +49,6 @@ const Breadcrumbs = props => {
   )
 }
 
-Breadcrumbs.propTypes = {
-  crumbs: PropTypes.array
-}
+Breadcrumbs.propTypes = propTypes
 
 export default Breadcrumbs

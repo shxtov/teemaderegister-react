@@ -23,7 +23,7 @@ import SearchContainer from './containers/SearchContainer'
 
 import store from './store/configureStore'
 
-import '../styles/main.scss'
+import './styles/main.scss'
 
 // antd fonts
 import './fonts/iconfont.eot'

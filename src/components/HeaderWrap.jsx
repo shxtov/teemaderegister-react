@@ -9,16 +9,21 @@ import { Form, Input, Layout, Button } from 'antd'
 const Search = Input.Search
 const { Header } = Layout
 
+const { bool, func, object, shape } = PropTypes
+
 const propTypes = {
-  auth: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired,
-
-  setSearch: PropTypes.func.isRequired,
-  getSearchCounts: PropTypes.func.isRequired,
-  search: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
-
-  history: PropTypes.object.isRequired
+  auth: shape({
+    isAuthenticated: bool.isRequired
+  }).isRequired,
+  form: shape({
+    getFieldDecorator: func.isRequired,
+    setFieldsInitialValue: func.isRequired
+  }).isRequired,
+  getSearchCounts: func.isRequired,
+  history: object.isRequired,
+  logout: func.isRequired,
+  search: object.isRequired,
+  setSearch: func.isRequired
 }
 
 class HeaderWrap extends Component {
@@ -69,8 +74,10 @@ class HeaderWrap extends Component {
   }
 
   render () {
-    const { getFieldDecorator } = this.props.form
-    const { isAuthenticated } = this.props.auth
+    const {
+      auth: { isAuthenticated },
+      form: { getFieldDecorator }
+    } = this.props
 
     return (
       <Header>

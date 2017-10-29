@@ -5,14 +5,18 @@ import TableContentTopics from './TableContentTopics'
 import TableContentSupervisors from './TableContentSupervisors'
 import { Table } from 'antd'
 
+const { bool, func, object, shape, string } = PropTypes
+
 const propTypes = {
-  tableKey: PropTypes.string.isRequired,
-  tableContent: PropTypes.object.isRequired,
-
-  curriculum: PropTypes.object,
-  supervisor: PropTypes.object,
-
-  handleTableChange: PropTypes.func.isRequired
+  curriculum: object,
+  handleTableChange: func.isRequired,
+  supervisor: object,
+  tableContent: shape({
+    loading: bool.isRequired,
+    supervisors: object.isRequired,
+    topics: object.isRequired
+  }).isRequired,
+  tableKey: string.isRequired
 }
 
 class TableContent extends React.Component {
@@ -27,16 +31,19 @@ class TableContent extends React.Component {
 
   render () {
     const {
-      tableKey,
       curriculum,
+      handleTableChange,
       supervisor,
-
-      handleTableChange
+      tableContent,
+      tableContent: { loading },
+      tableKey
     } = this.props
 
-    let { loading } = this.props.tableContent
-    let { data, count, query } = this.props.tableContent[tableKey]
-    const { sub, page, columnKey, order, types, curriculums } = query
+    const {
+      data,
+      count,
+      query: { sub, page, columnKey, order, types, curriculums }
+    } = tableContent[tableKey]
 
     // TODO check if curriculum has SE or KU
     const { meta: { names, type } } = curriculum || { meta: {} }
@@ -44,10 +51,10 @@ class TableContent extends React.Component {
     const currentPage = page ? parseInt(page) : 1
 
     const pagination = {
-      pageSize: 20,
-      total: count[sub] || 0,
       current: currentPage,
-      size: ''
+      pageSize: 20,
+      size: '',
+      total: count[sub] || 0
     }
 
     const Columns = this.columnsMap[tableKey]
@@ -56,17 +63,6 @@ class TableContent extends React.Component {
       <div>
         <br />
         <Table
-          size='small'
-          loading={{ spinning: loading, delay: 200 }}
-          onChange={handleTableChange}
-          dataSource={data}
-          pagination={pagination}
-          expandedRowRender={
-            tableKey === 'topics' && sub === 'available'
-              ? renderExpandedRow
-              : false
-          }
-          rowKey={r => r._id}
           bordered
           columns={Columns({
             // for creating columns
@@ -83,6 +79,17 @@ class TableContent extends React.Component {
             types,
             curriculums
           })}
+          dataSource={data}
+          expandedRowRender={
+            tableKey === 'topics' && sub === 'available'
+              ? renderExpandedRow
+              : false
+          }
+          loading={{ spinning: loading, delay: 200 }}
+          onChange={handleTableChange}
+          pagination={pagination}
+          rowKey={r => r._id}
+          size='small'
         />
       </div>
     )

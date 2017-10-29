@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   q: '',
   loading: true
 }
+
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.SEARCH_START:

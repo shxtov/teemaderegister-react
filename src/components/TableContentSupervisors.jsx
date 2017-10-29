@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+// TODO user moment locale
 
 const substract = moment()
   .subtract(8, 'months')

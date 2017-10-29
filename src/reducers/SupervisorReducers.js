@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   count: {},
   loading: true
 }
+
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.SUPERVISOR_LOADED: {

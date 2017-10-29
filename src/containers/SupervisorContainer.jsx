@@ -5,28 +5,27 @@ import { connect } from 'react-redux'
 import Supervisor from '../components/Supervisor'
 import { getSupervisor, initSupervisor } from '../actions/SupervisorActions'
 import {
+  clearTableContent,
   getTableContent,
-  initTableContent,
-  clearTableContent
+  initTableContent
 } from '../actions/TableContentActions'
 
 const SupervisorContainer = props => <Supervisor {...props} />
 
 const mapStateToProps = state => ({
   supervisor: state.supervisor,
-  topics: state.tableContent.topics,
-  tableContent: state.tableContent
+  tableContent: state.tableContent,
+  topics: state.tableContent.topics
 })
 
 const mapDispatchToProps = (dispatch, props) =>
   bindActionCreators(
     {
+      clearTableContent,
       getSupervisor: slug => getSupervisor(slug || props.match.params.slug),
-      initSupervisor,
-
       getTableContent,
-      initTableContent,
-      clearTableContent
+      initSupervisor,
+      initTableContent
     },
     dispatch
   )

@@ -5,13 +5,20 @@ import Breadcrumbs from './Breadcrumbs'
 import TableWrap from '../components/TableWrap'
 import getTabs from '../utils/getTabs'
 
+const { bool, func, object, shape } = PropTypes
+
 const propTypes = {
-  topics: PropTypes.object.isRequired,
-  supervisors: PropTypes.object.isRequired,
-  search: PropTypes.object.isRequired,
-  initTableContent: PropTypes.func.isRequired,
-  initSearch: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired
+  clearTableContent: func.isRequired,
+  getTableContent: func.isRequired,
+  history: object.isRequired,
+  initSearch: func.isRequired,
+  initTableContent: func.isRequired,
+  search: shape({
+    loading: bool.isRequired
+  }).isRequired,
+  supervisors: object.isRequired,
+  tableContent: object.isRequired,
+  topics: object.isRequired
 }
 
 class Search extends React.Component {
@@ -27,15 +34,16 @@ class Search extends React.Component {
 
   render () {
     const {
-      topics,
-      supervisors,
-      search,
-      getTableContent,
       clearTableContent,
-      tableContent
+      getTableContent,
+      history,
+      search,
+      search: { loading },
+      supervisors,
+      tableContent,
+      topics
     } = this.props
 
-    const { loading } = search
     return (
       <div id='search-page'>
         {!loading &&
@@ -43,7 +51,7 @@ class Search extends React.Component {
             <Breadcrumbs crumbs={this.getCrumbs()} />
             <TableWrap
               tabs={getTabs({ topics, supervisors })}
-              history={this.props.history}
+              history={history}
               search={search}
               getTableContent={getTableContent}
               clearTableContent={clearTableContent}

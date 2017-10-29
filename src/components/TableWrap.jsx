@@ -6,16 +6,25 @@ import { removeEmpty } from '../utils/Helpers'
 import setUrl from '../utils/setUrl'
 import TabsWrap from './TabsWrap'
 
+const { func, object, shape, string } = PropTypes
+
 const propTypes = {
-  tabs: PropTypes.object.isRequired,
-  defaultTab: PropTypes.object,
-  queryExtend: PropTypes.object,
-  search: PropTypes.object,
-
-  getTableContent: PropTypes.func.isRequired,
-  clearTableContent: PropTypes.func.isRequired,
-
-  history: PropTypes.object.isRequired
+  clearTableContent: func.isRequired,
+  curriculum: object,
+  defaultTab: string,
+  getTableContent: func.isRequired,
+  history: shape({
+    replace: func.isRequired,
+    location: shape({
+      pathname: string.isRequired,
+      search: string.isRequired
+    }).isRequired
+  }).isRequired,
+  queryExtend: object,
+  search: object,
+  supervisor: object,
+  tableContent: object.isRequired,
+  tabs: object.isRequired
 }
 
 class TableWrap extends React.Component {
@@ -94,9 +103,9 @@ class TableWrap extends React.Component {
 
   getDefaults ({ tab, sub }) {
     const tabObj = this.tabs[tab]
-
     sub = sub || tabObj.sub
     const { columnKey, order } = tabObj.subs[sub]
+
     return {
       sub,
       columnKey,
@@ -137,7 +146,7 @@ class TableWrap extends React.Component {
   }
 
   writeURL () {
-    const { replace, location } = this.props.history
+    const { history: { replace, location: { pathname } } } = this.props
     const { tab, sub, columnKey } = this.state
 
     // FIX overwrite sub to be default sub no matter what,
@@ -150,14 +159,13 @@ class TableWrap extends React.Component {
         columnKey === defaults.columnKey ? defaults.order : this.defaultOrder
     })
 
-    setUrl(replace, location.pathname, this.state, defaults)
+    setUrl(replace, pathname, this.state, defaults)
   }
 
   handleTableChange (pagination, filters, sorter) {
     const { columnKey, order } = sorter
     const page = pagination.current
-    filters = removeEmpty(filters)
-    const { types, curriculums } = filters
+    const { types, curriculums } = removeEmpty(filters)
     const showLoading = true
 
     this.setState({ page, columnKey, order, types, curriculums }, () => {
@@ -167,19 +175,27 @@ class TableWrap extends React.Component {
   }
 
   render () {
+    const { sub, tab } = this.state
+    const {
+      curriculum,
+      supervisor,
+      tableContent,
+      tabs
+    } = this.props
+
     return (
       <div className='curriculum-content'>
         <br />
         <br />
         <TabsWrap
-          tabs={this.props.tabs}
-          activeTab={this.state.tab}
-          activeSub={this.state.sub}
-          tabUpdated={this.tabUpdated}
+          activeSub={sub}
+          activeTab={tab}
+          curriculum={curriculum}
           handleTableChange={this.handleTableChange}
-          tableContent={this.props.tableContent}
-          supervisor={this.props.supervisor}
-          curriculum={this.props.curriculum}
+          tabUpdated={this.tabUpdated}
+          supervisor={supervisor}
+          tableContent={tableContent}
+          tabs={tabs}
         />
       </div>
     )

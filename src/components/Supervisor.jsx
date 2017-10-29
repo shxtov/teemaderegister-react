@@ -6,17 +6,38 @@ import SupervisorMeta from './SupervisorMeta'
 import TableWrap from '../components/TableWrap'
 import getTabs from '../utils/getTabs'
 
+const { bool, func, object, shape, string } = PropTypes
+
+const SupervisorObj = {
+  count: object.isRequired,
+  data: shape({
+    _id: string,
+    profile: shape({
+      firstName: string,
+      lastName: string
+    })
+  }).isRequired,
+  loading: bool.isRequired
+}
+
 const propTypes = {
-  supervisor: PropTypes.object.isRequired,
-  getSupervisor: PropTypes.func.isRequired,
-  initSupervisor: PropTypes.func.isRequired,
-
-  topics: PropTypes.object.isRequired,
-  initTableContent: PropTypes.func.isRequired,
-
-  history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired
+  clearTableContent: func.isRequired,
+  getSupervisor: func.isRequired,
+  getTableContent: func.isRequired,
+  history: object.isRequired,
+  initSupervisor: func.isRequired,
+  initTableContent: func.isRequired,
+  location: shape({
+    pathname: string.isRequired
+  }).isRequired,
+  match: shape({
+    params: shape({
+      slug: string.isRequired
+    }).isRequired
+  }).isRequired,
+  supervisor: shape(SupervisorObj).isRequired,
+  tableContent: object.isRequired,
+  topics: object.isRequired
 }
 
 class Supervisor extends React.Component {
@@ -54,34 +75,39 @@ class Supervisor extends React.Component {
 
   render () {
     const {
-      topics,
-      supervisor,
-      supervisor: { loading, data, count },
-      getTableContent,
       clearTableContent,
-      tableContent
+      getTableContent,
+      supervisor,
+      supervisor: {
+        loading,
+        data,
+        data: {
+          _id,
+          profile
+        },
+        count
+      },
+      tableContent,
+      topics
     } = this.props
 
-    const { profile } = data
     return (
       <div id='supervisor-page'>
         {!loading &&
           <div>
             <Breadcrumbs
-              crumbs={this.getCrumbs(
-                profile.firstName + ' ' + profile.lastName
-              )}
+              crumbs={this.getCrumbs(`${profile.firstName} ${profile.lastName}`)}
             />
             <br />
             <SupervisorMeta data={data} count={count} />
             <TableWrap
-              tabs={getTabs({ topics })}
-              queryExtend={{ supervisorId: data._id }}
-              history={this.props.history}
-              getTableContent={getTableContent}
               clearTableContent={clearTableContent}
+              getTableContent={getTableContent}
+              history={this.props.history}
               supervisor={supervisor}
               tableContent={tableContent}
+              tabs={getTabs({ topics })}
+              queryExtend={{ supervisorId: _id }}
             />
           </div>}
       </div>

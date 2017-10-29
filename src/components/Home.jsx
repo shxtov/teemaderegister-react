@@ -3,9 +3,14 @@ import PropTypes from 'prop-types'
 
 import HomeCollection from './HomeCollection'
 
+const { array, bool, func, shape } = PropTypes
+
 const propTypes = {
-  getCurriculums: PropTypes.func.isRequired,
-  home: PropTypes.object.isRequired
+  getCurriculums: func.isRequired,
+  home: shape({
+    curriculums: array.isRequired,
+    loading: bool.isRequired
+  }).isRequired
 }
 
 class Home extends React.Component {
@@ -14,7 +19,7 @@ class Home extends React.Component {
   }
 
   render () {
-    const { loading, curriculums } = this.props.home
+    const { home: { loading, curriculums } } = this.props
 
     return (
       <div id='home-page'>

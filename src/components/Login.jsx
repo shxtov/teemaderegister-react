@@ -7,34 +7,43 @@ import Breadcrumbs from './Breadcrumbs'
 import { Row, Col, Form, Icon, Input, Button, message, Tooltip } from 'antd'
 const FormItem = Form.Item
 
+const { bool, func, object, shape, string } = PropTypes
+
 const propTypes = {
-  initLogin: PropTypes.func.isRequired,
-  login: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  auth: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
-  loginError: PropTypes.object.isRequired,
-  hasLoginError: PropTypes.bool.isRequired
+  form: shape({
+    getFieldDecorator: func.isRequired,
+    getFieldInstance: func.isRequired,
+    validateFields: func.isRequired
+  }).isRequired,
+  initLogin: func.isRequired,
+  location: object.isRequired,
+  login: shape({
+    hasError: bool.isRequired,
+    loading: bool.isRequired,
+    error: shape({
+      message: string
+    }).isRequired
+  }).isRequired,
+  triggerLogin: func.isRequired
 }
 
 class Login extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      loading: props.loading
+      loading: props.login.loading
     }
     this.submit = this.submit.bind(this)
   }
 
   componentWillReceiveProps (nextProps) {
     // You don't have to do this check first, but it can help prevent an unneeded render
-    if (nextProps.loading !== this.state.loading) {
-      this.setState({ loading: nextProps.loading })
-      if (nextProps.hasLoginError) {
-        console.log(nextProps.loginError)
-        message.error(nextProps.loginError.message)
-        // nextProps.loginError.map(err => message.error(err.msg))
+    if (nextProps.login.loading !== this.state.loading) {
+      this.setState({ loading: nextProps.login.loading })
+      if (nextProps.login.hasError) {
+        console.log(nextProps.login.error)
+        message.error(nextProps.login.error.message)
+        // nextProps.error.map(err => message.error(err.msg))
       }
     }
   }
@@ -55,17 +64,21 @@ class Login extends React.Component {
         this.setState({ loading: true })
         // show user loading
         window.setTimeout(() => {
-          this.props.login(values)
+          this.props.triggerLogin(values)
         }, 1500)
       }
     })
   }
 
   render () {
-    const { getFieldDecorator } = this.props.form
+    const {
+      form: { getFieldDecorator },
+      location: { search }
+    } = this.props
+
     const { loading } = this.state
 
-    const params = queryString.parse(this.props.location.search)
+    const params = queryString.parse(search)
     const redirect = params.redirect || '/'
 
     const crumbs = [{ url: this.props.location.pathname, name: 'Sign In' }]
