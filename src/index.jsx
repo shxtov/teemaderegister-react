@@ -11,13 +11,12 @@ import {
   SUPERVISOR_PATH
 } from './constants/RouterConstants'
 
-import HeaderWrapContainer from './containers/HeaderWrapContainer'
-import RouteWrapContainer from './containers/RouteWrapContainer'
-
-import HomeContainer from './containers/HomeContainer'
-import NotFound from './components/NotFound'
-import LoginContainer from './containers/LoginContainer'
 import CurriculumContainer from './containers/CurriculumContainer'
+import HeaderWrapContainer from './containers/HeaderWrapContainer'
+import HomeContainer from './containers/HomeContainer'
+import LoginContainer from './containers/LoginContainer'
+import NotFound from './components/NotFound'
+import RouteWrapContainer from './containers/RouteWrapContainer'
 import SupervisorContainer from './containers/SupervisorContainer'
 import SearchContainer from './containers/SearchContainer'
 
@@ -45,18 +44,18 @@ render(
           <Content>
             <div id='content-wrapper'>
               <Switch>
-                <Route exact path={INDEX_PATH} component={RouteWrapContainer(HomeContainer)} />
-                <Route exact path={LOGIN_PATH} component={RouteWrapContainer(LoginContainer)} />
-                <Route path={SEARCH_PATH} component={RouteWrapContainer(SearchContainer)} />
+                <Route exact path={INDEX_PATH}
+                  component={RouteWrapContainer(HomeContainer)} />
+                <Route exact path={LOGIN_PATH}
+                  component={RouteWrapContainer(LoginContainer)} />
+                <Route path={SEARCH_PATH}
+                  component={RouteWrapContainer(SearchContainer)} />
+                <Route path={CURRICULUM_PATH}
+                  component={RouteWrapContainer(CurriculumContainer)} />
+                <Route path={SUPERVISOR_PATH}
+                  component={RouteWrapContainer(SupervisorContainer)} />
                 <Route
-                  path={CURRICULUM_PATH}
-                  component={RouteWrapContainer(CurriculumContainer)}
-                />
-                <Route
-                  path={SUPERVISOR_PATH}
-                  component={RouteWrapContainer(SupervisorContainer)}
-                />
-                <Route component={RouteWrapContainer(NotFound)} />
+                  component={RouteWrapContainer(NotFound)} />
               </Switch>
             </div>
           </Content>
