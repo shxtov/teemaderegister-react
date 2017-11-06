@@ -74,20 +74,17 @@ class SupervisorMeta extends PureComponent {
     const imgSrc = `http://via.placeholder.com/150/b1e3da/ffffff/?text=${firstName[0]} ${lastName[0]}`
 
     return (
-      <div className='supervisors-meta'>
-        <Row className='meta-row' gutter={24} type='flex'>
+      <div className='supervisorMeta'>
+        <Row className='supervisorMeta__row' gutter={24} type='flex'>
+
           <Col sm={13} md={12} className='profile'>
-            <img className='profile-image' src={imgSrc} />
-            <div className='details'>
-              <h1>
-                {name}
-              </h1>
+            <img className='profile__image' src={imgSrc} />
+            <div className='profile__details'>
+              <h1>{name}</h1>
               <h3>Tarkvaratehnika õpetaja</h3>
               <h3>Tallinna Ülikool | A-431</h3>
-              <div className='contact'>
-                {/* TODO concat if too long <email></email> */}
-                E-mail: romil.robtsenkov@romil.ee
-                <br />
+              <div className='profile__details__scontact'>
+                E-mail: romil.robtsenkov@romil.ee<br />
                 Phone: 6555524 <br />
                 Links: <a href='github.com'>Github</a>,{' '}
                 <a href='github.com'>ETIS</a>
@@ -96,10 +93,10 @@ class SupervisorMeta extends PureComponent {
           </Col>
 
           <Col
+            className='topics-description'
             xs={24}
             sm={{ span: 10, offset: 1 }}
             md={{ span: 11, offset: 1 }}
-            className='topics-description'
           >
             <h4>Topics</h4>
             <div>
@@ -111,25 +108,25 @@ class SupervisorMeta extends PureComponent {
           </Col>
         </Row>
 
-        <div className='chart-area'>
-          <Card className='supervising-card'>
-            <span className='card-title'>
+        <div className='supervisorMeta__chart'>
+          <Card className='card card--supervising'>
+            <span className='card__title'>
               Supervising <br /> today
             </span>
 
-            <span className='count'>
+            <span className='card__count'>
               <Popover
                 content={this.renderPopover(registered.types)}
                 placement='right'
               >
                 {registered.all}
-                <Icon className='info-icon' type='info-circle-o' />
+                <Icon className='card__count__icon' type='info-circle-o' />
               </Popover>
             </span>
             <br />
           </Card>
 
-          <Card className='defendedCard'>
+          <Card className='card card--chart'>
             <ResponsiveContainer height={103}>
               <AreaChart
                 data={defended.chartData}
@@ -150,6 +147,7 @@ class SupervisorMeta extends PureComponent {
                   </linearGradient>
                 </defs>
                 <Tooltip
+                  className='card--chart__tooltip'
                   content={this.renderTooltip}
                   cursor={false}
                   active
@@ -171,17 +169,17 @@ class SupervisorMeta extends PureComponent {
               </AreaChart>
             </ResponsiveContainer>
 
-            <div className='supervised-card'>
-              <span className='card-title'>
+            <div className='card card--supervised'>
+              <span className='card__title'>
                 Total <br />supervised
               </span>
-              <span className='count'>
+              <span className='card__count'>
                 <Popover
                   content={this.renderPopover(defended.types)}
                   placement='right'
                 >
                   {defended.all}
-                  <Icon className='info-icon' type='info-circle-o' />
+                  <Icon className='card__count__icon' type='info-circle-o' />
                 </Popover>
               </span>
             </div>

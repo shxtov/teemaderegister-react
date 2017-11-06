@@ -140,9 +140,6 @@ class TableWrap extends React.Component {
       this.writeURL()
       this.makeQuery(showLoading)
     })
-
-    // TODO update document title
-    // TODO check if it is needed to update
   }
 
   writeURL () {
@@ -184,20 +181,16 @@ class TableWrap extends React.Component {
     } = this.props
 
     return (
-      <div className='curriculum-content'>
-        <br />
-        <br />
-        <TabsWrap
-          activeSub={sub}
-          activeTab={tab}
-          curriculum={curriculum}
-          handleTableChange={this.handleTableChange}
-          tabUpdated={this.tabUpdated}
-          supervisor={supervisor}
-          tableContent={tableContent}
-          tabs={tabs}
-        />
-      </div>
+      <TabsWrap
+        activeSub={sub}
+        activeTab={tab}
+        curriculum={curriculum}
+        handleTableChange={this.handleTableChange}
+        tabUpdated={this.tabUpdated}
+        supervisor={supervisor}
+        tableContent={tableContent}
+        tabs={tabs}
+      />
     )
   }
 }

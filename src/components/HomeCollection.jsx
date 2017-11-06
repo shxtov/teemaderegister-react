@@ -28,10 +28,8 @@ const HomeCollection = props => {
         const { type, collection } = single
 
         return (
-          <div className='home-curriculums' key={type}>
-            <h1>
-              {typeMap[type]}
-            </h1>
+          <div className='homeCollection' key={type}>
+            <h1>{typeMap[type]}</h1>
             <HomeCards type={type} collection={collection} />
           </div>
         )

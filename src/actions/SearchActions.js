@@ -22,7 +22,6 @@ export const getSearchCounts = q => dispatch => {
       dispatch({ type: types.SEARCH_LOADED, q })
     })
     .catch(err => {
-      // TODO handle errors
       console.log(err)
     })
 }

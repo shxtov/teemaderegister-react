@@ -19,7 +19,6 @@ export const getCurriculums = () => dispatch => {
       curriculums: data.curriculums
     }))
     .catch(err => {
-      // TODO handle errors
       console.log(err)
     })
 }
@@ -32,7 +31,6 @@ export const getCurriculum = slug => dispatch => {
       dispatch({ type: types.CURRICULUM_LOADED, meta })
     })
     .catch(err => {
-      // TODO handle errors
       console.log(err)
     })
 }

@@ -43,13 +43,12 @@ class Login extends React.Component {
       if (nextProps.login.hasError) {
         console.log(nextProps.login.error)
         message.error(nextProps.login.error.message)
-        // nextProps.error.map(err => message.error(err.msg))
       }
     }
   }
 
   componentDidMount () {
-    let emailInput = this.props.form.getFieldInstance('email').refs.input
+    const emailInput = this.props.form.getFieldInstance('email').refs.input
     emailInput.focus()
   }
 
@@ -83,20 +82,19 @@ class Login extends React.Component {
 
     const crumbs = [{ url: this.props.location.pathname, name: 'Sign In' }]
 
-    // TODO no redirect after logout?
     if (getToken()) {
       return <Redirect to={redirect} />
     }
 
     return (
-      <div id='login-page'>
+      <div className='login'>
         <Breadcrumbs crumbs={crumbs} />
         <Row gutter={8}>
           <Col span={8} />
           <Col xs={24} sm={8}>
-            <Form onSubmit={this.submit} className='login-form'>
-              <h2 className='center'>
-                Sign in to <span className='emphisize-title'>Te</span>
+            <Form onSubmit={this.submit} className='login__form'>
+              <h2 className='text-align-center'>
+                Sign in to <span className='emphisize'>Te</span>
               </h2>
               <FormItem>
                 {getFieldDecorator('email', {
@@ -123,7 +121,7 @@ class Login extends React.Component {
                 <Button
                   type='primary'
                   htmlType='submit'
-                  className='login-form-button'
+                  className='login__button'
                   loading={loading}
                 >
                   Log in

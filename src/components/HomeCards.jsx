@@ -50,7 +50,7 @@ const HomeCards = props => {
         <Link to={'/curriculum/' + slugs.et}>
           <Card
             key={_id}
-            className='curriculum-card'
+            className='homeCards__card'
             style={cardBackground}
             bordered
           >
@@ -67,7 +67,7 @@ const HomeCards = props => {
   })
 
   return (
-    <Row gutter={24}>
+    <Row className='homeCards' gutter={24}>
       {items}
     </Row>
   )

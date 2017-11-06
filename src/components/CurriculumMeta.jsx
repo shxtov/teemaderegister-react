@@ -54,34 +54,22 @@ class CurriculumMeta extends PureComponent {
         l + ((i !== languages.length - 1) & (languages.length > 1) ? '/' : '')
     )
 
-    const metaBackGround = { backgroundImage: 'url(' + this.colorMap[type] + ')' }
+    const metaBackGround = { backgroundImage: `url(${this.colorMap[type]})` }
 
     return (
-      <div id='curriculum-meta' style={metaBackGround}>
-        <h1>
-          {names.et}
-        </h1>
-        <i>
-          <h3>
-            {abbreviation} | {names.en}
-          </h3>
-        </i>
-        <br />
-        <h4>
-          {this.typeMap[type]} - {languageList}
-        </h4>
-        <br />
-        <div className='c-representative'>
+      <div className='curriculumMeta' style={metaBackGround}>
+        <h1>{names.et}</h1>
+        <h3>{abbreviation} | {names.en}</h3>
+        <h4>{this.typeMap[type]} - {languageList}</h4>
+        <div>
           <Tooltip title={'Õppekava kuraator'}>
             <Avatar
-              className='curriculum-avatar'
+              className='curriculumMeta__avatar'
               shape='square'
               size='small'
               icon='user'
             />
-            <span>
-              {profile.firstName + ' ' + profile.lastName}
-            </span>
+            <span>{profile.firstName + ' ' + profile.lastName}</span>
           </Tooltip>
         </div>
       </div>

@@ -92,13 +92,12 @@ class Supervisor extends React.Component {
     } = this.props
 
     return (
-      <div id='supervisor-page'>
+      <div className='supervisor'>
         {!loading &&
           <div>
             <Breadcrumbs
               crumbs={this.getCrumbs(`${profile.firstName} ${profile.lastName}`)}
             />
-            <br />
             <SupervisorMeta data={data} count={count} />
             <TableWrap
               clearTableContent={clearTableContent}

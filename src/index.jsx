@@ -42,7 +42,7 @@ render(
         <Layout className='layout'>
           <Route component={HeaderWrapContainer} />
           <Content>
-            <div id='content-wrapper'>
+            <div className='layout__content'>
               <Switch>
                 <Route exact path={INDEX_PATH}
                   component={RouteWrapContainer(HomeContainer)} />
@@ -59,7 +59,7 @@ render(
               </Switch>
             </div>
           </Content>
-          <Footer>
+          <Footer className='layout__footer'>
             TLU ©{new Date().getFullYear()} | Made by Romil Rõbtšenkov
           </Footer>
         </Layout>

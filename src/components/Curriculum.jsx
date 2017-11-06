@@ -56,7 +56,7 @@ class Curriculum extends React.Component {
     } = this.props
 
     return (
-      <div id='curriculum-page'>
+      <div className='curriculum'>
         {!loading &&
           <div>
             <Breadcrumbs crumbs={this.getCrumbs(meta.names.et)} />

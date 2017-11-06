@@ -1,41 +1,60 @@
-.no-desc .ant-table-row-expand-icon {
-  display: none;
-}
-//TODO move to parent comp css
-#main .ant-table-thead > tr > th {
-  background: #f7f7f7;
-}
-
-#main .ant-table-thead > tr > th.ant-table-column-sort {
-  background: #eee;
-}
-
-#main .align-col-right {
-  text-align: right;
-}
-
-#main .align-col-center {
-  text-align: center;
-  .ant-badge-status-text {
-    margin: 0;
+.tableContent {
+  margin-top: 15px;
+  
+  .link {
+    &--curriculum {
+      width: auto;
+      padding-right: 3px;
+    }
+    &--pdf {
+      display: inline;
+    }
   }
-}
+  
+  /* antd overwrites */
+  .no-desc {
+    .ant-table-row-expand-icon {
+      display: none;
+    }
+  }
+  
+  .no-status-margin {
+    .ant-badge-status-text {
+      margin: 0;
+    }
+  }
 
-.cur-link {
-  width: auto;
-  padding-right: 3px;
-}
+  .ant-table-thead {
+    tr {
+      th {
+        background: #f7f7f7;
 
-.inline-link {
-  display: inline;
-}
+        .ant-table-column-sort {
+          background: #eee;
+        }
+      }
+    }
+  }
 
-.icon-15 {
-  font-size: 15px;
-}
-
-.ant-tabs-tabpane-inactive {
-  .ant-pagination {
-    display: none;
+  .ant-table-thead,
+  .ant-table-tbody {
+    tr {
+      th,
+      td {
+        word-break: normal; 
+        a { 
+          height: 100%; 
+          width: 100%; 
+          display: inline-block; 
+        } 
+      }
+    }
+  }
+  
+  /* hack for hiding inactive tab panes pagination */
+  .ant-tabs-tabpane-inactive {
+    .ant-pagination {
+      display: none;
+    }
   }
 }

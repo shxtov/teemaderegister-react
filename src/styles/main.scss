@@ -1,11 +1,19 @@
 @import 'variables';
+@import 'helpers';
+
+@import 'nprogress/nprogress';
+@import 'recharts/recharts';
 
 @import 'app';
 
 @import 'components/Breadcrumbs';
 @import 'components/Curriculum';
+@import 'components/CurriculumMeta';
 @import 'components/HeaderWrap';
 @import 'components/Home';
+@import 'components/HomeCollection';
+@import 'components/HomeCards';
 @import 'components/Login';
 @import 'components/Supervisor';
+@import 'components/supervisorMeta';
 @import 'components/TableContent';

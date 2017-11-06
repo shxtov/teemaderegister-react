@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
-// TODO user moment locale
 
 const substract = moment()
   .subtract(8, 'months')
@@ -17,7 +16,7 @@ const available = ({ columnKey, order }) => ({
   dataIndex: 'available',
   key: 'available',
   sortOrder: columnKey === 'available' && order,
-  className: 'align-col-right',
+  className: 'text-align--right',
   sorter: true
 })
 
@@ -26,7 +25,7 @@ const defended = ({ columnKey, order }) => ({
   dataIndex: 'defended',
   key: 'defended',
   sortOrder: columnKey === 'defended' && order,
-  className: 'align-col-right',
+  className: 'text-align--right',
   sorter: true
 })
 
@@ -35,7 +34,7 @@ const defendedLastYear = ({ columnKey, order }) => ({
   dataIndex: 'defendedLastYear',
   key: 'defendedLastYear',
   sortOrder: columnKey === 'defendedLastYear' && order,
-  className: 'align-col-right',
+  className: 'text-align--right',
   sorter: true
 })
 
@@ -44,7 +43,7 @@ const registered = ({ columnKey, order }) => ({
   dataIndex: 'registered',
   key: 'registered',
   sortOrder: columnKey === 'registered' && order,
-  className: 'align-col-right',
+  className: 'text-align--right',
   sorter: true
 })
 

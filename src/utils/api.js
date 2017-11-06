@@ -28,8 +28,7 @@ const makeConfig = (method, url, query) => {
 }
 
 export default (method, url, query) => {
-  let config = makeConfig(method, url, query)
-  // TODO if already started continue progressbar (from auth)
+  const config = makeConfig(method, url, query)
   nprogress.start()
 
   return axios
@@ -41,7 +40,6 @@ export default (method, url, query) => {
     })
     .catch(err => {
       if (err.status === 403) {
-        // TODO redirect for user auth error
         // dispatch same as logout
         console.log('not authorized')
       }

@@ -25,7 +25,6 @@ export const getSupervisor = slug => dispatch => {
       dispatch({ type: types.SUPERVISOR_LOADED, supervisor, counts })
     })
     .catch(err => {
-      // TODO handle errors
       console.log(err)
     })
 }

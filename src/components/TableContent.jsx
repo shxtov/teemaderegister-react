@@ -45,7 +45,6 @@ class TableContent extends React.Component {
       query: { sub, page, columnKey, order, types, curriculums }
     } = tableContent[tableKey]
 
-    // TODO check if curriculum has SE or KU
     const { meta: { names, type } } = curriculum || { meta: {} }
 
     const currentPage = page ? parseInt(page) : 1
@@ -60,38 +59,36 @@ class TableContent extends React.Component {
     const Columns = this.columnsMap[tableKey]
 
     return (
-      <div>
-        <br />
-        <Table
-          bordered
-          columns={Columns({
-            // for creating columns
-            sub,
-            names,
-            supervisor,
-            type,
+      <Table
+        className='tableContent'
+        bordered
+        columns={Columns({
+          // for creating columns
+          sub,
+          names,
+          supervisor,
+          type,
 
-            // sort
-            columnKey,
-            order,
+          // sort
+          columnKey,
+          order,
 
-            // filters
-            types,
-            curriculums
-          })}
-          dataSource={data}
-          expandedRowRender={
-            tableKey === 'topics' && sub === 'available'
-              ? renderExpandedRow
-              : false
-          }
-          loading={{ spinning: loading, delay: 200 }}
-          onChange={handleTableChange}
-          pagination={pagination}
-          rowKey={r => r._id}
-          size='small'
-        />
-      </div>
+          // filters
+          types,
+          curriculums
+        })}
+        dataSource={data}
+        expandedRowRender={
+          tableKey === 'topics' && sub === 'available'
+            ? renderExpandedRow
+            : false
+        }
+        loading={{ spinning: loading, delay: 200 }}
+        onChange={handleTableChange}
+        pagination={pagination}
+        rowKey={r => r._id}
+        size='small'
+      />
     )
   }
 }

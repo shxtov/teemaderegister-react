@@ -80,29 +80,28 @@ class HeaderWrap extends Component {
     } = this.props
 
     return (
-      <Header>
-        <div id='header-wrapper'>
+      <Header className='headerWrap'>
+        <div className='headerWrap__wrapper'>
           <Link to='/'>
-            <div className='header-logo'>Te</div>
+            <div className='logo'>Te</div>
           </Link>
-          <div className='header-content'>
-            <div className='search'>
-              <Form>
-                {getFieldDecorator('searchField')(
-                  <Search
-                    size='large'
-                    placeholder='Search title or supervisor'
-                    onSearch={this.handleSearch}
-                  />
-                )}
-              </Form>
-            </div>
+          <div className='content'>
+            <Form className='search'>
+              {getFieldDecorator('searchField')(
+                <Search
+                  className='search__input'
+                  size='large'
+                  placeholder='Search title or supervisor'
+                  onSearch={this.handleSearch}
+                />
+              )}
+            </Form>
             {!isAuthenticated &&
-              <div className='header-login'>
+              <div className='login'>
                 <Link to='/login'>Sign in</Link>
               </div>}
             {isAuthenticated &&
-            <div className='header-login'>
+            <div className='login'>
               <Button onClick={this.props.logout} ghost icon='logout' title='logout' />
             </div>}
           </div>

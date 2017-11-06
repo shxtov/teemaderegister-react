@@ -41,7 +41,7 @@ const Breadcrumbs = props => {
   ].concat(extraBreadcrumbItems)
 
   return (
-    <div id='breadcrumb-wrapper'>
+    <div className='breadcrumbs'>
       <Breadcrumb>
         {breadcrumbItems}
       </Breadcrumb>

@@ -29,7 +29,6 @@ export const getTableContent = (params, showLoading) => dispatch => {
       dispatch({ type: types.TABLE_LOADED, topics, supervisors, count, query })
     })
     .catch(err => {
-      // TODO handle errors
       console.log(err)
     })
 }

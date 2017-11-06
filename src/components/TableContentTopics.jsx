@@ -20,7 +20,7 @@ const typesMap = {
 
 const accepted = ({ columnKey, order }) => ({
   title: 'Added',
-  className: 'align-col-right',
+  className: 'text-align--right',
   dataIndex: 'accepted',
   key: 'accepted',
   render: renderDate,
@@ -41,7 +41,7 @@ const author = ({ columnKey, order }) => ({
 })
 
 const curriculums = ({ curriculums }) => ({
-  className: 'align-col-center',
+  className: 'text-align--center',
   filters: [{ text: 'Sobib teistele õppekavadele', value: 'others' }],
   filterMultiple: false,
   title: (
@@ -54,14 +54,19 @@ const curriculums = ({ curriculums }) => ({
   filteredValue: curriculums || null,
   render: curriculums => {
     let content = null
-    if (curriculums.length > 1) content = <Badge status='default' />
+    if (curriculums.length > 1) {
+      content = <Badge
+        className='no-status-margin'
+        status='default'
+      />
+    }
     return content
   }
 })
 
 const defended = ({ columnKey, order }) => ({
   title: 'Defended',
-  className: 'align-col-right',
+  className: 'text-align--right',
   dataIndex: 'defended',
   key: 'defended',
   render: renderDate,
@@ -70,7 +75,7 @@ const defended = ({ columnKey, order }) => ({
 })
 
 const detailCurriculums = () => ({
-  className: 'align-col-left',
+  className: 'text-align--left',
   dataIndex: 'curriculums',
   key: 'curriculums',
   title: 'Curriculum',
@@ -90,7 +95,7 @@ const detailCurriculums = () => ({
           placement='topLeft'
           title={c.names.et + ' ' + c.type}
         >
-          <Link className='cur-link' to={url}>
+          <Link className='link-curriculum' to={url}>
             {content}
           </Link>
         </Tooltip>
@@ -100,7 +105,7 @@ const detailCurriculums = () => ({
 })
 
 const detailTypes = () => ({
-  className: 'align-col-left',
+  className: 'text-align--left',
   dataIndex: 'types',
   key: 'types',
   title: 'Types',
@@ -120,14 +125,14 @@ const detailTypes = () => ({
 
 const file = ({ columnKey, order }) => ({
   title: '',
-  className: 'align-col-right',
+  className: 'text-align--right',
   dataIndex: 'file',
   key: 'file',
   sortOrder: columnKey === 'file' && order,
   render: file => {
     let content = (
       <span>
-        <a className='inline-link' href={file} target='_blank'>
+        <a className='link--pdf' href={file} target='_blank'>
           <Icon type='file-pdf' className='icon-15' />
         </a>
       </span>
@@ -140,7 +145,7 @@ const registered = ({ columnKey, order }) => ({
   title: 'Registered',
   dataIndex: 'registered',
   key: 'registered',
-  className: 'align-col-right',
+  className: 'text-align--right',
   render: renderDate,
   sorter: true,
   sortOrder: columnKey === 'registered' && order
@@ -158,7 +163,6 @@ const supervisors = () => ({
           ? profile.firstName + ' ' + profile.lastName + ', '
           : profile.firstName + ' ' + profile.lastName
 
-      // TODO replace with slug
       const url = '/supervisor/' + profile.slug
 
       return (
@@ -187,9 +191,8 @@ const title = ({ columnKey, order }) => ({
 })
 
 const types = ({ columnKey, order, sub, types }) => ({
-  className: 'align-col-center',
+  className: 'text-align--center',
   filterMultiple: false,
-  // TODO other text value for other tabs
   filters: [
     {
       text: sub === 'available' ? 'Sobib seminaritööks' : 'Seminaritöö',
@@ -211,7 +214,12 @@ const types = ({ columnKey, order, sub, types }) => ({
   filteredValue: types || null,
   render: types => {
     let content = null
-    if (types.indexOf('SE') !== -1) content = <Badge status='default' />
+    if (types.indexOf('SE') !== -1) {
+      content = <Badge
+        className='no-status-margin'
+        status='default'
+      />
+    }
     return content
   }
 })
@@ -221,7 +229,6 @@ const renderDate = date => moment(date).format('DD.MM.YY')
 const getColumnNames = ({ sub, names, type, supervisor }) => {
   let columns = ['title'] // default
 
-  // TODO check for other types of works in curriculum SE or KT
   const isInformaticsBa = names && names.et === 'Informaatika' && type === 'BA'
   const isSupervisorPage = !!supervisor
 

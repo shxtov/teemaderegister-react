@@ -22,8 +22,8 @@ class Home extends React.Component {
     const { home: { loading, curriculums } } = this.props
 
     return (
-      <div id='home-page'>
-        <div className='intro'>
+      <div className='home'>
+        <div className='home__intro'>
           <h1>Tere tulemast DTI uue teemaderegistri lehele!!!!</h1>
         </div>
         {!loading && <HomeCollection curriculums={curriculums} />}
