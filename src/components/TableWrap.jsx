@@ -181,16 +181,18 @@ class TableWrap extends React.Component {
     } = this.props
 
     return (
-      <TabsWrap
-        activeSub={sub}
-        activeTab={tab}
-        curriculum={curriculum}
-        handleTableChange={this.handleTableChange}
-        tabUpdated={this.tabUpdated}
-        supervisor={supervisor}
-        tableContent={tableContent}
-        tabs={tabs}
-      />
+      <div className='tableWrap'>
+        <TabsWrap
+          activeSub={sub}
+          activeTab={tab}
+          curriculum={curriculum}
+          handleTableChange={this.handleTableChange}
+          tabUpdated={this.tabUpdated}
+          supervisor={supervisor}
+          tableContent={tableContent}
+          tabs={tabs}
+        />
+      </div>
     )
   }
 }
