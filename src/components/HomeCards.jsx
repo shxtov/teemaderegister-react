@@ -98,11 +98,11 @@ const HomeCards = props => {
     <div>
       <Row className='homeCards' gutter={24}>
         {items}
-
       </Row>
+
       <Collapse bordered={false}>
-        <Panel header="Suletud" key="1">
-          <Row className='closedCards' gutter={24}>
+        <Panel className='closedCards' header="Suletud" key="1">
+          <Row gutter={24}>
             {closedItems}
           </Row>
         </Panel>

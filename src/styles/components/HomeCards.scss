@@ -22,6 +22,14 @@
   }
 }
 
-.closedCards {
-  margin: 0, 0px;
+.closedCards{
+  a {
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 12px;
+  }
+}
+.closedCards div:nth-child(2){
+
+  padding-left: 0px;
+  padding-right: 0px;
 }
