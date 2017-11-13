@@ -38,7 +38,11 @@ const HomeCards = props => {
   let items = []
 
   collection.forEach((c, i) => {
-    const { abbreviation, names, slugs, _id, languages } = c
+    if (c.closed != null) {
+      c.closed = 'Suletud'
+    }
+
+    const { abbreviation, names, slugs, _id, languages, closed } = c
     const cardBackground = { backgroundImage: 'url(' + colorMap[type] + ')' }
     const languageList = languages.map(
       (l, i) =>
@@ -58,7 +62,7 @@ const HomeCards = props => {
               {names.et}
             </h2>
             <p>
-              {abbreviation} | {languageList}
+              {abbreviation} | {languageList} | <b>{closed}</b>
             </p>
           </Card>
         </Link>
