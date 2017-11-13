@@ -53,47 +53,27 @@ const HomeCards = props => {
       (l, i) =>
         l + ((i !== languages.length - 1) & (languages.length > 1) ? '/' : '')
     )
-    if (c.closed == null) {
-      items.available.push(
-        <Col key={i} sm={12} md={8}>
-          <Link to={'/curriculum/' + slugs.et}>
-            <Card
-              key={_id}
-              className='homeCards__card'
-              style={cardBackground}
-              bordered
-            >
-              <h2>
-                {names.et}
-              </h2>
-              <p>
-                {abbreviation} | {languageList}
-              </p>
-            </Card>
-          </Link>
-        </Col>
-      )
-    } else {
-      items.closed.push(
-        <Col key={i} sm={12} md={8}>
-          <Link to={'/curriculum/' + slugs.et}>
-            <Card
-              key={_id}
-              className='homeCards__card'
-              style={cardBackground}
-              bordered
-            >
-              <h2>
-                {names.et}
-              </h2>
-              <p>
-                {abbreviation} | {languageList} | <b>{closed}</b>
-              </p>
-            </Card>
-          </Link>
-        </Col>
-      )
-    }
+
+    const place = c.closed ? 'closed' : 'available'
+    items[place].push(
+      <Col key={i} sm={12} md={8}>
+        <Link to={'/curriculum/' + slugs.et}>
+          <Card
+            key={_id}
+            className='homeCards__card'
+            style={cardBackground}
+            bordered
+          >
+            <h2>
+              {names.et}
+            </h2>
+            <p>
+              {abbreviation} | {languageList} | <b>{closed}</b>
+            </p>
+          </Card>
+        </Link>
+      </Col>
+    )
   })
 
   return (
