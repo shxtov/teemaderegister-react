@@ -37,8 +37,10 @@ const HomeCards = props => {
     PHD: noneBack
   }
 
-  let items = []
-  let closedItems = []
+  let items = {
+    available: [],
+    closed: []
+  }
 
   collection.forEach((c, i) => {
     if (c.closed != null) {
@@ -52,7 +54,7 @@ const HomeCards = props => {
         l + ((i !== languages.length - 1) & (languages.length > 1) ? '/' : '')
     )
     if (c.closed == null) {
-      items.push(
+      items.available.push(
         <Col key={i} sm={12} md={8}>
           <Link to={'/curriculum/' + slugs.et}>
             <Card
@@ -72,7 +74,7 @@ const HomeCards = props => {
         </Col>
       )
     } else {
-      closedItems.push(
+      items.closed.push(
         <Col key={i} sm={12} md={8}>
           <Link to={'/curriculum/' + slugs.et}>
             <Card
@@ -97,13 +99,12 @@ const HomeCards = props => {
   return (
     <div>
       <Row className='homeCards' gutter={24}>
-        {items}
-
+        {items.available}
       </Row>
       <Collapse bordered={false}>
         <Panel header="Suletud" key="1">
           <Row className='closedCards' gutter={24}>
-            {closedItems}
+            {items.closed}
           </Row>
         </Panel>
       </Collapse>
