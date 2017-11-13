@@ -101,9 +101,10 @@ const HomeCards = props => {
       <Row className='homeCards' gutter={24}>
         {items.available}
       </Row>
+
       <Collapse bordered={false}>
-        <Panel header="Suletud" key="1">
-          <Row className='closedCards' gutter={24}>
+        <Panel className='closedCards' header="Suletud" key="1">
+          <Row gutter={24}>
             {items.closed}
           </Row>
         </Panel>
