@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import queryString from 'query-string'
 
 import Breadcrumbs from './Breadcrumbs'
 import TableWrap from '../components/TableWrap'
@@ -27,15 +26,6 @@ class Search extends React.Component {
     // Reset all state params
     this.props.initTableContent()
     this.props.initSearch()
-  }
-
-  componentDidMount(){
-    console.log(this.props)
-    const { q } = queryString.parse(this.props.history.location.search)
-    if (q) {
-      this.props.setSearch(q)
-      this.defaultSearch = q
-    }
   }
 
   getCrumbs () {
