@@ -8,6 +8,8 @@ import {
   getTableContent
 } from '../actions/TableContentActions'
 import { initSearch } from '../actions/SearchActions'
+import { setSearch } from '../actions/SearchActions'
+
 
 const SearchContainer = props => <Search {...props} />
 
@@ -22,5 +24,6 @@ export default connect(mapStateToProps, {
   clearTableContent,
   getTableContent,
   initSearch,
+  setSearch,
   initTableContent
 })(SearchContainer)

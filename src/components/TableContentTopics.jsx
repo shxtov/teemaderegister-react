@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+
 
 import { Badge, Tooltip, Icon } from 'antd'
 
@@ -180,11 +182,21 @@ const title = ({ columnKey, order }) => ({
   key: 'title',
   sorter: true,
   sortOrder: columnKey === 'title' && order,
-  render: title => {
+  render: (title, row) => {
+    const url = window.location.host + '/search?q=' + row.slug
     let content = (
-      <span>
-        {title}
-      </span>
+        <div>
+          <span>
+            {title}
+          </span>
+          <CopyToClipboard text={url}>
+          <a href="#">
+            <Tooltip placement='topLeft' title='Copied to clipboard!' trigger='click'>
+              <span><Icon type="copy" /> Copy link to clipboard</span>
+            </Tooltip>
+          </a>
+          </CopyToClipboard>
+        </div>
     )
     return content
   }
