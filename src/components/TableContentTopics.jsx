@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import moment from 'moment'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
 
-import { Badge, Tooltip, Icon } from 'antd'
+import { message, Badge, Tooltip, Icon } from 'antd'
 
 export default params => {
   const columns = getColumnNames(params)
@@ -182,18 +182,16 @@ const title = ({ columnKey, order }) => ({
   sorter: true,
   sortOrder: columnKey === 'title' && order,
   render: (title, row) => {
-    const url = window.location.host + '/search?q=' + row.slug
+    const url = window.location.host + '/search?q=' + row.slug + '&sub=' + columnKey
     let content = (
       <div>
         <span>
           {title}
         </span>
-        <CopyToClipboard text={url}>
-          <a href="#">
-            <Tooltip placement='topLeft' title='Copied to clipboard!' trigger='click'>
-              <span><Icon type="copy" /> Copy link to clipboard</span>
-            </Tooltip>
-          </a>
+        <CopyToClipboard text={url} onCopy={() => message.success('Link copied to clipboard')}>
+          <Tooltip placement='topLeft' title='Copy link to clipboard'>
+            <span style={{ float: 'right'}}><Icon type="share-alt" /></span>
+          </Tooltip>
         </CopyToClipboard>
       </div>
     )
